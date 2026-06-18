@@ -62,15 +62,10 @@ class GrossSalaryEngineTest {
     // -------------------------------------------------------------------------
     // All absent: 0 days worked out of 23
     // absentDays = 23, deduction = 23 * 1200 = 27600
-    // gross = 30000 - 27600 = 2400
-    //
-    // TODO: confirm floor-at-zero rule. Currently computes raw value.
-    // If an employee has more absent days than SALARY_DIVISOR allows
-    // (e.g., 26 absent on a 25-divisor scale) gross would go negative.
-    // Awaiting business rule: should gross floor at 0?
+    // gross = 30000 - 27600 = 2400  (still positive, floor does not trigger)
     // -------------------------------------------------------------------------
     @Test
-    @DisplayName("All absent: 0/23 days worked → gross 2400 (raw, no floor)")
+    @DisplayName("All absent: 0/23 days worked → gross 2400")
     void allAbsent_0of23() {
         BigDecimal gross = engine.grossSalary(23, 0);
         BigDecimal epfEmployee = engine.epfEmployeeDeduction(gross);
@@ -109,5 +104,16 @@ class GrossSalaryEngineTest {
     void shortMonth_22of22() {
         BigDecimal gross = engine.grossSalary(22, 22);
         assertThat(gross.compareTo(new BigDecimal("30000"))).isZero();
+    }
+
+    // -------------------------------------------------------------------------
+    // Floor test: availableWorkingDays=26, daysWorked=0
+    // raw = 30000 - (1200 * 26) = 30000 - 31200 = -1200  → floored to 0
+    // -------------------------------------------------------------------------
+    @Test
+    @DisplayName("Floor: 0/26 days worked → raw -1200 floored to Rs. 0.00")
+    void grossFloor_26available_0worked() {
+        BigDecimal gross = engine.grossSalary(26, 0);
+        assertThat(gross.compareTo(BigDecimal.ZERO)).isZero();
     }
 }

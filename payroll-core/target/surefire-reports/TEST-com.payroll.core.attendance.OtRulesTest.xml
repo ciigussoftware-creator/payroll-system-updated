@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.1" name="com.payroll.core.engine.GrossSalaryEngineTest" time="0.015" tests="6" errors="0" skipped="0" failures="0">
+<testsuite xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="https://maven.apache.org/surefire/maven-surefire-plugin/xsd/surefire-test-report.xsd" version="3.0.1" name="com.payroll.core.attendance.OtRulesTest" time="0.119" tests="12" errors="0" skipped="0" failures="0">
   <properties>
     <property name="java.specification.version" value="23"/>
     <property name="sun.cpu.isalist" value="amd64"/>
@@ -58,10 +58,16 @@
     <property name="sun.io.unicode.encoding" value="UnicodeLittle"/>
     <property name="java.class.version" value="67.0"/>
   </properties>
-  <testcase name="typical_20of23_allStatutory" classname="com.payroll.core.engine.GrossSalaryEngineTest" time="0.004"/>
-  <testcase name="shortMonth_22of22" classname="com.payroll.core.engine.GrossSalaryEngineTest" time="0.001"/>
-  <testcase name="goldenTest_VijithaBandara_April2026" classname="com.payroll.core.engine.GrossSalaryEngineTest" time="0.001"/>
-  <testcase name="fullAttendance_23of23" classname="com.payroll.core.engine.GrossSalaryEngineTest" time="0.001"/>
-  <testcase name="allAbsent_0of23" classname="com.payroll.core.engine.GrossSalaryEngineTest" time="0.001"/>
-  <testcase name="grossFloor_26available_0worked" classname="com.payroll.core.engine.GrossSalaryEngineTest" time="0.001"/>
+  <testcase name="floor_317_to_315" classname="com.payroll.core.attendance.OtRulesTest" time="0.074"/>
+  <testcase name="gate_switchesSetToday_employeeNull_notAuthorized" classname="com.payroll.core.attendance.OtRulesTest" time="0.002"/>
+  <testcase name="breaks_window_1300_1625_afternoonTeaOnly" classname="com.payroll.core.attendance.OtRulesTest" time="0.0"/>
+  <testcase name="gate_switchesSetToday_employeeFalse_notAuthorized" classname="com.payroll.core.attendance.OtRulesTest" time="0.001"/>
+  <testcase name="floor_300_to_300" classname="com.payroll.core.attendance.OtRulesTest" time="0.001"/>
+  <testcase name="breaks_window_0800_1230_morningTeaOnly" classname="com.payroll.core.attendance.OtRulesTest" time="0.0"/>
+  <testcase name="gate_noSwitchesSetToday_alwaysAuthorized" classname="com.payroll.core.attendance.OtRulesTest" time="0.002"/>
+  <testcase name="gate_switchesSetToday_employeeTrue_authorized" classname="com.payroll.core.attendance.OtRulesTest" time="0.001"/>
+  <testcase name="breaks_window_saturday_0725_1320_morningTeaAndLunch" classname="com.payroll.core.attendance.OtRulesTest" time="0.001"/>
+  <testcase name="floor_7_to_0" classname="com.payroll.core.attendance.OtRulesTest" time="0.001"/>
+  <testcase name="floor_314_to_300" classname="com.payroll.core.attendance.OtRulesTest" time="0.001"/>
+  <testcase name="breaks_window_preShift_0600_0730_none" classname="com.payroll.core.attendance.OtRulesTest" time="0.001"/>
 </testsuite>
