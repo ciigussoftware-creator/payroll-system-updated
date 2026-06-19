@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,6 +32,25 @@ class AttendanceEngineTest {
 
     private static Scan entry(int h, int m) { return new Scan(DATE.atTime(h, m), ScanType.ENTRY); }
     private static Scan exit(int h, int m)  { return new Scan(DATE.atTime(h, m), ScanType.EXIT); }
+
+    private static final List<BreakPeriod> STANDARD_BREAKS = List.of(
+            new BreakPeriod(LocalTime.of(10,  0), LocalTime.of(10, 20), "Morning tea"),
+            new BreakPeriod(LocalTime.of(12, 30), LocalTime.of(13,  0), "Lunch"),
+            new BreakPeriod(LocalTime.of(15,  0), LocalTime.of(15, 10), "Afternoon tea")
+    );
+
+    /** Weekday STANDARD input with real break schedule and configurable OT authorization. */
+    private DayInput weekdayOtInput(boolean anySwitch, Boolean perEmployeeAuth, List<Scan> scans) {
+        return new DayInput(
+                EmployeeCategory.STANDARD,
+                DATE,
+                DayType.WEEKDAY,
+                scans,
+                false,
+                perEmployeeAuth,
+                anySwitch,
+                STANDARD_BREAKS);
+    }
 
     private void assertAbsent(DayResult r) {
         assertThat(r.getDayClassification()).isEqualTo(DayClassification.ABSENT);
@@ -217,6 +237,164 @@ class AttendanceEngineTest {
                 input(DayType.WEEKDAY, false, List.of(entry(12, 0), exit(16, 45))));
 
         assertAbsent(r);
+        assertThat(r.getFlags()).isEmpty();
+    }
+
+    // --- WEEKDAY (STANDARD) — post-shift OT ---
+
+    @Test
+    void weekday_ot_arriveAt0715_leave1630_15min() {
+        // shiftEnd(07:15) = 16:15; OT = [16:15, 16:30] = 15 min; floor(15) = 15
+        DayResult r = engine.classifyDay(
+                weekdayOtInput(false, null, List.of(entry(7, 15), exit(16, 30))));
+
+        assertThat(r.getDayClassification()).isEqualTo(DayClassification.FULL_DAY);
+        assertThat(r.getDayCredit()).isEqualByComparingTo("1.0");
+        assertThat(r.getOtMinutes()).isEqualTo(15);
+        assertThat(r.getOtHoursDecimal()).isEqualByComparingTo("0.25");
+        assertThat(r.getFlags()).isEmpty();
+    }
+
+    @Test
+    void weekday_postShiftOt_authorized_breakBeforeOtWindow_90min() {
+        // arrive 07:00 → shiftEnd 16:00; leave 17:30 → 90 min raw
+        // afternoon tea 15:00–15:10 is before 16:00, not in OT window → 0 deducted
+        // floor(90) = 90 → 1.50 hrs
+        DayResult r = engine.classifyDay(
+                weekdayOtInput(false, null, List.of(entry(7, 0), exit(17, 30))));
+
+        assertThat(r.getDayClassification()).isEqualTo(DayClassification.FULL_DAY);
+        assertThat(r.getDayCredit()).isEqualByComparingTo("1.0");
+        assertThat(r.getOtMinutes()).isEqualTo(90);
+        assertThat(r.getOtHoursDecimal()).isEqualByComparingTo("1.5");
+    }
+
+    @Test
+    void weekday_postShiftOt_notAuthorized_zeroOt() {
+        // same scan as above but per-employee switches set today and this employee not included
+        DayResult r = engine.classifyDay(
+                weekdayOtInput(true, null, List.of(entry(7, 0), exit(17, 30))));
+
+        assertThat(r.getDayClassification()).isEqualTo(DayClassification.FULL_DAY);
+        assertThat(r.getOtMinutes()).isZero();
+        assertThat(r.getOtHoursDecimal()).isEqualByComparingTo("0");
+    }
+
+    @Test
+    void weekday_leaveExactlyAtShiftEnd_zeroOt() {
+        // arrive 07:00 → shiftEnd 16:00; leave 16:00 → no time past shiftEnd
+        DayResult r = engine.classifyDay(
+                weekdayOtInput(false, null, List.of(entry(7, 0), exit(16, 0))));
+
+        assertThat(r.getDayClassification()).isEqualTo(DayClassification.FULL_DAY);
+        assertThat(r.getOtMinutes()).isZero();
+        assertThat(r.getOtHoursDecimal()).isEqualByComparingTo("0");
+    }
+
+    @Test
+    void weekday_postShiftOt_flooredToQuarter_75min() {
+        // arrive 07:00 → shiftEnd 16:00; leave 17:17 → 77 min raw → floor → 75 → 1.25 hrs
+        DayResult r = engine.classifyDay(
+                weekdayOtInput(false, null, List.of(entry(7, 0), exit(17, 17))));
+
+        assertThat(r.getDayClassification()).isEqualTo(DayClassification.FULL_DAY);
+        assertThat(r.getOtMinutes()).isEqualTo(75);
+        assertThat(r.getOtHoursDecimal()).isEqualByComparingTo("1.25");
+    }
+
+    // --- WEEKDAY (STANDARD) — pre-shift OT ---
+
+    @Test
+    void weekday_earlyArrival_noReturn_preShiftForfeited() {
+        // arrive 06:00, leave 10:00, never return → no qualifying session → ABSENT, 0 OT
+        DayResult r = engine.classifyDay(
+                weekdayOtInput(false, null, List.of(entry(6, 0), exit(10, 0))));
+
+        assertAbsent(r);
+        assertThat(r.getFlags()).isEmpty();
+    }
+
+    @Test
+    void weekday_earlyArrival_lateReturn_preShiftForfeited() {
+        // arrive 06:00, return 12:30 — past 11:45 PM window → no qualifying session → ABSENT
+        DayResult r = engine.classifyDay(
+                weekdayOtInput(false, null, List.of(entry(6, 0), exit(10, 0), entry(12, 30), exit(16, 30))));
+
+        assertAbsent(r);
+        assertThat(r.getFlags()).isEmpty();
+    }
+
+    @Test
+    void weekday_earlyArrival_morningSessionOtAgainstPmCredit() {
+        // arrive 06:00, leave 10:00, return 11:30, leave 16:15 → PM half qualifies
+        // entire morning session [06:00, 10:00] = 240 min outside PM credit [11:30, 16:15]
+        // no breaks before 10:00 → floor(240) = 240 → 4.00 hrs
+        DayResult r = engine.classifyDay(
+                weekdayOtInput(false, null, List.of(entry(6, 0), exit(10, 0), entry(11, 30), exit(16, 15))));
+
+        assertThat(r.getDayClassification()).isEqualTo(DayClassification.HALF_DAY_PM);
+        assertThat(r.getDayCredit()).isEqualByComparingTo("0.5");
+        assertThat(r.getOtMinutes()).isEqualTo(240);
+        assertThat(r.getOtHoursDecimal()).isEqualByComparingTo("4.0");
+        assertThat(r.getFlags()).isEmpty();
+    }
+
+    @Test
+    void weekday_earlyArrival_fullDayContinuous_preShiftOtCounts() {
+        // arrive 06:00, work straight to 16:00 → FULL_DAY (shiftEnd(07:00)=16:00)
+        // pre-shift [06:00, 07:30] = 90 min; post-shift = 0 (left at shiftEnd)
+        DayResult r = engine.classifyDay(
+                weekdayOtInput(false, null, List.of(entry(6, 0), exit(16, 0))));
+
+        assertThat(r.getDayClassification()).isEqualTo(DayClassification.FULL_DAY);
+        assertThat(r.getDayCredit()).isEqualByComparingTo("1.0");
+        assertThat(r.getOtMinutes()).isEqualTo(90);
+        assertThat(r.getOtHoursDecimal()).isEqualByComparingTo("1.5");
+        assertThat(r.getFlags()).isEmpty();
+    }
+
+    @Test
+    void weekday_earlyArrival_unauthorized_zeroOt() {
+        // same sessions as qualifyingPmSession but unauthorized → 0 OT, still HALF_DAY_PM credit
+        DayResult r = engine.classifyDay(
+                weekdayOtInput(true, null, List.of(entry(6, 0), exit(10, 0), entry(11, 30), exit(16, 15))));
+
+        assertThat(r.getDayClassification()).isEqualTo(DayClassification.HALF_DAY_PM);
+        assertThat(r.getDayCredit()).isEqualByComparingTo("0.5");
+        assertThat(r.getOtMinutes()).isZero();
+        assertThat(r.getOtHoursDecimal()).isEqualByComparingTo("0");
+        assertThat(r.getFlags()).isEmpty();
+    }
+
+    // --- WEEKDAY (STANDARD) — half-day OT ---
+
+    @Test
+    void weekday_amHalf_eveningReturn_120minOt() {
+        // AM half: arrive 07:00, leave 11:15 (exactly 4h15m credit)
+        // Evening return 17:00–19:00 = 120 min outside AM credit [07:00, 11:15]
+        // no breaks in [17:00, 19:00] → floor(120) = 120 → 2.00 hrs
+        DayResult r = engine.classifyDay(
+                weekdayOtInput(false, null,
+                        List.of(entry(7, 0), exit(11, 15), entry(17, 0), exit(19, 0))));
+
+        assertThat(r.getDayClassification()).isEqualTo(DayClassification.HALF_DAY_AM);
+        assertThat(r.getDayCredit()).isEqualByComparingTo("0.5");
+        assertThat(r.getOtMinutes()).isEqualTo(120);
+        assertThat(r.getOtHoursDecimal()).isEqualByComparingTo("2.0");
+        assertThat(r.getFlags()).isEmpty();
+    }
+
+    @Test
+    void weekday_amHalf_eveningReturn_unauthorized_zeroOt() {
+        // same sessions as above but unauthorized → 0 OT, credit 0.5 still stands
+        DayResult r = engine.classifyDay(
+                weekdayOtInput(true, null,
+                        List.of(entry(7, 0), exit(11, 15), entry(17, 0), exit(19, 0))));
+
+        assertThat(r.getDayClassification()).isEqualTo(DayClassification.HALF_DAY_AM);
+        assertThat(r.getDayCredit()).isEqualByComparingTo("0.5");
+        assertThat(r.getOtMinutes()).isZero();
+        assertThat(r.getOtHoursDecimal()).isEqualByComparingTo("0");
         assertThat(r.getFlags()).isEmpty();
     }
 
