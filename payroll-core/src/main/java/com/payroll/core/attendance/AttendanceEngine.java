@@ -19,8 +19,7 @@ public class AttendanceEngine {
     private static final DayResult ABSENT_CLEAN =
             new DayResult(DayClassification.ABSENT, BigDecimal.ZERO, 0, BigDecimal.ZERO, Set.of());
 
-    private static final DayResult OT_CLEAN =
-            new DayResult(DayClassification.OT_DAY, BigDecimal.ZERO, 0, BigDecimal.ZERO, Set.of());
+    // OT_CLEAN removed — all OT-day paths now compute real OT minutes.
 
     private final SessionBuilder sessionBuilder = new SessionBuilder();
 
@@ -41,19 +40,25 @@ public class AttendanceEngine {
         }
 
         return switch (input.getDayType()) {
-            case SUNDAY             -> OT_CLEAN;
-            case SATURDAY           -> classifySaturday(sr.getSessions());
-            case MERCANTILE_HOLIDAY -> classifyMercantileHoliday(input.isDayLevelOtOn());
+            case SUNDAY             -> classifySunday(input, sr.getSessions());
+            case SATURDAY           -> classifySaturday(input, sr.getSessions());
+            case MERCANTILE_HOLIDAY -> classifyMercantileHoliday(input, sr.getSessions());
             case SPECIAL            -> ABSENT_CLEAN; // TODO: SPECIAL branch
             case WEEKDAY            -> input.getCategory() == EmployeeCategory.PEELING
-                                        ? classifyPeeling()
+                                        ? classifyPeeling(input, sr.getSessions())
                                         : classifyWeekday(input, sr.getSessions());
         };
     }
 
-    private DayResult classifyPeeling() {
-        // TODO: OT from second half computed in Phase 2E
-        return new DayResult(DayClassification.FULL_DAY, BigDecimal.ONE, 0, BigDecimal.ZERO, Set.of());
+    private DayResult classifyPeeling(DayInput input, List<Session> sessions) {
+        LocalDateTime firstEntry = sessions.get(0).getStart();
+        LocalDateTime lastExit   = sessions.get(sessions.size() - 1).getEnd();
+        Duration totalPresence   = Duration.between(firstEntry, lastExit);
+        LocalDateTime midpoint   = firstEntry.plus(totalPresence.dividedBy(2));
+        int raw = rawNetMinutes(input, midpoint, lastExit);
+        int ot  = OtRules.floorToQuarterHour(raw);
+        if (!OtRules.isOtAuthorized(input)) ot = 0;
+        return fullDayResult(ot);
     }
 
     private DayResult classifyWeekday(DayInput input, List<Session> sessions) {
@@ -91,7 +96,7 @@ public class AttendanceEngine {
             }
         }
 
-        return ABSENT_CLEAN;
+        return absentWithPreShiftOt(input, sessions);
     }
 
     /**
@@ -133,8 +138,7 @@ public class AttendanceEngine {
             }
         }
 
-        // No qualifying session → pre-shift OT forfeited
-        return ABSENT_CLEAN;
+        return absentWithPreShiftOt(input, sessions);
     }
 
     // -------------------------------------------------------------------------
@@ -189,6 +193,26 @@ public class AttendanceEngine {
         return OtRules.isOtAuthorized(input) ? ot : 0;
     }
 
+    /**
+     * ABSENT result with pre-shift OT: sums each session's slice before SHIFT_START_BOUNDARY (07:30),
+     * deducts breaks, floors the total to 15 min, applies auth gate. dayCredit is always 0.
+     */
+    private DayResult absentWithPreShiftOt(DayInput input, List<Session> sessions) {
+        LocalDateTime boundary = sessions.get(0).getStart().toLocalDate()
+                .atTime(AttendanceConstants.SHIFT_START_BOUNDARY);
+        int totalRaw = 0;
+        for (Session s : sessions) {
+            if (s.getStart().isBefore(boundary)) {
+                LocalDateTime otEnd = s.getEnd().isBefore(boundary) ? s.getEnd() : boundary;
+                totalRaw += rawNetMinutes(input, s.getStart(), otEnd);
+            }
+        }
+        int ot = OtRules.floorToQuarterHour(totalRaw);
+        if (!OtRules.isOtAuthorized(input)) ot = 0;
+        BigDecimal otHours = BigDecimal.valueOf(ot).divide(SIXTY, 2, RoundingMode.HALF_UP);
+        return new DayResult(DayClassification.ABSENT, BigDecimal.ZERO, ot, otHours, Set.of());
+    }
+
     /** Raw session minutes in [start, end] minus breaks — no floor, no auth gate. */
     private int rawNetMinutes(DayInput input, LocalDateTime start, LocalDateTime end) {
         if (!end.isAfter(start)) return 0;
@@ -213,24 +237,47 @@ public class AttendanceEngine {
     // Non-weekday branches
     // -------------------------------------------------------------------------
 
-    private DayResult classifySaturday(List<Session> sessions) {
+    private DayResult classifySunday(DayInput input, List<Session> sessions) {
+        return otDayResult(computeAllSessionsOt(input, sessions));
+    }
+
+    private DayResult classifySaturday(DayInput input, List<Session> sessions) {
         LocalTime arrival  = sessions.get(0).getStart().toLocalTime();
         LocalTime lastExit = sessions.get(sessions.size() - 1).getEnd().toLocalTime();
 
         if (!arrival.isAfter(AttendanceConstants.FLEX_ARRIVAL_END)
                 && !lastExit.isBefore(AttendanceConstants.SATURDAY_END)) {
-            return new DayResult(DayClassification.FULL_DAY, BigDecimal.ONE, 0, BigDecimal.ZERO, Set.of());
+            // FULL_DAY: credit 1.0, OT = any time worked past SATURDAY_END
+            LocalDateTime creditStart = sessions.get(0).getStart();
+            LocalDateTime creditEnd   = creditStart.toLocalDate().atTime(AttendanceConstants.SATURDAY_END);
+            return buildFullDayResult(input, creditStart, creditEnd, sessions);
         }
 
         if (arrival.isAfter(AttendanceConstants.FLEX_ARRIVAL_END)) {
-            return OT_CLEAN;
+            return otDayResult(computeAllSessionsOt(input, sessions));
         }
 
         // TODO: arrived on time but left before SATURDAY_END — no business rule yet
         return ABSENT_CLEAN;
     }
 
-    private DayResult classifyMercantileHoliday(boolean dayLevelOtOn) {
-        return dayLevelOtOn ? OT_CLEAN : ABSENT_CLEAN;
+    private DayResult classifyMercantileHoliday(DayInput input, List<Session> sessions) {
+        if (!input.isDayLevelOtOn()) return ABSENT_CLEAN;
+        return otDayResult(computeAllSessionsOt(input, sessions));
+    }
+
+    private DayResult otDayResult(int otMinutes) {
+        BigDecimal otHours = BigDecimal.valueOf(otMinutes).divide(SIXTY, 2, RoundingMode.HALF_UP);
+        return new DayResult(DayClassification.OT_DAY, BigDecimal.ZERO, otMinutes, otHours, Set.of());
+    }
+
+    /** Sum of all session worked minutes (break-adjusted), floored to 15 min, auth-gated. */
+    private int computeAllSessionsOt(DayInput input, List<Session> sessions) {
+        int totalRaw = 0;
+        for (Session s : sessions) {
+            totalRaw += rawNetMinutes(input, s.getStart(), s.getEnd());
+        }
+        int ot = OtRules.floorToQuarterHour(totalRaw);
+        return OtRules.isOtAuthorized(input) ? ot : 0;
     }
 }
