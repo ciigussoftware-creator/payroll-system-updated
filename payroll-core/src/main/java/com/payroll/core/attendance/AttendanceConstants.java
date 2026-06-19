@@ -14,10 +14,13 @@ public final class AttendanceConstants {
 
     public static final Duration  STANDARD_DAY_LENGTH   = Duration.ofHours(9);
 
-    public static final LocalTime WEEKDAY_FIRST_HALF_START  = LocalTime.of(7, 25);
-    public static final LocalTime WEEKDAY_FIRST_HALF_END    = LocalTime.of(11, 45);
-    public static final LocalTime WEEKDAY_SECOND_HALF_START = LocalTime.of(11, 15);
-    public static final LocalTime WEEKDAY_SECOND_HALF_END   = LocalTime.of(16, 25);
+    public static final LocalTime     AM_HALF_ARRIVAL_START  = LocalTime.of(7, 0);
+    public static final LocalTime     AM_HALF_ARRIVAL_END    = LocalTime.of(8, 0);
+    public static final Duration      AM_HALF_DURATION       = Duration.ofHours(4).plusMinutes(15);
+
+    public static final LocalTime     PM_HALF_START_EARLIEST = LocalTime.of(11, 15);
+    public static final LocalTime     PM_HALF_START_LATEST   = LocalTime.of(11, 45);
+    public static final Duration      PM_HALF_DURATION       = Duration.ofHours(4).plusMinutes(45);
 
     public static final LocalTime SATURDAY_START = LocalTime.of(7, 25);
     public static final LocalTime SATURDAY_END   = LocalTime.of(13, 20);

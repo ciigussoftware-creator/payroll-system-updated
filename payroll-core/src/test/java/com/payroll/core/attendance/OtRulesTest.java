@@ -74,13 +74,13 @@ class OtRulesTest {
 
     // -------------------------------------------------------------------------
     // breakMinutesInsideWindow
-    // Break schedule: morning tea 10:00–10:20, lunch 12:30–13:00, afternoon tea 14:30–14:40
+    // Break schedule: morning tea 10:00–10:20, lunch 12:30–13:00, afternoon tea 15:00–15:10
     // -------------------------------------------------------------------------
 
     private static final List<BreakPeriod> BREAKS = List.of(
             new BreakPeriod(LocalTime.of(10,  0), LocalTime.of(10, 20), "Morning tea"),
             new BreakPeriod(LocalTime.of(12, 30), LocalTime.of(13,  0), "Lunch"),
-            new BreakPeriod(LocalTime.of(14, 30), LocalTime.of(14, 40), "Afternoon tea")
+            new BreakPeriod(LocalTime.of(15,  0), LocalTime.of(15, 10), "Afternoon tea")
     );
 
     @Test
@@ -100,7 +100,7 @@ class OtRulesTest {
     }
 
     @Test
-    @DisplayName("breaks: window 13:00–16:25 → afternoon tea only = 10 min")
+    @DisplayName("breaks: window 13:00–16:25 → afternoon tea (15:00–15:10) inside → 10 min deducted")
     void breaks_window_1300_1625_afternoonTeaOnly() {
         int result = OtRules.breakMinutesInsideWindow(
                 LocalTime.of(13, 0), LocalTime.of(16, 25), BREAKS);
