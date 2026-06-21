@@ -11,6 +11,7 @@ import org.junit.jupiter.api.io.TempDir;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Path;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -133,6 +134,81 @@ class AttendanceRecordRepositoryIT {
             repo.markSynced(saved.getId(), 100L);
 
             assertThat(repo.findUnsynced()).isEmpty();
+        }
+    }
+
+    @Test
+    void newRecordHasNonNullNonEmptySyncUuid(@TempDir Path tempDir) throws IOException {
+        try (DatabaseManager db = new DatabaseManager(tempDir)) {
+            EmployeeRepository empRepo = new EmployeeRepository(db.getSessionFactory());
+            AttendanceRecordRepository repo = new AttendanceRecordRepository(db.getSessionFactory());
+
+            Employee emp = savedEmployee(empRepo, "EMP-001");
+            AttendanceRecord saved = repo.save(
+                    newRecord(emp, LocalDateTime.of(2026, 6, 20, 8, 0), ScanType.ENTRY));
+
+            assertThat(saved.getSyncUuid()).isNotNull().isNotEmpty();
+        }
+    }
+
+    @Test
+    void twoRecordsHaveDifferentSyncUuids(@TempDir Path tempDir) throws IOException {
+        try (DatabaseManager db = new DatabaseManager(tempDir)) {
+            EmployeeRepository empRepo = new EmployeeRepository(db.getSessionFactory());
+            AttendanceRecordRepository repo = new AttendanceRecordRepository(db.getSessionFactory());
+
+            Employee emp = savedEmployee(empRepo, "EMP-001");
+            AttendanceRecord r1 = repo.save(newRecord(emp, LocalDateTime.of(2026, 6, 20, 8, 0), ScanType.ENTRY));
+            AttendanceRecord r2 = repo.save(newRecord(emp, LocalDateTime.of(2026, 6, 20, 17, 0), ScanType.EXIT));
+
+            assertThat(r1.getSyncUuid()).isNotEqualTo(r2.getSyncUuid());
+        }
+    }
+
+    @Test
+    void incrementSyncAttemptIncrementsCountAndStoresErrorAndTimestamp(@TempDir Path tempDir) throws IOException {
+        try (DatabaseManager db = new DatabaseManager(tempDir)) {
+            EmployeeRepository empRepo = new EmployeeRepository(db.getSessionFactory());
+            AttendanceRecordRepository repo = new AttendanceRecordRepository(db.getSessionFactory());
+
+            Employee emp = savedEmployee(empRepo, "EMP-001");
+            AttendanceRecord saved = repo.save(
+                    newRecord(emp, LocalDateTime.of(2026, 6, 20, 8, 0), ScanType.ENTRY));
+
+            Instant before = Instant.now();
+            repo.incrementSyncAttempt(saved.getId(), "connection timeout");
+            Instant after = Instant.now();
+
+            Optional<AttendanceRecord> found = repo.findById(saved.getId());
+            assertThat(found).isPresent();
+            assertThat(found.get().getSyncAttempts()).isEqualTo(1);
+            assertThat(found.get().getLastSyncError()).isEqualTo("connection timeout");
+            assertThat(found.get().getLastSyncAttemptAt())
+                    .isAfterOrEqualTo(before)
+                    .isBeforeOrEqualTo(after);
+
+            // Second attempt increments again
+            repo.incrementSyncAttempt(saved.getId(), "timeout again");
+            assertThat(repo.findById(saved.getId()).get().getSyncAttempts()).isEqualTo(2);
+        }
+    }
+
+    @Test
+    void findBySyncUuidReturnsCorrectRecord(@TempDir Path tempDir) throws IOException {
+        try (DatabaseManager db = new DatabaseManager(tempDir)) {
+            EmployeeRepository empRepo = new EmployeeRepository(db.getSessionFactory());
+            AttendanceRecordRepository repo = new AttendanceRecordRepository(db.getSessionFactory());
+
+            Employee emp = savedEmployee(empRepo, "EMP-001");
+            AttendanceRecord saved = repo.save(
+                    newRecord(emp, LocalDateTime.of(2026, 6, 20, 8, 0), ScanType.ENTRY));
+
+            Optional<AttendanceRecord> found = repo.findBySyncUuid(saved.getSyncUuid());
+            assertThat(found).isPresent();
+            assertThat(found.get().getId()).isEqualTo(saved.getId());
+            assertThat(found.get().getEmployee().getEmployeeCode()).isEqualTo("EMP-001");
+
+            assertThat(repo.findBySyncUuid("no-such-uuid")).isEmpty();
         }
     }
 }

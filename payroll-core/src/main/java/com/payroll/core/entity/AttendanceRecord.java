@@ -1,7 +1,9 @@
 package com.payroll.core.entity;
 
 import jakarta.persistence.*;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "attendance_records")
@@ -43,7 +45,28 @@ public class AttendanceRecord {
     @Column(name = "cloud_record_id")
     private Long cloudRecordId;
 
-    public AttendanceRecord() {}
+    @Column(name = "sync_uuid", nullable = false, unique = true, length = 36)
+    private String syncUuid;
+
+    @Column(name = "sync_attempts", nullable = false)
+    private int syncAttempts = 0;
+
+    @Column(name = "last_sync_error", length = 1000)
+    private String lastSyncError;
+
+    @Column(name = "last_sync_attempt_at")
+    private Instant lastSyncAttemptAt;
+
+    public AttendanceRecord() {
+        this.syncUuid = UUID.randomUUID().toString();
+    }
+
+    @PrePersist
+    private void prePersist() {
+        if (syncUuid == null) {
+            syncUuid = UUID.randomUUID().toString();
+        }
+    }
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -77,4 +100,16 @@ public class AttendanceRecord {
 
     public Long getCloudRecordId() { return cloudRecordId; }
     public void setCloudRecordId(Long cloudRecordId) { this.cloudRecordId = cloudRecordId; }
+
+    public String getSyncUuid() { return syncUuid; }
+    public void setSyncUuid(String syncUuid) { this.syncUuid = syncUuid; }
+
+    public int getSyncAttempts() { return syncAttempts; }
+    public void setSyncAttempts(int syncAttempts) { this.syncAttempts = syncAttempts; }
+
+    public String getLastSyncError() { return lastSyncError; }
+    public void setLastSyncError(String lastSyncError) { this.lastSyncError = lastSyncError; }
+
+    public Instant getLastSyncAttemptAt() { return lastSyncAttemptAt; }
+    public void setLastSyncAttemptAt(Instant lastSyncAttemptAt) { this.lastSyncAttemptAt = lastSyncAttemptAt; }
 }

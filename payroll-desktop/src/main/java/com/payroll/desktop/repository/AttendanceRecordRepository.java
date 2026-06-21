@@ -5,6 +5,7 @@ import com.payroll.core.entity.Employee;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -76,6 +77,31 @@ public class AttendanceRecordRepository {
                     .setParameter("id", id)
                     .executeUpdate();
             session.getTransaction().commit();
+        }
+    }
+
+    public void incrementSyncAttempt(Long id, String errorMessage) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            session.createMutationQuery(
+                            "UPDATE AttendanceRecord SET syncAttempts = syncAttempts + 1, " +
+                            "lastSyncError = :error, lastSyncAttemptAt = :attemptAt WHERE id = :id")
+                    .setParameter("error", errorMessage)
+                    .setParameter("attemptAt", Instant.now())
+                    .setParameter("id", id)
+                    .executeUpdate();
+            session.getTransaction().commit();
+        }
+    }
+
+    public Optional<AttendanceRecord> findBySyncUuid(String uuid) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery(
+                            "SELECT r FROM AttendanceRecord r JOIN FETCH r.employee " +
+                            "WHERE r.syncUuid = :uuid",
+                            AttendanceRecord.class)
+                    .setParameter("uuid", uuid)
+                    .uniqueResultOptional();
         }
     }
 
