@@ -1,0 +1,96 @@
+package com.payroll.desktop.repository;
+
+import com.payroll.core.entity.AttendanceRecord;
+import com.payroll.core.entity.Employee;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
+public class AttendanceRecordRepository {
+
+    private final SessionFactory sessionFactory;
+
+    public AttendanceRecordRepository(SessionFactory sessionFactory) {
+        this.sessionFactory = sessionFactory;
+    }
+
+    public AttendanceRecord save(AttendanceRecord r) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            // getReference avoids a detached-entity error when the employee comes from a prior session
+            r.setEmployee(session.getReference(Employee.class, r.getEmployee().getId()));
+            session.persist(r);
+            session.getTransaction().commit();
+            return r;
+        }
+    }
+
+    public Optional<AttendanceRecord> findById(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery(
+                            "SELECT r FROM AttendanceRecord r JOIN FETCH r.employee WHERE r.id = :id",
+                            AttendanceRecord.class)
+                    .setParameter("id", id)
+                    .uniqueResultOptional();
+        }
+    }
+
+    public List<AttendanceRecord> findByEmployeeAndDate(Employee e, LocalDate date) {
+        LocalDateTime dayStart = date.atStartOfDay();
+        LocalDateTime dayEnd = date.plusDays(1).atStartOfDay();
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery(
+                            "SELECT r FROM AttendanceRecord r JOIN FETCH r.employee " +
+                            "WHERE r.employee.id = :empId " +
+                            "AND r.scanDatetime >= :dayStart AND r.scanDatetime < :dayEnd " +
+                            "ORDER BY r.scanDatetime",
+                            AttendanceRecord.class)
+                    .setParameter("empId", e.getId())
+                    .setParameter("dayStart", dayStart)
+                    .setParameter("dayEnd", dayEnd)
+                    .list();
+        }
+    }
+
+    public List<AttendanceRecord> findUnsynced() {
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery(
+                            "SELECT r FROM AttendanceRecord r JOIN FETCH r.employee " +
+                            "WHERE r.syncedToCloud = false ORDER BY r.scanDatetime ASC",
+                            AttendanceRecord.class)
+                    .list();
+        }
+    }
+
+    public void markSynced(Long id, Long cloudRecordId) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            session.createMutationQuery(
+                            "UPDATE AttendanceRecord SET syncedToCloud = true, cloudRecordId = :cloudId " +
+                            "WHERE id = :id")
+                    .setParameter("cloudId", cloudRecordId)
+                    .setParameter("id", id)
+                    .executeUpdate();
+            session.getTransaction().commit();
+        }
+    }
+
+    public List<AttendanceRecord> findByDateRange(LocalDate from, LocalDate to) {
+        LocalDateTime fromDt = from.atStartOfDay();
+        LocalDateTime toDt = to.plusDays(1).atStartOfDay();
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery(
+                            "SELECT r FROM AttendanceRecord r JOIN FETCH r.employee " +
+                            "WHERE r.scanDatetime >= :fromDt AND r.scanDatetime < :toDt " +
+                            "ORDER BY r.scanDatetime",
+                            AttendanceRecord.class)
+                    .setParameter("fromDt", fromDt)
+                    .setParameter("toDt", toDt)
+                    .list();
+        }
+    }
+}
