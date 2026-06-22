@@ -15,6 +15,7 @@
 
     <modules>
         <module>payroll-core</module>
+        <module>payroll-desktop</module>
     </modules>
 
     <properties>
@@ -28,6 +29,7 @@
         <jakarta.persistence.version>3.1.0</jakarta.persistence.version>
         <junit.version>5.10.3</junit.version>
         <assertj.version>3.26.0</assertj.version>
+        <h2.version>2.3.232</h2.version>
     </properties>
 
     <dependencyManagement>
@@ -44,6 +46,28 @@
                 <groupId>org.hibernate.orm</groupId>
                 <artifactId>hibernate-core</artifactId>
                 <version>${hibernate.version}</version>
+            </dependency>
+
+            <!-- H2 embedded database (used by payroll-desktop) -->
+            <dependency>
+                <groupId>com.h2database</groupId>
+                <artifactId>h2</artifactId>
+                <version>${h2.version}</version>
+            </dependency>
+
+            <!-- Quartz scheduler (used by payroll-desktop sync) -->
+            <dependency>
+                <groupId>org.quartz-scheduler</groupId>
+                <artifactId>quartz</artifactId>
+                <version>2.3.2</version>
+            </dependency>
+
+            <!-- SLF4J simple binding (test scope only — keeps Quartz logging quiet in ITs) -->
+            <dependency>
+                <groupId>org.slf4j</groupId>
+                <artifactId>slf4j-simple</artifactId>
+                <version>1.7.36</version>
+                <scope>test</scope>
             </dependency>
 
             <!-- Testing -->
@@ -78,6 +102,11 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
+                    <version>3.3.0</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-failsafe-plugin</artifactId>
                     <version>3.3.0</version>
                 </plugin>
             </plugins>
