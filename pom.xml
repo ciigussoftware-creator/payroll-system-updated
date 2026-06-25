@@ -30,6 +30,9 @@
         <junit.version>5.10.3</junit.version>
         <assertj.version>3.26.0</assertj.version>
         <h2.version>2.3.232</h2.version>
+        <javafx.version>21.0.4</javafx.version>
+        <atlantafx.version>2.0.1</atlantafx.version>
+        <argon2jvm.version>2.11</argon2jvm.version>
     </properties>
 
     <dependencyManagement>
@@ -60,6 +63,37 @@
                 <groupId>org.quartz-scheduler</groupId>
                 <artifactId>quartz</artifactId>
                 <version>2.3.2</version>
+            </dependency>
+
+            <!-- JavaFX 21 -->
+            <dependency>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-controls</artifactId>
+                <version>${javafx.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-graphics</artifactId>
+                <version>${javafx.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.openjfx</groupId>
+                <artifactId>javafx-base</artifactId>
+                <version>${javafx.version}</version>
+            </dependency>
+
+            <!-- AtlantaFX theme (optional UI polish) -->
+            <dependency>
+                <groupId>io.github.mkpaz</groupId>
+                <artifactId>atlantafx-base</artifactId>
+                <version>${atlantafx.version}</version>
+            </dependency>
+
+            <!-- Argon2 password hashing via JNA-backed native library -->
+            <dependency>
+                <groupId>de.mkammerer</groupId>
+                <artifactId>argon2-jvm</artifactId>
+                <version>${argon2jvm.version}</version>
             </dependency>
 
             <!-- SLF4J simple binding (test scope only — keeps Quartz logging quiet in ITs) -->
