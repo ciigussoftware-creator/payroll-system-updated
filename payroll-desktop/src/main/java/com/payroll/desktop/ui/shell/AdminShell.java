@@ -1,5 +1,6 @@
 package com.payroll.desktop.ui.shell;
 
+import com.payroll.desktop.repository.EmployeeRepository;
 import com.payroll.desktop.ui.admin.CardsScreen;
 import com.payroll.desktop.ui.admin.DashboardScreen;
 import com.payroll.desktop.ui.admin.EmployeesScreen;
@@ -10,11 +11,7 @@ import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 
 // ISOLATION GUARANTEE: this class and the entire ui.admin package must have
 // zero imports from com.payroll.desktop.ui.superadmin. Enforced by AdminPackageIsolationTest.
@@ -22,10 +19,12 @@ public class AdminShell extends BorderPane {
 
     private final UserSession session;
     private final Runnable onLogout;
+    private final EmployeeRepository employeeRepository;
 
-    public AdminShell(UserSession session, Runnable onLogout) {
+    public AdminShell(UserSession session, Runnable onLogout, EmployeeRepository employeeRepository) {
         this.session = session;
         this.onLogout = onLogout;
+        this.employeeRepository = employeeRepository;
         setTop(buildTopBar());
         setLeft(buildSidebar());
         setCenter(DashboardScreen.build());
@@ -52,8 +51,8 @@ public class AdminShell extends BorderPane {
         sidebar.getStyleClass().add("sidebar");
 
         addNavButton(sidebar, "Dashboard",        () -> setCenter(DashboardScreen.build()));
-        addNavButton(sidebar, "Employees",        () -> setCenter(EmployeesScreen.build()));
-        addNavButton(sidebar, "Cards",            () -> setCenter(CardsScreen.build()));
+        addNavButton(sidebar, "Employees",        () -> setCenter(new EmployeesScreen(employeeRepository)));
+        addNavButton(sidebar, "Cards",            () -> setCenter(new CardsScreen(employeeRepository)));
         addNavButton(sidebar, "Working Days",     () -> setCenter(WorkingDaysScreen.build()));
         sidebar.getChildren().add(new Separator());
         addNavButton(sidebar, "Statutory Export", () -> setCenter(StatutoryExportScreen.build()));
