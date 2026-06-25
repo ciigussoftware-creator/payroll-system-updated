@@ -21,13 +21,13 @@ public class FirstRunSetup extends VBox {
         setMaxWidth(360);
 
         Label title = new Label("Initial Setup");
-        title.setStyle("-fx-font-size: 22; -fx-font-weight: bold;");
+        title.getStyleClass().add("setup-title");
 
         Label subtitle = new Label("Create your Admin and Super Admin accounts to get started.");
         subtitle.setWrapText(true);
 
         Label adminSection = new Label("Admin Account");
-        adminSection.setStyle("-fx-font-weight: bold;");
+        adminSection.getStyleClass().add("section-label");
         TextField adminUsername = new TextField();
         adminUsername.setPromptText("Admin username");
         PasswordField adminPassword = new PasswordField();
@@ -36,7 +36,7 @@ public class FirstRunSetup extends VBox {
         adminConfirm.setPromptText("Confirm admin password");
 
         Label superSection = new Label("Super Admin Account");
-        superSection.setStyle("-fx-font-weight: bold;");
+        superSection.getStyleClass().add("section-label");
         TextField superUsername = new TextField();
         superUsername.setPromptText("Super admin username");
         PasswordField superPassword = new PasswordField();
@@ -45,7 +45,7 @@ public class FirstRunSetup extends VBox {
         superConfirm.setPromptText("Confirm super admin password");
 
         Label errorLabel = new Label();
-        errorLabel.setStyle("-fx-text-fill: #cc0000;");
+        errorLabel.getStyleClass().add("error-text");
         errorLabel.setWrapText(true);
 
         Button createButton = new Button("Create Accounts");

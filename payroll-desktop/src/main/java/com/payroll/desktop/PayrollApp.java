@@ -13,6 +13,9 @@ public class PayrollApp extends Application {
 
     private DatabaseManager databaseManager;
 
+    public static final String APP_CSS =
+            PayrollApp.class.getResource("/com/payroll/desktop/css/app.css").toExternalForm();
+
     @Override
     public void start(Stage primaryStage) throws Exception {
         Application.setUserAgentStylesheet(new PrimerLight().getUserAgentStylesheet());

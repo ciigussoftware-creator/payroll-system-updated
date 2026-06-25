@@ -7,7 +7,6 @@ import com.payroll.desktop.ui.admin.StatutoryExportScreen;
 import com.payroll.desktop.ui.admin.WorkingDaysScreen;
 import com.payroll.desktop.ui.auth.UserSession;
 import javafx.geometry.Insets;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
@@ -34,7 +33,7 @@ public class AdminShell extends BorderPane {
 
     private HBox buildTopBar() {
         Label appName = new Label("Payroll System");
-        appName.setStyle("-fx-font-size: 16; -fx-font-weight: bold;");
+        appName.getStyleClass().add("app-title");
 
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
@@ -44,16 +43,13 @@ public class AdminShell extends BorderPane {
         logoutButton.setOnAction(e -> onLogout.run());
 
         HBox topBar = new HBox(12, appName, spacer, userLabel, logoutButton);
-        topBar.setPadding(new Insets(10, 16, 10, 16));
-        topBar.setStyle("-fx-background-color: #f0f0f0; -fx-border-color: #cccccc; -fx-border-width: 0 0 1 0;");
+        topBar.getStyleClass().add("top-bar");
         return topBar;
     }
 
     private VBox buildSidebar() {
         VBox sidebar = new VBox(4);
-        sidebar.setPadding(new Insets(12, 8, 12, 8));
-        sidebar.setPrefWidth(190);
-        sidebar.setStyle("-fx-background-color: #fafafa; -fx-border-color: #cccccc; -fx-border-width: 0 1 0 0;");
+        sidebar.getStyleClass().add("sidebar");
 
         addNavButton(sidebar, "Dashboard",        () -> setCenter(DashboardScreen.build()));
         addNavButton(sidebar, "Employees",        () -> setCenter(EmployeesScreen.build()));
@@ -66,8 +62,9 @@ public class AdminShell extends BorderPane {
 
     private void addNavButton(VBox nav, String label, Runnable action) {
         Button btn = new Button(label);
-        btn.setMaxWidth(Double.MAX_VALUE);
+        btn.getStyleClass().add("nav-button");
         btn.setOnAction(e -> action.run());
         nav.getChildren().add(btn);
     }
 }
+

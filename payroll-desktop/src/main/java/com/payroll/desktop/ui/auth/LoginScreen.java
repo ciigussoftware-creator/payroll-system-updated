@@ -18,7 +18,7 @@ public class LoginScreen extends VBox {
         setPadding(new Insets(48));
 
         Label title = new Label("Payroll System");
-        title.setStyle("-fx-font-size: 26; -fx-font-weight: bold;");
+        title.getStyleClass().add("auth-title");
 
         TextField usernameField = new TextField();
         usernameField.setPromptText("Username");
@@ -29,7 +29,7 @@ public class LoginScreen extends VBox {
         passwordField.setMaxWidth(280);
 
         Label errorLabel = new Label();
-        errorLabel.setStyle("-fx-text-fill: #cc0000;");
+        errorLabel.getStyleClass().add("error-text");
 
         Button loginButton = new Button("Login");
         loginButton.setDefaultButton(true);
