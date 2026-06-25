@@ -1,6 +1,7 @@
 package com.payroll.desktop.ui.shell;
 
 import com.payroll.desktop.PayrollApp;
+import com.payroll.desktop.repository.EmployeeRepository;
 import com.payroll.desktop.repository.UserAccountRepository;
 import com.payroll.desktop.ui.auth.AuthService;
 import com.payroll.desktop.ui.auth.FirstRunSetup;
@@ -19,15 +20,18 @@ public class AppShell {
     private final UserAccountRepository userAccountRepository;
     private final PasswordHasher passwordHasher;
     private final AuthService authService;
+    private final EmployeeRepository employeeRepository;
 
     public AppShell(Stage stage,
                     UserAccountRepository userAccountRepository,
                     PasswordHasher passwordHasher,
-                    AuthService authService) {
+                    AuthService authService,
+                    EmployeeRepository employeeRepo) {
         this.stage = stage;
         this.userAccountRepository = userAccountRepository;
         this.passwordHasher = passwordHasher;
         this.authService = authService;
+        this.employeeRepository = employeeRepo;
     }
 
     public void start() {
@@ -53,8 +57,8 @@ public class AppShell {
     private void showShell(UserSession session) {
         Runnable onLogout = this::showLogin;
         BorderPane shell = switch (session.getRole()) {
-            case ADMIN      -> new AdminShell(session, onLogout);
-            case SUPER_ADMIN -> new SuperAdminShell(session, onLogout);
+            case ADMIN       -> new AdminShell(session, onLogout, employeeRepository);
+            case SUPER_ADMIN -> new SuperAdminShell(session, onLogout, employeeRepository);
         };
         stage.setScene(styledScene(shell, 1280, 800));
     }
