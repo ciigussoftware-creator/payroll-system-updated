@@ -1,6 +1,7 @@
 package com.payroll.desktop.ui.shell;
 
 import com.payroll.desktop.PayrollApp;
+import com.payroll.desktop.repository.AttendanceRecordRepository;
 import com.payroll.desktop.repository.EmployeeRepository;
 import com.payroll.desktop.repository.UserAccountRepository;
 import com.payroll.desktop.repository.WorkingDaysConfigRepository;
@@ -23,19 +24,22 @@ public class AppShell {
     private final AuthService authService;
     private final EmployeeRepository employeeRepository;
     private final WorkingDaysConfigRepository workingDaysRepository;
+    private final AttendanceRecordRepository attendanceRepository;
 
     public AppShell(Stage stage,
                     UserAccountRepository userAccountRepository,
                     PasswordHasher passwordHasher,
                     AuthService authService,
                     EmployeeRepository employeeRepository,
-                    WorkingDaysConfigRepository workingDaysRepository) {
+                    WorkingDaysConfigRepository workingDaysRepository,
+                    AttendanceRecordRepository attendanceRepository) {
         this.stage = stage;
         this.userAccountRepository = userAccountRepository;
         this.passwordHasher = passwordHasher;
         this.authService = authService;
         this.employeeRepository = employeeRepository;
         this.workingDaysRepository = workingDaysRepository;
+        this.attendanceRepository = attendanceRepository;
     }
 
     public void start() {
@@ -61,8 +65,10 @@ public class AppShell {
     private void showShell(UserSession session) {
         Runnable onLogout = this::showLogin;
         BorderPane shell = switch (session.getRole()) {
-            case ADMIN       -> new AdminShell(session, onLogout, employeeRepository, workingDaysRepository);
-            case SUPER_ADMIN -> new SuperAdminShell(session, onLogout, employeeRepository, workingDaysRepository);
+            case ADMIN       -> new AdminShell(session, onLogout, employeeRepository,
+                                               workingDaysRepository, attendanceRepository);
+            case SUPER_ADMIN -> new SuperAdminShell(session, onLogout, employeeRepository,
+                                                    workingDaysRepository, attendanceRepository);
         };
         stage.setScene(styledScene(shell, 1280, 800));
     }

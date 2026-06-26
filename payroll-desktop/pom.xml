@@ -97,7 +97,7 @@
                 <artifactId>javafx-maven-plugin</artifactId>
                 <version>0.0.8</version>
                 <configuration>
-                    <mainClass>com.payroll.desktop.PayrollApp</mainClass>
+                    <mainClass>com.payroll.desktop.Launcher</mainClass>
                 </configuration>
             </plugin>
 

@@ -1,10 +1,12 @@
 package com.payroll.desktop.ui.superadmin;
 
+import com.payroll.desktop.repository.AttendanceRecordRepository;
 import com.payroll.desktop.repository.EmployeeRepository;
 import com.payroll.desktop.repository.WorkingDaysConfigRepository;
 import com.payroll.desktop.ui.admin.CardsScreen;
 import com.payroll.desktop.ui.admin.DashboardScreen;
 import com.payroll.desktop.ui.admin.EmployeesScreen;
+import com.payroll.desktop.ui.admin.ScanEntryScreen;
 import com.payroll.desktop.ui.admin.StatutoryExportScreen;
 import com.payroll.desktop.ui.admin.WorkingDaysScreen;
 import com.payroll.desktop.ui.auth.UserSession;
@@ -19,18 +21,21 @@ public class SuperAdminShell extends BorderPane {
     private final Runnable onLogout;
     private final EmployeeRepository employeeRepository;
     private final WorkingDaysConfigRepository workingDaysRepository;
+    private final AttendanceRecordRepository attendanceRepository;
 
     public SuperAdminShell(UserSession session,
                            Runnable onLogout,
                            EmployeeRepository employeeRepository,
-                           WorkingDaysConfigRepository workingDaysRepository) {
+                           WorkingDaysConfigRepository workingDaysRepository,
+                           AttendanceRecordRepository attendanceRepository) {
         this.session = session;
         this.onLogout = onLogout;
         this.employeeRepository = employeeRepository;
         this.workingDaysRepository = workingDaysRepository;
+        this.attendanceRepository = attendanceRepository;
         setTop(buildTopBar());
         setLeft(buildSidebar());
-        setCenter(DashboardScreen.build());
+        setCenter(new DashboardScreen(attendanceRepository, employeeRepository));
     }
 
     private HBox buildTopBar() {
@@ -53,13 +58,20 @@ public class SuperAdminShell extends BorderPane {
         VBox sidebar = new VBox(4);
         sidebar.getStyleClass().add("sidebar");
 
-        // Shared admin screens (reused — dependency flows superadmin → admin only)
-        addNavButton(sidebar, "Dashboard",             () -> setCenter(DashboardScreen.build()));
-        addNavButton(sidebar, "Employees",             () -> setCenter(new EmployeesScreen(employeeRepository)));
-        addNavButton(sidebar, "Cards",                 () -> setCenter(new CardsScreen(employeeRepository)));
-        addNavButton(sidebar, "Working Days",          () -> setCenter(new WorkingDaysScreen(workingDaysRepository, session)));
+        // Shared admin screens (dependency flows superadmin → admin only)
+        addNavButton(sidebar, "Dashboard",
+                () -> setCenter(new DashboardScreen(attendanceRepository, employeeRepository)));
+        addNavButton(sidebar, "Scan Entry",
+                () -> setCenter(new ScanEntryScreen(attendanceRepository, employeeRepository)));
+        addNavButton(sidebar, "Employees",
+                () -> setCenter(new EmployeesScreen(employeeRepository)));
+        addNavButton(sidebar, "Cards",
+                () -> setCenter(new CardsScreen(employeeRepository)));
+        addNavButton(sidebar, "Working Days",
+                () -> setCenter(new WorkingDaysScreen(workingDaysRepository, session)));
         sidebar.getChildren().add(new Separator());
-        addNavButton(sidebar, "Statutory Export",      () -> setCenter(StatutoryExportScreen.build()));
+        addNavButton(sidebar, "Statutory Export",
+                () -> setCenter(StatutoryExportScreen.build()));
         sidebar.getChildren().add(new Separator());
 
         // Super Admin-only
