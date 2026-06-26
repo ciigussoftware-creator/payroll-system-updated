@@ -3,6 +3,7 @@ package com.payroll.desktop.ui.shell;
 import com.payroll.desktop.PayrollApp;
 import com.payroll.desktop.repository.EmployeeRepository;
 import com.payroll.desktop.repository.UserAccountRepository;
+import com.payroll.desktop.repository.WorkingDaysConfigRepository;
 import com.payroll.desktop.ui.auth.AuthService;
 import com.payroll.desktop.ui.auth.FirstRunSetup;
 import com.payroll.desktop.ui.auth.LoginScreen;
@@ -21,17 +22,20 @@ public class AppShell {
     private final PasswordHasher passwordHasher;
     private final AuthService authService;
     private final EmployeeRepository employeeRepository;
+    private final WorkingDaysConfigRepository workingDaysRepository;
 
     public AppShell(Stage stage,
                     UserAccountRepository userAccountRepository,
                     PasswordHasher passwordHasher,
                     AuthService authService,
-                    EmployeeRepository employeeRepo) {
+                    EmployeeRepository employeeRepository,
+                    WorkingDaysConfigRepository workingDaysRepository) {
         this.stage = stage;
         this.userAccountRepository = userAccountRepository;
         this.passwordHasher = passwordHasher;
         this.authService = authService;
-        this.employeeRepository = employeeRepo;
+        this.employeeRepository = employeeRepository;
+        this.workingDaysRepository = workingDaysRepository;
     }
 
     public void start() {
@@ -57,17 +61,15 @@ public class AppShell {
     private void showShell(UserSession session) {
         Runnable onLogout = this::showLogin;
         BorderPane shell = switch (session.getRole()) {
-            case ADMIN       -> new AdminShell(session, onLogout, employeeRepository);
-            case SUPER_ADMIN -> new SuperAdminShell(session, onLogout, employeeRepository);
+            case ADMIN       -> new AdminShell(session, onLogout, employeeRepository, workingDaysRepository);
+            case SUPER_ADMIN -> new SuperAdminShell(session, onLogout, employeeRepository, workingDaysRepository);
         };
         stage.setScene(styledScene(shell, 1280, 800));
     }
 
-    /** Creates a Scene and attaches the app-wide stylesheet. */
     private static Scene styledScene(Parent root, double width, double height) {
         Scene scene = new Scene(root, width, height);
         scene.getStylesheets().add(PayrollApp.APP_CSS);
         return scene;
     }
 }
-

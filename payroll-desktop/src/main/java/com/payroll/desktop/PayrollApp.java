@@ -4,6 +4,7 @@ import atlantafx.base.theme.PrimerLight;
 import com.payroll.desktop.db.DatabaseManager;
 import com.payroll.desktop.repository.EmployeeRepository;
 import com.payroll.desktop.repository.UserAccountRepository;
+import com.payroll.desktop.repository.WorkingDaysConfigRepository;
 import com.payroll.desktop.ui.auth.AuthService;
 import com.payroll.desktop.ui.auth.PasswordHasher;
 import com.payroll.desktop.ui.shell.AppShell;
@@ -24,12 +25,14 @@ public class PayrollApp extends Application {
         databaseManager = new DatabaseManager();
         var sessionFactory = databaseManager.getSessionFactory();
 
-        var userAccountRepo  = new UserAccountRepository(sessionFactory);
-        var employeeRepo     = new EmployeeRepository(sessionFactory);
-        var hasher           = new PasswordHasher();
-        var authService      = new AuthService(userAccountRepo, hasher);
+        var userAccountRepo     = new UserAccountRepository(sessionFactory);
+        var employeeRepo        = new EmployeeRepository(sessionFactory);
+        var workingDaysRepo     = new WorkingDaysConfigRepository(sessionFactory);
+        var hasher              = new PasswordHasher();
+        var authService         = new AuthService(userAccountRepo, hasher);
 
-        new AppShell(primaryStage, userAccountRepo, hasher, authService, employeeRepo).start();
+        new AppShell(primaryStage, userAccountRepo, hasher, authService,
+                     employeeRepo, workingDaysRepo).start();
     }
 
     @Override

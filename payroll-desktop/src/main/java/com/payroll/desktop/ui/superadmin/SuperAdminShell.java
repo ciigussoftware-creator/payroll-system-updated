@@ -1,6 +1,7 @@
 package com.payroll.desktop.ui.superadmin;
 
 import com.payroll.desktop.repository.EmployeeRepository;
+import com.payroll.desktop.repository.WorkingDaysConfigRepository;
 import com.payroll.desktop.ui.admin.CardsScreen;
 import com.payroll.desktop.ui.admin.DashboardScreen;
 import com.payroll.desktop.ui.admin.EmployeesScreen;
@@ -17,11 +18,16 @@ public class SuperAdminShell extends BorderPane {
     private final UserSession session;
     private final Runnable onLogout;
     private final EmployeeRepository employeeRepository;
+    private final WorkingDaysConfigRepository workingDaysRepository;
 
-    public SuperAdminShell(UserSession session, Runnable onLogout, EmployeeRepository employeeRepository) {
+    public SuperAdminShell(UserSession session,
+                           Runnable onLogout,
+                           EmployeeRepository employeeRepository,
+                           WorkingDaysConfigRepository workingDaysRepository) {
         this.session = session;
         this.onLogout = onLogout;
         this.employeeRepository = employeeRepository;
+        this.workingDaysRepository = workingDaysRepository;
         setTop(buildTopBar());
         setLeft(buildSidebar());
         setCenter(DashboardScreen.build());
@@ -51,7 +57,7 @@ public class SuperAdminShell extends BorderPane {
         addNavButton(sidebar, "Dashboard",             () -> setCenter(DashboardScreen.build()));
         addNavButton(sidebar, "Employees",             () -> setCenter(new EmployeesScreen(employeeRepository)));
         addNavButton(sidebar, "Cards",                 () -> setCenter(new CardsScreen(employeeRepository)));
-        addNavButton(sidebar, "Working Days",          () -> setCenter(WorkingDaysScreen.build()));
+        addNavButton(sidebar, "Working Days",          () -> setCenter(new WorkingDaysScreen(workingDaysRepository, session)));
         sidebar.getChildren().add(new Separator());
         addNavButton(sidebar, "Statutory Export",      () -> setCenter(StatutoryExportScreen.build()));
         sidebar.getChildren().add(new Separator());
@@ -70,4 +76,3 @@ public class SuperAdminShell extends BorderPane {
         nav.getChildren().add(btn);
     }
 }
-
