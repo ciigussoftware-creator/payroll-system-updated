@@ -66,6 +66,12 @@
             <artifactId>argon2-jvm</artifactId>
         </dependency>
 
+        <!-- Apache POI — xlsx export and test verification -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+        </dependency>
+
         <!-- Testing -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>

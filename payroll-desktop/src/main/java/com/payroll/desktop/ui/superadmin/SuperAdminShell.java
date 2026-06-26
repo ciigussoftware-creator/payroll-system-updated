@@ -2,7 +2,9 @@ package com.payroll.desktop.ui.superadmin;
 
 import com.payroll.desktop.repository.AttendanceRecordRepository;
 import com.payroll.desktop.repository.EmployeeRepository;
+import com.payroll.desktop.repository.StatutoryOverrideRepository;
 import com.payroll.desktop.repository.WorkingDaysConfigRepository;
+import com.payroll.desktop.statutory.StatutoryCalculationService;
 import com.payroll.desktop.ui.admin.CardsScreen;
 import com.payroll.desktop.ui.admin.DashboardScreen;
 import com.payroll.desktop.ui.admin.EmployeesScreen;
@@ -22,17 +24,23 @@ public class SuperAdminShell extends BorderPane {
     private final EmployeeRepository employeeRepository;
     private final WorkingDaysConfigRepository workingDaysRepository;
     private final AttendanceRecordRepository attendanceRepository;
+    private final StatutoryCalculationService statutoryService;
+    private final StatutoryOverrideRepository overrideRepository;
 
     public SuperAdminShell(UserSession session,
                            Runnable onLogout,
                            EmployeeRepository employeeRepository,
                            WorkingDaysConfigRepository workingDaysRepository,
-                           AttendanceRecordRepository attendanceRepository) {
+                           AttendanceRecordRepository attendanceRepository,
+                           StatutoryCalculationService statutoryService,
+                           StatutoryOverrideRepository overrideRepository) {
         this.session = session;
         this.onLogout = onLogout;
         this.employeeRepository = employeeRepository;
         this.workingDaysRepository = workingDaysRepository;
         this.attendanceRepository = attendanceRepository;
+        this.statutoryService = statutoryService;
+        this.overrideRepository = overrideRepository;
         setTop(buildTopBar());
         setLeft(buildSidebar());
         setCenter(new DashboardScreen(attendanceRepository, employeeRepository));
@@ -71,7 +79,7 @@ public class SuperAdminShell extends BorderPane {
                 () -> setCenter(new WorkingDaysScreen(workingDaysRepository, session)));
         sidebar.getChildren().add(new Separator());
         addNavButton(sidebar, "Statutory Export",
-                () -> setCenter(StatutoryExportScreen.build()));
+                () -> setCenter(new StatutoryExportScreen(statutoryService, overrideRepository, session)));
         sidebar.getChildren().add(new Separator());
 
         // Super Admin-only

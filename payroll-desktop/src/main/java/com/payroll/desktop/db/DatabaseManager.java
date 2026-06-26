@@ -4,6 +4,7 @@ import com.payroll.core.entity.AttendanceRecord;
 import com.payroll.core.entity.DayLevelOTConfig;
 import com.payroll.core.entity.Employee;
 import com.payroll.core.entity.PayrollCalculation;
+import com.payroll.core.entity.StatutoryOverride;
 import com.payroll.core.entity.UserAccount;
 import com.payroll.core.entity.WorkingDaysConfig;
 import org.hibernate.SessionFactory;
@@ -76,6 +77,7 @@ public class DatabaseManager implements AutoCloseable {
                     .addAnnotatedClass(AttendanceRecord.class)
                     .addAnnotatedClass(DayLevelOTConfig.class)
                     .addAnnotatedClass(PayrollCalculation.class)
+                    .addAnnotatedClass(StatutoryOverride.class)
                     .addAnnotatedClass(UserAccount.class)
                     .addAnnotatedClass(WorkingDaysConfig.class)
                     .buildMetadata()

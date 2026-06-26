@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "PowerShell(New-Item *)",
-      "Bash(mvn verify *)"
+      "Bash(mvn verify *)",
+      "PowerShell(mvn verify *)"
     ]
   }
 }

@@ -3,8 +3,10 @@ package com.payroll.desktop.ui.shell;
 import com.payroll.desktop.PayrollApp;
 import com.payroll.desktop.repository.AttendanceRecordRepository;
 import com.payroll.desktop.repository.EmployeeRepository;
+import com.payroll.desktop.repository.StatutoryOverrideRepository;
 import com.payroll.desktop.repository.UserAccountRepository;
 import com.payroll.desktop.repository.WorkingDaysConfigRepository;
+import com.payroll.desktop.statutory.StatutoryCalculationService;
 import com.payroll.desktop.ui.auth.AuthService;
 import com.payroll.desktop.ui.auth.FirstRunSetup;
 import com.payroll.desktop.ui.auth.LoginScreen;
@@ -25,6 +27,8 @@ public class AppShell {
     private final EmployeeRepository employeeRepository;
     private final WorkingDaysConfigRepository workingDaysRepository;
     private final AttendanceRecordRepository attendanceRepository;
+    private final StatutoryCalculationService statutoryService;
+    private final StatutoryOverrideRepository overrideRepository;
 
     public AppShell(Stage stage,
                     UserAccountRepository userAccountRepository,
@@ -32,7 +36,9 @@ public class AppShell {
                     AuthService authService,
                     EmployeeRepository employeeRepository,
                     WorkingDaysConfigRepository workingDaysRepository,
-                    AttendanceRecordRepository attendanceRepository) {
+                    AttendanceRecordRepository attendanceRepository,
+                    StatutoryCalculationService statutoryService,
+                    StatutoryOverrideRepository overrideRepository) {
         this.stage = stage;
         this.userAccountRepository = userAccountRepository;
         this.passwordHasher = passwordHasher;
@@ -40,6 +46,8 @@ public class AppShell {
         this.employeeRepository = employeeRepository;
         this.workingDaysRepository = workingDaysRepository;
         this.attendanceRepository = attendanceRepository;
+        this.statutoryService = statutoryService;
+        this.overrideRepository = overrideRepository;
     }
 
     public void start() {
@@ -66,9 +74,11 @@ public class AppShell {
         Runnable onLogout = this::showLogin;
         BorderPane shell = switch (session.getRole()) {
             case ADMIN       -> new AdminShell(session, onLogout, employeeRepository,
-                                               workingDaysRepository, attendanceRepository);
+                                               workingDaysRepository, attendanceRepository,
+                                               statutoryService, overrideRepository);
             case SUPER_ADMIN -> new SuperAdminShell(session, onLogout, employeeRepository,
-                                                    workingDaysRepository, attendanceRepository);
+                                                    workingDaysRepository, attendanceRepository,
+                                                    statutoryService, overrideRepository);
         };
         stage.setScene(styledScene(shell, 1280, 800));
     }
