@@ -2,7 +2,11 @@ package com.payroll.desktop.ui.shell;
 
 import com.payroll.desktop.PayrollApp;
 import com.payroll.desktop.repository.AttendanceRecordRepository;
+import com.payroll.desktop.repository.AuditLogRepository;
+import com.payroll.desktop.repository.DayLevelOTConfigRepository;
+import com.payroll.desktop.repository.EmployeeNoteRepository;
 import com.payroll.desktop.repository.EmployeeRepository;
+import com.payroll.desktop.repository.OtEmployeeAuthorizationRepository;
 import com.payroll.desktop.repository.StatutoryOverrideRepository;
 import com.payroll.desktop.repository.UserAccountRepository;
 import com.payroll.desktop.repository.WorkingDaysConfigRepository;
@@ -29,6 +33,10 @@ public class AppShell {
     private final AttendanceRecordRepository attendanceRepository;
     private final StatutoryCalculationService statutoryService;
     private final StatutoryOverrideRepository overrideRepository;
+    private final DayLevelOTConfigRepository dayLevelOTRepository;
+    private final AuditLogRepository auditLogRepository;
+    private final OtEmployeeAuthorizationRepository otAuthRepository;
+    private final EmployeeNoteRepository employeeNoteRepository;
 
     public AppShell(Stage stage,
                     UserAccountRepository userAccountRepository,
@@ -38,7 +46,11 @@ public class AppShell {
                     WorkingDaysConfigRepository workingDaysRepository,
                     AttendanceRecordRepository attendanceRepository,
                     StatutoryCalculationService statutoryService,
-                    StatutoryOverrideRepository overrideRepository) {
+                    StatutoryOverrideRepository overrideRepository,
+                    DayLevelOTConfigRepository dayLevelOTRepository,
+                    AuditLogRepository auditLogRepository,
+                    OtEmployeeAuthorizationRepository otAuthRepository,
+                    EmployeeNoteRepository employeeNoteRepository) {
         this.stage = stage;
         this.userAccountRepository = userAccountRepository;
         this.passwordHasher = passwordHasher;
@@ -48,6 +60,10 @@ public class AppShell {
         this.attendanceRepository = attendanceRepository;
         this.statutoryService = statutoryService;
         this.overrideRepository = overrideRepository;
+        this.dayLevelOTRepository = dayLevelOTRepository;
+        this.auditLogRepository = auditLogRepository;
+        this.otAuthRepository = otAuthRepository;
+        this.employeeNoteRepository = employeeNoteRepository;
     }
 
     public void start() {
@@ -78,7 +94,9 @@ public class AppShell {
                                                statutoryService, overrideRepository);
             case SUPER_ADMIN -> new SuperAdminShell(session, onLogout, employeeRepository,
                                                     workingDaysRepository, attendanceRepository,
-                                                    statutoryService, overrideRepository);
+                                                    statutoryService, overrideRepository,
+                                                    dayLevelOTRepository, auditLogRepository,
+                                                    otAuthRepository, employeeNoteRepository);
         };
         stage.setScene(styledScene(shell, 1280, 800));
     }

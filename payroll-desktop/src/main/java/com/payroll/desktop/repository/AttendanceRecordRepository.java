@@ -2,6 +2,7 @@ package com.payroll.desktop.repository;
 
 import com.payroll.core.entity.AttendanceRecord;
 import com.payroll.core.entity.Employee;
+import com.payroll.core.entity.ScanType;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 
@@ -102,6 +103,45 @@ public class AttendanceRecordRepository {
                             AttendanceRecord.class)
                     .setParameter("uuid", uuid)
                     .uniqueResultOptional();
+        }
+    }
+
+    /**
+     * Applies a timestamp correction in-place using targeted HQL to avoid detached-entity issues.
+     * If originalToPreserve is non-null (first correction), also writes originalScanDatetime.
+     * Always resets syncedToCloud=false so the corrected record is re-queued for sync.
+     *
+     * TODO: cloud conflict — if the original record was already synced, the cloud's add-only
+     * policy means the corrected version cannot overwrite it. A conflict-resolution strategy
+     * (e.g. a cloud "correction" endpoint, or flagging the record for manual review) is needed
+     * before cloud sync is enabled for corrections.
+     */
+    public void applyCorrection(Long id, LocalDateTime newDatetime, ScanType newScanType,
+                                LocalDateTime originalToPreserve, String correctionNote) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            if (originalToPreserve != null) {
+                session.createMutationQuery(
+                                "UPDATE AttendanceRecord SET scanDatetime = :newDt, scanType = :newType, " +
+                                "originalScanDatetime = :origDt, correctionNote = :note, syncedToCloud = false " +
+                                "WHERE id = :id")
+                        .setParameter("newDt", newDatetime)
+                        .setParameter("newType", newScanType)
+                        .setParameter("origDt", originalToPreserve)
+                        .setParameter("note", correctionNote)
+                        .setParameter("id", id)
+                        .executeUpdate();
+            } else {
+                session.createMutationQuery(
+                                "UPDATE AttendanceRecord SET scanDatetime = :newDt, scanType = :newType, " +
+                                "correctionNote = :note, syncedToCloud = false WHERE id = :id")
+                        .setParameter("newDt", newDatetime)
+                        .setParameter("newType", newScanType)
+                        .setParameter("note", correctionNote)
+                        .setParameter("id", id)
+                        .executeUpdate();
+            }
+            session.getTransaction().commit();
         }
     }
 

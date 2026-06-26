@@ -1,7 +1,11 @@
 package com.payroll.desktop.ui.superadmin;
 
 import com.payroll.desktop.repository.AttendanceRecordRepository;
+import com.payroll.desktop.repository.AuditLogRepository;
+import com.payroll.desktop.repository.DayLevelOTConfigRepository;
+import com.payroll.desktop.repository.EmployeeNoteRepository;
 import com.payroll.desktop.repository.EmployeeRepository;
+import com.payroll.desktop.repository.OtEmployeeAuthorizationRepository;
 import com.payroll.desktop.repository.StatutoryOverrideRepository;
 import com.payroll.desktop.repository.WorkingDaysConfigRepository;
 import com.payroll.desktop.statutory.StatutoryCalculationService;
@@ -26,6 +30,11 @@ public class SuperAdminShell extends BorderPane {
     private final AttendanceRecordRepository attendanceRepository;
     private final StatutoryCalculationService statutoryService;
     private final StatutoryOverrideRepository overrideRepository;
+    private final AuditLogRepository auditLogRepository;
+    private final OtSwitchService otSwitchService;
+    private final TimestampCorrectionService timestampCorrectionService;
+    private final EmployeeNoteRepository employeeNoteRepository;
+    private final EmployeeNoteService employeeNoteService;
 
     public SuperAdminShell(UserSession session,
                            Runnable onLogout,
@@ -33,7 +42,11 @@ public class SuperAdminShell extends BorderPane {
                            WorkingDaysConfigRepository workingDaysRepository,
                            AttendanceRecordRepository attendanceRepository,
                            StatutoryCalculationService statutoryService,
-                           StatutoryOverrideRepository overrideRepository) {
+                           StatutoryOverrideRepository overrideRepository,
+                           DayLevelOTConfigRepository dayLevelOTRepository,
+                           AuditLogRepository auditLogRepository,
+                           OtEmployeeAuthorizationRepository otAuthRepository,
+                           EmployeeNoteRepository employeeNoteRepository) {
         this.session = session;
         this.onLogout = onLogout;
         this.employeeRepository = employeeRepository;
@@ -41,6 +54,11 @@ public class SuperAdminShell extends BorderPane {
         this.attendanceRepository = attendanceRepository;
         this.statutoryService = statutoryService;
         this.overrideRepository = overrideRepository;
+        this.auditLogRepository = auditLogRepository;
+        this.otSwitchService = new OtSwitchService(dayLevelOTRepository, otAuthRepository, auditLogRepository);
+        this.timestampCorrectionService = new TimestampCorrectionService(attendanceRepository, auditLogRepository);
+        this.employeeNoteRepository = employeeNoteRepository;
+        this.employeeNoteService = new EmployeeNoteService(employeeNoteRepository, auditLogRepository);
         setTop(buildTopBar());
         setLeft(buildSidebar());
         setCenter(new DashboardScreen(attendanceRepository, employeeRepository));
@@ -83,9 +101,13 @@ public class SuperAdminShell extends BorderPane {
         sidebar.getChildren().add(new Separator());
 
         // Super Admin-only
-        addNavButton(sidebar, "OT Switch",             () -> setCenter(OtSwitchScreen.build()));
-        addNavButton(sidebar, "Timestamp Corrections", () -> setCenter(TimestampCorrectionsScreen.build()));
-        addNavButton(sidebar, "Notes",                 () -> setCenter(NotesScreen.build()));
+        addNavButton(sidebar, "OT Switch",
+                () -> setCenter(new OtSwitchScreen(session, employeeRepository, otSwitchService)));
+        addNavButton(sidebar, "Timestamp Corrections",
+                () -> setCenter(new TimestampCorrectionsScreen(
+                        session, employeeRepository, attendanceRepository, timestampCorrectionService)));
+        addNavButton(sidebar, "Notes",
+                () -> setCenter(new NotesScreen(session, employeeRepository, employeeNoteService)));
         return sidebar;
     }
 

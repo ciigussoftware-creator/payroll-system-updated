@@ -3,8 +3,11 @@ package com.payroll.desktop;
 import atlantafx.base.theme.PrimerLight;
 import com.payroll.desktop.db.DatabaseManager;
 import com.payroll.desktop.repository.AttendanceRecordRepository;
+import com.payroll.desktop.repository.AuditLogRepository;
 import com.payroll.desktop.repository.DayLevelOTConfigRepository;
+import com.payroll.desktop.repository.EmployeeNoteRepository;
 import com.payroll.desktop.repository.EmployeeRepository;
+import com.payroll.desktop.repository.OtEmployeeAuthorizationRepository;
 import com.payroll.desktop.repository.StatutoryOverrideRepository;
 import com.payroll.desktop.repository.UserAccountRepository;
 import com.payroll.desktop.repository.WorkingDaysConfigRepository;
@@ -35,6 +38,9 @@ public class PayrollApp extends Application {
         var attendanceRepo   = new AttendanceRecordRepository(sessionFactory);
         var dayLevelOTRepo   = new DayLevelOTConfigRepository(sessionFactory);
         var overrideRepo     = new StatutoryOverrideRepository(sessionFactory);
+        var auditLogRepo     = new AuditLogRepository(sessionFactory);
+        var otAuthRepo       = new OtEmployeeAuthorizationRepository(sessionFactory);
+        var employeeNoteRepo = new EmployeeNoteRepository(sessionFactory);
         var hasher           = new PasswordHasher();
         var authService      = new AuthService(userAccountRepo, hasher);
         var statutoryService = new StatutoryCalculationService(
@@ -42,7 +48,8 @@ public class PayrollApp extends Application {
 
         new AppShell(primaryStage, userAccountRepo, hasher, authService,
                      employeeRepo, workingDaysRepo, attendanceRepo,
-                     statutoryService, overrideRepo).start();
+                     statutoryService, overrideRepo,
+                     dayLevelOTRepo, auditLogRepo, otAuthRepo, employeeNoteRepo).start();
     }
 
     @Override
