@@ -3,6 +3,7 @@ package com.payroll.desktop.ui.admin;
 import com.payroll.core.entity.Employee;
 import com.payroll.core.entity.EmployeeCategory;
 import com.payroll.desktop.repository.EmployeeRepository;
+import com.payroll.desktop.ui.auth.UserSession;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
@@ -15,11 +16,16 @@ import javafx.scene.layout.*;
 public class EmployeesScreen extends BorderPane {
 
     private final EmployeeRepository repository;
+    private final EmployeeManagementService managementService;
+    private final UserSession session;
     private final ObservableList<Employee> allData = FXCollections.observableArrayList();
     private final FilteredList<Employee> view      = new FilteredList<>(allData);
 
-    public EmployeesScreen(EmployeeRepository repository) {
+    public EmployeesScreen(EmployeeRepository repository, EmployeeManagementService managementService,
+                           UserSession session) {
         this.repository = repository;
+        this.managementService = managementService;
+        this.session = session;
         setPadding(new Insets(12));
         setTop(buildToolbar());
         setCenter(buildTable());
@@ -83,11 +89,13 @@ public class EmployeesScreen extends BorderPane {
 
     private TableColumn<Employee, Void> buildActionsColumn() {
         TableColumn<Employee, Void> col = new TableColumn<>("Actions");
-        col.setPrefWidth(165);
+        col.setPrefWidth(300);
         col.setCellFactory(c -> new TableCell<>() {
-            private final Button editBtn       = new Button("Edit");
-            private final Button deactivateBtn = new Button("Deactivate");
-            private final HBox   box           = new HBox(4, editBtn, deactivateBtn);
+            private final Button editBtn        = new Button("Edit");
+            private final Button deactivateBtn  = new Button("Deactivate");
+            private final Button reactivateBtn  = new Button("Reactivate");
+            private final Button deleteBtn      = new Button("Delete");
+            private final HBox   box            = new HBox(4, editBtn, deactivateBtn, reactivateBtn, deleteBtn);
 
             {
                 editBtn.setOnAction(e -> {
@@ -98,6 +106,14 @@ public class EmployeesScreen extends BorderPane {
                     Employee emp = getTableView().getItems().get(getIndex());
                     confirmDeactivate(emp);
                 });
+                reactivateBtn.setOnAction(e -> {
+                    Employee emp = getTableView().getItems().get(getIndex());
+                    reactivate(emp);
+                });
+                deleteBtn.setOnAction(e -> {
+                    Employee emp = getTableView().getItems().get(getIndex());
+                    confirmDelete(emp);
+                });
             }
 
             @Override protected void updateItem(Void item, boolean empty) {
@@ -107,7 +123,10 @@ public class EmployeesScreen extends BorderPane {
                     return;
                 }
                 Employee emp = getTableView().getItems().get(getIndex());
-                deactivateBtn.setDisable(!emp.isActive());
+                deactivateBtn.setVisible(emp.isActive());
+                deactivateBtn.setManaged(emp.isActive());
+                reactivateBtn.setVisible(!emp.isActive());
+                reactivateBtn.setManaged(!emp.isActive());
                 setGraphic(box);
             }
         });
@@ -137,6 +156,33 @@ public class EmployeesScreen extends BorderPane {
         alert.showAndWait().ifPresent(btn -> {
             if (btn == ButtonType.OK) {
                 repository.deactivate(emp.getId());
+                refreshData();
+            }
+        });
+    }
+
+    private void reactivate(Employee emp) {
+        managementService.reactivate(emp, session.getUsername());
+        refreshData();
+    }
+
+    private void confirmDelete(Employee emp) {
+        var alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.initOwner(getScene().getWindow());
+        alert.setTitle("Delete Employee");
+        alert.setHeaderText("Permanently delete " + emp.getName() + " (" + emp.getEmployeeCode() + ")?");
+        alert.setContentText("This will also delete ALL their attendance records, notes, and "
+                + "payroll history. This CANNOT be undone.");
+
+        ButtonType deleteButton = new ButtonType("Delete");
+        ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+        alert.getButtonTypes().setAll(cancelButton, deleteButton);
+        ((Button) alert.getDialogPane().lookupButton(cancelButton)).setDefaultButton(true);
+        ((Button) alert.getDialogPane().lookupButton(deleteButton)).setDefaultButton(false);
+
+        alert.showAndWait().ifPresent(btn -> {
+            if (btn == deleteButton) {
+                managementService.deleteEmployee(emp, session.getUsername());
                 refreshData();
             }
         });

@@ -9,8 +9,8 @@ import com.payroll.desktop.repository.OtEmployeeAuthorizationRepository;
 import com.payroll.desktop.repository.StatutoryOverrideRepository;
 import com.payroll.desktop.repository.WorkingDaysConfigRepository;
 import com.payroll.desktop.statutory.StatutoryCalculationService;
-import com.payroll.desktop.ui.admin.CardsScreen;
 import com.payroll.desktop.ui.admin.DashboardScreen;
+import com.payroll.desktop.ui.admin.EmployeeManagementService;
 import com.payroll.desktop.ui.admin.EmployeesScreen;
 import com.payroll.desktop.ui.admin.ScanEntryScreen;
 import com.payroll.desktop.ui.admin.StatutoryExportScreen;
@@ -35,6 +35,7 @@ public class SuperAdminShell extends BorderPane {
     private final TimestampCorrectionService timestampCorrectionService;
     private final EmployeeNoteRepository employeeNoteRepository;
     private final EmployeeNoteService employeeNoteService;
+    private final EmployeeManagementService employeeManagementService;
 
     public SuperAdminShell(UserSession session,
                            Runnable onLogout,
@@ -59,6 +60,8 @@ public class SuperAdminShell extends BorderPane {
         this.timestampCorrectionService = new TimestampCorrectionService(attendanceRepository, auditLogRepository);
         this.employeeNoteRepository = employeeNoteRepository;
         this.employeeNoteService = new EmployeeNoteService(employeeNoteRepository, auditLogRepository);
+        this.employeeManagementService = new EmployeeManagementService(
+                employeeRepository, attendanceRepository, auditLogRepository);
         setTop(buildTopBar());
         setLeft(buildSidebar());
         setCenter(new DashboardScreen(attendanceRepository, employeeRepository));
@@ -90,9 +93,7 @@ public class SuperAdminShell extends BorderPane {
         addNavButton(sidebar, "Scan Entry",
                 () -> setCenter(new ScanEntryScreen(attendanceRepository, employeeRepository)));
         addNavButton(sidebar, "Employees",
-                () -> setCenter(new EmployeesScreen(employeeRepository)));
-        addNavButton(sidebar, "Cards",
-                () -> setCenter(new CardsScreen(employeeRepository)));
+                () -> setCenter(new EmployeesScreen(employeeRepository, employeeManagementService, session)));
         addNavButton(sidebar, "Working Days",
                 () -> setCenter(new WorkingDaysScreen(workingDaysRepository, session)));
         sidebar.getChildren().add(new Separator());

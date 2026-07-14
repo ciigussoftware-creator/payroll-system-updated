@@ -3,7 +3,12 @@
     "allow": [
       "PowerShell(New-Item *)",
       "Bash(mvn verify *)",
-      "PowerShell(mvn verify *)"
+      "PowerShell(mvn verify *)",
+      "Bash(xargs grep -l \"CardsScreen\")",
+      "Bash(mvn -q -o verify)",
+      "Bash(mvn -o verify)",
+      "Bash(echo \"EXIT:$?\")",
+      "Read(//tmp/**)"
     ]
   }
 }

@@ -1,12 +1,13 @@
 package com.payroll.desktop.ui.shell;
 
 import com.payroll.desktop.repository.AttendanceRecordRepository;
+import com.payroll.desktop.repository.AuditLogRepository;
 import com.payroll.desktop.repository.EmployeeRepository;
 import com.payroll.desktop.repository.StatutoryOverrideRepository;
 import com.payroll.desktop.repository.WorkingDaysConfigRepository;
 import com.payroll.desktop.statutory.StatutoryCalculationService;
-import com.payroll.desktop.ui.admin.CardsScreen;
 import com.payroll.desktop.ui.admin.DashboardScreen;
+import com.payroll.desktop.ui.admin.EmployeeManagementService;
 import com.payroll.desktop.ui.admin.EmployeesScreen;
 import com.payroll.desktop.ui.admin.ScanEntryScreen;
 import com.payroll.desktop.ui.admin.StatutoryExportScreen;
@@ -29,6 +30,7 @@ public class AdminShell extends BorderPane {
     private final AttendanceRecordRepository attendanceRepository;
     private final StatutoryCalculationService statutoryService;
     private final StatutoryOverrideRepository overrideRepository;
+    private final EmployeeManagementService employeeManagementService;
 
     public AdminShell(UserSession session,
                       Runnable onLogout,
@@ -36,7 +38,8 @@ public class AdminShell extends BorderPane {
                       WorkingDaysConfigRepository workingDaysRepository,
                       AttendanceRecordRepository attendanceRepository,
                       StatutoryCalculationService statutoryService,
-                      StatutoryOverrideRepository overrideRepository) {
+                      StatutoryOverrideRepository overrideRepository,
+                      AuditLogRepository auditLogRepository) {
         this.session = session;
         this.onLogout = onLogout;
         this.employeeRepository = employeeRepository;
@@ -44,6 +47,8 @@ public class AdminShell extends BorderPane {
         this.attendanceRepository = attendanceRepository;
         this.statutoryService = statutoryService;
         this.overrideRepository = overrideRepository;
+        this.employeeManagementService = new EmployeeManagementService(
+                employeeRepository, attendanceRepository, auditLogRepository);
         setTop(buildTopBar());
         setLeft(buildSidebar());
         setCenter(new DashboardScreen(attendanceRepository, employeeRepository));
@@ -74,9 +79,7 @@ public class AdminShell extends BorderPane {
         addNavButton(sidebar, "Scan Entry",
                 () -> setCenter(new ScanEntryScreen(attendanceRepository, employeeRepository)));
         addNavButton(sidebar, "Employees",
-                () -> setCenter(new EmployeesScreen(employeeRepository)));
-        addNavButton(sidebar, "Cards",
-                () -> setCenter(new CardsScreen(employeeRepository)));
+                () -> setCenter(new EmployeesScreen(employeeRepository, employeeManagementService, session)));
         addNavButton(sidebar, "Working Days",
                 () -> setCenter(new WorkingDaysScreen(workingDaysRepository, session)));
         sidebar.getChildren().add(new Separator());
