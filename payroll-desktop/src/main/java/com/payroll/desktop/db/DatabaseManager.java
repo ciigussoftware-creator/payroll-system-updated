@@ -1,9 +1,15 @@
 package com.payroll.desktop.db;
 
 import com.payroll.core.entity.AttendanceRecord;
+import com.payroll.core.entity.AuditLogEntry;
 import com.payroll.core.entity.DayLevelOTConfig;
 import com.payroll.core.entity.Employee;
+import com.payroll.core.entity.EmployeeNote;
+import com.payroll.core.entity.OtEmployeeAuthorization;
 import com.payroll.core.entity.PayrollCalculation;
+import com.payroll.core.entity.StatutoryOverride;
+import com.payroll.core.entity.UserAccount;
+import com.payroll.core.entity.WorkingDaysConfig;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.MetadataSources;
 import org.hibernate.boot.registry.StandardServiceRegistry;
@@ -72,8 +78,14 @@ public class DatabaseManager implements AutoCloseable {
             return new MetadataSources(registry)
                     .addAnnotatedClass(Employee.class)
                     .addAnnotatedClass(AttendanceRecord.class)
+                    .addAnnotatedClass(AuditLogEntry.class)
                     .addAnnotatedClass(DayLevelOTConfig.class)
+                    .addAnnotatedClass(EmployeeNote.class)
+                    .addAnnotatedClass(OtEmployeeAuthorization.class)
                     .addAnnotatedClass(PayrollCalculation.class)
+                    .addAnnotatedClass(StatutoryOverride.class)
+                    .addAnnotatedClass(UserAccount.class)
+                    .addAnnotatedClass(WorkingDaysConfig.class)
                     .buildMetadata()
                     .buildSessionFactory();
         } catch (Exception e) {

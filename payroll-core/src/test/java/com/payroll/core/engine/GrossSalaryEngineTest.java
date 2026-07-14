@@ -116,4 +116,59 @@ class GrossSalaryEngineTest {
         BigDecimal gross = engine.grossSalary(26, 0);
         assertThat(gross.compareTo(BigDecimal.ZERO)).isZero();
     }
+
+    // =========================================================================
+    // Fractional daysWorked (BigDecimal overload)
+    // =========================================================================
+
+    // Half-day: 22 available, 0.5 worked
+    // absentDays = 21.5 → deduction = 1200 × 21.5 = 25,800 → gross = 4,200
+    // EPF8% = 336, EPF12% = 504, ETF3% = 126, adminBalance = 3,864
+    @Test
+    @DisplayName("Half-day: 22 available, 0.5 worked → gross 4200")
+    void halfDay_22available_0point5worked() {
+        BigDecimal gross = engine.grossSalary(22, new BigDecimal("0.5"));
+
+        assertThat(gross).isEqualByComparingTo("4200");
+        assertThat(engine.epfEmployeeDeduction(gross)).isEqualByComparingTo("336");
+        assertThat(engine.epfEmployerContribution(gross)).isEqualByComparingTo("504");
+        assertThat(engine.etfContribution(gross)).isEqualByComparingTo("126");
+        assertThat(engine.adminBalance(gross)).isEqualByComparingTo("3864");
+    }
+
+    // Zero days (BigDecimal path): 22 available, 0 worked
+    // absentDays = 22 → deduction = 26,400 → gross = 3,600
+    @Test
+    @DisplayName("Zero days (BD): 22 available, 0 worked → gross 3600")
+    void zeroDaysBigDecimal_22available() {
+        BigDecimal gross = engine.grossSalary(22, new BigDecimal("0"));
+        assertThat(gross).isEqualByComparingTo("3600");
+    }
+
+    // Fractional mix: 23 available, 18.5 worked
+    // absentDays = 4.5 → deduction = 5,400 → gross = 24,600
+    @Test
+    @DisplayName("Fractional mix: 23 available, 18.5 worked → gross 24600")
+    void fractionalMix_23available_18point5worked() {
+        BigDecimal gross = engine.grossSalary(23, new BigDecimal("18.5"));
+        assertThat(gross).isEqualByComparingTo("24600");
+    }
+
+    // Golden stays correct via int overload delegating to BigDecimal overload
+    @Test
+    @DisplayName("Golden (BD): 23 available, 18 worked → gross 24000, EPF8% 1920, balance 22080")
+    void goldenBigDecimal_23available_18worked() {
+        BigDecimal gross = engine.grossSalary(23, new BigDecimal("18"));
+        assertThat(gross).isEqualByComparingTo("24000");
+        assertThat(engine.epfEmployeeDeduction(gross)).isEqualByComparingTo("1920");
+        assertThat(engine.adminBalance(gross)).isEqualByComparingTo("22080");
+    }
+
+    // Floor (BigDecimal path): 0/26 → negative → floored to 0
+    @Test
+    @DisplayName("Floor (BD): 0/26 days → floored to 0")
+    void floorBigDecimal_26available_0worked() {
+        BigDecimal gross = engine.grossSalary(26, new BigDecimal("0"));
+        assertThat(gross).isEqualByComparingTo("0");
+    }
 }

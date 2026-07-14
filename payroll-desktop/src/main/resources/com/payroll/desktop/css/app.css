@@ -1,0 +1,53 @@
+/* ── Top bar ──────────────────────────────────────────────────────────────── */
+.top-bar {
+    -fx-padding: 10 16 10 16;
+    -fx-background-color: -color-bg-subtle;
+    -fx-border-color: -color-border-default;
+    -fx-border-width: 0 0 1 0;
+}
+
+.app-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+}
+
+/* ── Sidebar ──────────────────────────────────────────────────────────────── */
+.sidebar {
+    -fx-padding: 12 8 12 8;
+    -fx-pref-width: 190px;
+    -fx-background-color: -color-bg-subtle;
+    -fx-border-color: -color-border-default;
+    -fx-border-width: 0 1 0 0;
+}
+
+.nav-button {
+    -fx-max-width: Infinity;
+    -fx-alignment: CENTER-LEFT;
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+}
+
+.nav-button:hover {
+    -fx-background-color: -color-accent-subtle;
+}
+
+/* ── Auth screens ─────────────────────────────────────────────────────────── */
+.auth-title {
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+}
+
+.setup-title {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+}
+
+.section-label {
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+}
+
+/* ── Shared utilities ─────────────────────────────────────────────────────── */
+.error-text {
+    -fx-text-fill: -color-danger-fg;
+}
