@@ -2,10 +2,10 @@ package com.payroll.desktop.ui.admin;
 
 import com.payroll.core.entity.AttendanceRecord;
 import com.payroll.core.entity.Employee;
-import com.payroll.desktop.repository.AttendanceRecordRepository;
-import com.payroll.desktop.repository.EmployeeRepository;
+import com.payroll.desktop.ui.auth.UserSession;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
@@ -13,58 +13,76 @@ import javafx.scene.layout.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
+import java.util.List;
 
 // ISOLATION GUARANTEE: no imports from com.payroll.desktop.ui.superadmin
 public class DashboardScreen extends BorderPane {
 
     private static final DateTimeFormatter TIME_FMT = DateTimeFormatter.ofPattern("HH:mm");
+    private static final DateTimeFormatter DATE_FMT = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    private static final int DAYS_SHOWN = 7;
 
-    private final AttendanceRecordRepository attendanceRepo;
-    private final EmployeeRepository employeeRepo;
+    private final DashboardService dashboardService;
+    private final EmployeeNoteService noteService;
+    private final UserSession session;
 
+    private Label titleLabel;
+    private ComboBox<DayOption> dayCombo;
     private Label countInLabel;
+    private Label countInCaption;
     private Label countActiveLabel;
     private Label countScannedLabel;
+    private Label inSectionTitle;
     private VBox currentlyInList;
+    private Label scansTitle;
     private TableView<AttendanceRecord> scansTable;
 
-    public DashboardScreen(AttendanceRecordRepository attendanceRepo,
-                           EmployeeRepository employeeRepo) {
-        this.attendanceRepo = attendanceRepo;
-        this.employeeRepo = employeeRepo;
+    public DashboardScreen(DashboardService dashboardService,
+                           EmployeeNoteService noteService,
+                           UserSession session) {
+        this.dashboardService = dashboardService;
+        this.noteService = noteService;
+        this.session = session;
         setPadding(new Insets(20));
         buildLayout();
         loadData();
     }
 
     private void buildLayout() {
-        Label title = new Label("Dashboard — Today's Attendance");
-        title.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+        titleLabel = new Label();
+        titleLabel.setStyle("-fx-font-size: 18px; -fx-font-weight: bold;");
+
+        dayCombo = new ComboBox<>(FXCollections.observableArrayList(lastSevenDays()));
+        dayCombo.setCellFactory(lv -> dayCell());
+        dayCombo.setButtonCell(dayCell());
+        dayCombo.getSelectionModel().selectFirst();
+        dayCombo.setOnAction(e -> loadData());
+
         Button refreshBtn = new Button("Refresh");
         refreshBtn.setOnAction(e -> loadData());
         Region spacer = new Region();
         HBox.setHgrow(spacer, Priority.ALWAYS);
-        HBox titleBar = new HBox(8, title, spacer, refreshBtn);
+        HBox titleBar = new HBox(8, titleLabel, spacer, new Label("Day:"), dayCombo, refreshBtn);
         titleBar.setAlignment(Pos.CENTER_LEFT);
 
         countInLabel      = summaryValue();
         countActiveLabel  = summaryValue();
         countScannedLabel = summaryValue();
+        countInCaption = new Label();
         HBox summary = new HBox(16,
-                summaryCard("Currently In",      countInLabel),
-                summaryCard("Active Employees",   countActiveLabel),
-                summaryCard("Scanned Today",      countScannedLabel));
+                summaryCard(countInCaption,                     countInLabel),
+                summaryCard(new Label("Active Employees"), countActiveLabel),
+                summaryCard(new Label("Scanned"),          countScannedLabel));
         summary.setPadding(new Insets(12, 0, 12, 0));
 
-        Label inTitle = new Label("Currently In");
-        inTitle.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
+        inSectionTitle = new Label();
+        inSectionTitle.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
         currentlyInList = new VBox(4);
-        VBox inSection = new VBox(6, inTitle, currentlyInList);
+        VBox inSection = new VBox(6, inSectionTitle, currentlyInList);
         inSection.setPadding(new Insets(0, 0, 12, 0));
 
-        Label scansTitle = new Label("Today's Scans");
+        scansTitle = new Label();
         scansTitle.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
         scansTable = buildScansTable();
         VBox.setVgrow(scansTable, Priority.ALWAYS);
@@ -76,14 +94,44 @@ public class DashboardScreen extends BorderPane {
         setCenter(scansSection);
     }
 
+    // ── day selector ──────────────────────────────────────────────────────────────
+
+    private record DayOption(LocalDate date, String label) {
+    }
+
+    private static List<DayOption> lastSevenDays() {
+        LocalDate today = LocalDate.now();
+        List<DayOption> days = new ArrayList<>();
+        for (int i = 0; i < DAYS_SHOWN; i++) {
+            LocalDate d = today.minusDays(i);
+            String label = switch (i) {
+                case 0  -> "Today (" + d.format(DATE_FMT) + ")";
+                case 1  -> "Yesterday (" + d.format(DATE_FMT) + ")";
+                default -> d.format(DATE_FMT);
+            };
+            days.add(new DayOption(d, label));
+        }
+        return days;
+    }
+
+    private static ListCell<DayOption> dayCell() {
+        return new ListCell<>() {
+            @Override protected void updateItem(DayOption item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? null : item.label());
+            }
+        };
+    }
+
+    // ── summary cards ────────────────────────────────────────────────────────────
+
     private static Label summaryValue() {
         Label lbl = new Label("—");
         lbl.setStyle("-fx-font-size: 24px; -fx-font-weight: bold;");
         return lbl;
     }
 
-    private static VBox summaryCard(String label, Label valueLabel) {
-        Label caption = new Label(label);
+    private static VBox summaryCard(Label caption, Label valueLabel) {
         caption.setStyle("-fx-font-size: 11px; -fx-text-fill: #555;");
         VBox card = new VBox(2, valueLabel, caption);
         card.setAlignment(Pos.TOP_LEFT);
@@ -92,10 +140,12 @@ public class DashboardScreen extends BorderPane {
         return card;
     }
 
+    // ── scans table ──────────────────────────────────────────────────────────────
+
     @SuppressWarnings("unchecked")
     private TableView<AttendanceRecord> buildScansTable() {
         TableView<AttendanceRecord> table = new TableView<>();
-        table.setPlaceholder(new Label("No scans recorded today."));
+        table.setPlaceholder(new Label("No scans recorded for this day."));
         table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
 
         TableColumn<AttendanceRecord, String> timeCol = new TableColumn<>("Time");
@@ -118,43 +168,111 @@ public class DashboardScreen extends BorderPane {
                 new SimpleStringProperty(c.getValue().getScanType().name()));
         dirCol.setPrefWidth(100);
 
-        table.getColumns().addAll(timeCol, codeCol, nameCol, dirCol);
+        table.getColumns().addAll(timeCol, codeCol, nameCol, dirCol, buildAddNoteColumn());
         return table;
     }
 
+    private TableColumn<AttendanceRecord, Void> buildAddNoteColumn() {
+        TableColumn<AttendanceRecord, Void> col = new TableColumn<>("Note");
+        col.setPrefWidth(100);
+        col.setCellFactory(c -> new TableCell<>() {
+            private final Button addNoteBtn = new Button("Add Note");
+            {
+                addNoteBtn.setOnAction(e -> {
+                    AttendanceRecord r = getTableView().getItems().get(getIndex());
+                    openAddNoteDialog(r);
+                });
+            }
+
+            @Override protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                setGraphic(empty ? null : addNoteBtn);
+            }
+        });
+        return col;
+    }
+
+    // ── add note dialog ──────────────────────────────────────────────────────────
+
+    private void openAddNoteDialog(AttendanceRecord record) {
+        Employee emp = record.getEmployee();
+        LocalDate noteDate = record.getScanDatetime().toLocalDate();
+
+        Dialog<String> dialog = new Dialog<>();
+        dialog.initOwner(getScene().getWindow());
+        dialog.setTitle("Add Note");
+        dialog.setHeaderText("Add note for " + emp.getEmployeeCode() + " — " + emp.getName()
+                + " on " + noteDate.format(DATE_FMT));
+
+        ButtonType saveButtonType = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
+
+        TextArea textArea = new TextArea();
+        textArea.setPromptText("Enter note text…");
+        textArea.setPrefRowCount(4);
+        textArea.setPrefWidth(320);
+        textArea.setWrapText(true);
+
+        Label errorLabel = new Label();
+        errorLabel.setStyle("-fx-text-fill: #cc0000;");
+        errorLabel.setWrapText(true);
+
+        VBox content = new VBox(8, textArea, errorLabel);
+        content.setPadding(new Insets(12));
+        dialog.getDialogPane().setContent(content);
+
+        Button saveBtn = (Button) dialog.getDialogPane().lookupButton(saveButtonType);
+        saveBtn.addEventFilter(ActionEvent.ACTION, event -> {
+            if (textArea.getText() == null || textArea.getText().isBlank()) {
+                errorLabel.setText("Note text cannot be empty.");
+                event.consume();
+            }
+        });
+
+        dialog.setResultConverter(btn -> btn == saveButtonType ? textArea.getText().trim() : null);
+
+        dialog.showAndWait().ifPresent(text -> {
+            noteService.addNote(emp.getId(), noteDate, text, session.getUsername());
+
+            Alert confirm = new Alert(Alert.AlertType.INFORMATION,
+                    "Note saved for " + emp.getName() + " on " + noteDate.format(DATE_FMT) + ".");
+            confirm.initOwner(getScene().getWindow());
+            confirm.setHeaderText(null);
+            confirm.showAndWait();
+        });
+    }
+
+    // ── data ─────────────────────────────────────────────────────────────────────
+
     private void loadData() {
-        LocalDate today = LocalDate.now();
-        List<AttendanceRecord> todayScans = attendanceRepo.findByDateRange(today, today);
-        List<Employee> activeEmployees    = employeeRepo.findAllActive();
+        DayOption selected = dayCombo.getValue();
+        LocalDate date = selected.date();
+        boolean isToday = date.equals(LocalDate.now());
 
-        // Group by employee id
-        Map<Long, List<AttendanceRecord>> byEmployee = todayScans.stream()
-                .collect(Collectors.groupingBy(r -> r.getEmployee().getId()));
+        DashboardSnapshot snapshot = dashboardService.loadFor(date);
 
-        // Odd scan count → currently in (last scan is an ENTRY)
-        List<AttendanceRecord> currentlyIn = byEmployee.values().stream()
-                .filter(scans -> scans.size() % 2 == 1)
-                .map(scans -> scans.get(scans.size() - 1))
-                .sorted(Comparator.comparing(AttendanceRecord::getScanDatetime))
-                .collect(Collectors.toList());
+        titleLabel.setText("Dashboard — Attendance for " + selected.label());
+        scansTitle.setText("Scans — " + selected.label());
+        inSectionTitle.setText(isToday ? "Currently In" : "Missing Clock-Out");
+        countInCaption.setText(isToday ? "Currently In" : "Missing Clock-Out");
 
-        countInLabel.setText(String.valueOf(currentlyIn.size()));
-        countActiveLabel.setText(String.valueOf(activeEmployees.size()));
-        countScannedLabel.setText(String.valueOf(byEmployee.size()));
+        countInLabel.setText(String.valueOf(snapshot.lastScanIsEntry().size()));
+        countActiveLabel.setText(String.valueOf(snapshot.activeEmployeeCount()));
+        countScannedLabel.setText(String.valueOf(snapshot.scannedEmployeeCount()));
 
         currentlyInList.getChildren().clear();
-        if (currentlyIn.isEmpty()) {
-            currentlyInList.getChildren().add(new Label("No employees currently in."));
+        if (snapshot.lastScanIsEntry().isEmpty()) {
+            currentlyInList.getChildren().add(new Label(
+                    isToday ? "No employees currently in." : "No missing clock-outs for this day."));
         } else {
-            for (AttendanceRecord r : currentlyIn) {
+            String verb = isToday ? "clocked in at" : "last scanned in at";
+            for (AttendanceRecord r : snapshot.lastScanIsEntry()) {
                 currentlyInList.getChildren().add(new Label(
                         r.getEmployee().getEmployeeCode() + "  " + r.getEmployee().getName()
-                        + " — clocked in at " + r.getScanDatetime().format(TIME_FMT)));
+                        + " — " + verb + " " + r.getScanDatetime().format(TIME_FMT)));
             }
         }
 
-        List<AttendanceRecord> reversed = new ArrayList<>(todayScans);
-        Collections.reverse(reversed);
-        scansTable.setItems(FXCollections.observableArrayList(reversed));
+        scansTable.setItems(FXCollections.observableArrayList(snapshot.scans()));
     }
 }

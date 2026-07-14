@@ -1,4 +1,4 @@
-package com.payroll.desktop.ui.superadmin;
+package com.payroll.desktop.ui.admin;
 
 import com.payroll.core.entity.AuditLogEntry;
 import com.payroll.core.entity.EmployeeNote;

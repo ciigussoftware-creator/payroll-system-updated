@@ -8,7 +8,9 @@
       "Bash(mvn -q -o verify)",
       "Bash(mvn -o verify)",
       "Bash(echo \"EXIT:$?\")",
-      "Read(//tmp/**)"
+      "Read(//tmp/**)",
+      "Bash(mvn -o -q compile test-compile)",
+      "Bash(mvn -o clean verify)"
     ]
   }
 }

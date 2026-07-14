@@ -3,6 +3,7 @@ package com.payroll.desktop.ui.superadmin;
 import com.payroll.core.entity.Employee;
 import com.payroll.core.entity.EmployeeNote;
 import com.payroll.desktop.repository.EmployeeRepository;
+import com.payroll.desktop.ui.admin.EmployeeNoteService;
 import com.payroll.desktop.ui.auth.UserSession;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;

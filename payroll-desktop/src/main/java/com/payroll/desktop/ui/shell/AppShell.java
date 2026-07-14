@@ -92,7 +92,7 @@ public class AppShell {
             case ADMIN       -> new AdminShell(session, onLogout, employeeRepository,
                                                workingDaysRepository, attendanceRepository,
                                                statutoryService, overrideRepository,
-                                               auditLogRepository);
+                                               auditLogRepository, employeeNoteRepository);
             case SUPER_ADMIN -> new SuperAdminShell(session, onLogout, employeeRepository,
                                                     workingDaysRepository, attendanceRepository,
                                                     statutoryService, overrideRepository,

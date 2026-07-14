@@ -2,12 +2,15 @@ package com.payroll.desktop.ui.shell;
 
 import com.payroll.desktop.repository.AttendanceRecordRepository;
 import com.payroll.desktop.repository.AuditLogRepository;
+import com.payroll.desktop.repository.EmployeeNoteRepository;
 import com.payroll.desktop.repository.EmployeeRepository;
 import com.payroll.desktop.repository.StatutoryOverrideRepository;
 import com.payroll.desktop.repository.WorkingDaysConfigRepository;
 import com.payroll.desktop.statutory.StatutoryCalculationService;
 import com.payroll.desktop.ui.admin.DashboardScreen;
+import com.payroll.desktop.ui.admin.DashboardService;
 import com.payroll.desktop.ui.admin.EmployeeManagementService;
+import com.payroll.desktop.ui.admin.EmployeeNoteService;
 import com.payroll.desktop.ui.admin.EmployeesScreen;
 import com.payroll.desktop.ui.admin.ScanEntryScreen;
 import com.payroll.desktop.ui.admin.StatutoryExportScreen;
@@ -31,6 +34,8 @@ public class AdminShell extends BorderPane {
     private final StatutoryCalculationService statutoryService;
     private final StatutoryOverrideRepository overrideRepository;
     private final EmployeeManagementService employeeManagementService;
+    private final EmployeeNoteService employeeNoteService;
+    private final DashboardService dashboardService;
 
     public AdminShell(UserSession session,
                       Runnable onLogout,
@@ -39,7 +44,8 @@ public class AdminShell extends BorderPane {
                       AttendanceRecordRepository attendanceRepository,
                       StatutoryCalculationService statutoryService,
                       StatutoryOverrideRepository overrideRepository,
-                      AuditLogRepository auditLogRepository) {
+                      AuditLogRepository auditLogRepository,
+                      EmployeeNoteRepository employeeNoteRepository) {
         this.session = session;
         this.onLogout = onLogout;
         this.employeeRepository = employeeRepository;
@@ -49,9 +55,11 @@ public class AdminShell extends BorderPane {
         this.overrideRepository = overrideRepository;
         this.employeeManagementService = new EmployeeManagementService(
                 employeeRepository, attendanceRepository, auditLogRepository);
+        this.employeeNoteService = new EmployeeNoteService(employeeNoteRepository, auditLogRepository);
+        this.dashboardService = new DashboardService(attendanceRepository, employeeRepository);
         setTop(buildTopBar());
         setLeft(buildSidebar());
-        setCenter(new DashboardScreen(attendanceRepository, employeeRepository));
+        setCenter(new DashboardScreen(dashboardService, employeeNoteService, session));
     }
 
     private HBox buildTopBar() {
@@ -75,7 +83,7 @@ public class AdminShell extends BorderPane {
         sidebar.getStyleClass().add("sidebar");
 
         addNavButton(sidebar, "Dashboard",
-                () -> setCenter(new DashboardScreen(attendanceRepository, employeeRepository)));
+                () -> setCenter(new DashboardScreen(dashboardService, employeeNoteService, session)));
         addNavButton(sidebar, "Scan Entry",
                 () -> setCenter(new ScanEntryScreen(attendanceRepository, employeeRepository)));
         addNavButton(sidebar, "Employees",
