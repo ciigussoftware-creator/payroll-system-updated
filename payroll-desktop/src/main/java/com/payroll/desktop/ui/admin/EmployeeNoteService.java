@@ -52,4 +52,12 @@ public class EmployeeNoteService {
     public List<EmployeeNote> findByEmployeeAndDate(Long employeeId, LocalDate date) {
         return noteRepo.findByEmployeeAndDate(employeeId, date);
     }
+
+    public List<EmployeeNote> findByMonth(String periodMonth) {
+        return noteRepo.findByMonth(periodMonth);
+    }
+
+    public List<EmployeeNote> findByEmployeeAndMonth(Long employeeId, String periodMonth) {
+        return noteRepo.findByEmployeeAndMonth(employeeId, periodMonth);
+    }
 }

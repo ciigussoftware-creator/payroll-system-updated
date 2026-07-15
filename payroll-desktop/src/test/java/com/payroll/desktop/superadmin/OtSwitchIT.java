@@ -24,6 +24,18 @@ class OtSwitchIT {
     private static final LocalDate FUTURE = LocalDate.now().plusDays(1);
     private static final LocalDate PAST   = LocalDate.now().minusDays(1);
 
+    private static LocalDate nextSunday() {
+        LocalDate d = LocalDate.now().plusDays(1);
+        while (d.getDayOfWeek() != java.time.DayOfWeek.SUNDAY) d = d.plusDays(1);
+        return d;
+    }
+
+    private static LocalDate nextWeekday() {
+        LocalDate d = LocalDate.now().plusDays(1);
+        while (d.getDayOfWeek() == java.time.DayOfWeek.SUNDAY) d = d.plusDays(1);
+        return d;
+    }
+
     // ── AuditLogEntry: save + findAll returns it; insert-only ─────────────────────
 
     @Test
@@ -221,6 +233,132 @@ class OtSwitchIT {
             assertThat(audits).hasSize(1);
             assertThat(audits.get(0).getReason()).isEqualTo(reason);
             assertThat(audits.get(0).getUsername()).isEqualTo("superadmin");
+        }
+    }
+
+    // ── saveAll: combined single-button save ────────────────────────────────────────
+
+    @Test
+    void saveAll_persistsDayLevelAndEmployeeAuthsInOneOperation_withAudits(@TempDir Path tempDir)
+            throws IOException {
+        try (var db = new DatabaseManager(tempDir)) {
+            var repos = repos(db);
+            var service = repos.service();
+
+            var employees = List.of(
+                    new OtSwitchService.EmployeeAuth(1L, "EMP-001", true),
+                    new OtSwitchService.EmployeeAuth(2L, "EMP-002", false));
+
+            service.saveAll(FUTURE, true, false, employees, "superadmin", null);
+
+            var config = repos.dayLevelRepo.findByDate(FUTURE);
+            assertThat(config).isPresent();
+            assertThat(config.get().isAllStaffOt()).isTrue();
+            assertThat(config.get().getDayType()).isEqualTo(OtSwitchService.deriveDayType(FUTURE));
+
+            assertThat(repos.otAuthRepo.findByEmployeeAndDate(1L, FUTURE)).isPresent();
+            assertThat(repos.otAuthRepo.findByEmployeeAndDate(1L, FUTURE).get().isAuthorized()).isTrue();
+            // EMP-002 authorized=false matches the default (no prior row) so no auth row/audit is written for it
+            assertThat(repos.otAuthRepo.findByEmployeeAndDate(2L, FUTURE)).isEmpty();
+
+            List<AuditLogEntry> audits = repos.auditRepo.findAll();
+            assertThat(audits).anyMatch(a -> "OT_DAYLEVEL_SET".equals(a.getAction()));
+            assertThat(audits).anyMatch(a -> "OT_EMPLOYEE_SET".equals(a.getAction())
+                    && ("employee=EMP-001 date=" + FUTURE).equals(a.getTargetRef()));
+        }
+    }
+
+    @Test
+    void saveAll_retroactiveWithEmptyReason_rejected(@TempDir Path tempDir) throws IOException {
+        try (var db = new DatabaseManager(tempDir)) {
+            var service = repos(db).service();
+            var employees = List.of(new OtSwitchService.EmployeeAuth(1L, "EMP-001", true));
+
+            assertThatThrownBy(() -> service.saveAll(PAST, true, false, employees, "superadmin", ""))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("reason");
+
+            assertThatThrownBy(() -> service.saveAll(PAST, true, false, employees, "superadmin", null))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("reason");
+        }
+    }
+
+    @Test
+    void saveAll_retroactiveWithReason_savedAndReasonInAudits(@TempDir Path tempDir) throws IOException {
+        try (var db = new DatabaseManager(tempDir)) {
+            var repos = repos(db);
+            var employees = List.of(new OtSwitchService.EmployeeAuth(1L, "EMP-001", true));
+            String reason = "Backdated correction approved";
+
+            repos.service().saveAll(PAST, true, false, employees, "superadmin", reason);
+
+            assertThat(repos.dayLevelRepo.findByDate(PAST)).isPresent();
+            List<AuditLogEntry> audits = repos.auditRepo.findAll();
+            assertThat(audits).hasSize(2);
+            assertThat(audits).allMatch(a -> reason.equals(a.getReason()));
+        }
+    }
+
+    // ── holiday flag: mercantile holiday override ───────────────────────────────────
+
+    @Test
+    void saveAll_holidayTicked_storesMercantileHolidayDayType(@TempDir Path tempDir) throws IOException {
+        try (var db = new DatabaseManager(tempDir)) {
+            var repos = repos(db);
+            LocalDate weekday = nextWeekday();
+
+            repos.service().saveAll(weekday, true, true, List.of(), "superadmin", null);
+
+            var config = repos.dayLevelRepo.findByDate(weekday);
+            assertThat(config).isPresent();
+            assertThat(config.get().getDayType()).isEqualTo(DayType.MERCANTILE_HOLIDAY);
+        }
+    }
+
+    @Test
+    void saveAll_holidayUnticked_storesDerivedDayType(@TempDir Path tempDir) throws IOException {
+        try (var db = new DatabaseManager(tempDir)) {
+            var repos = repos(db);
+            LocalDate sunday  = nextSunday();
+            LocalDate weekday = nextWeekday();
+
+            repos.service().saveAll(sunday, true, false, List.of(), "superadmin", null);
+            repos.service().saveAll(weekday, true, false, List.of(), "superadmin", null);
+
+            assertThat(repos.dayLevelRepo.findByDate(sunday).get().getDayType()).isEqualTo(DayType.SUNDAY);
+            assertThat(repos.dayLevelRepo.findByDate(weekday).get().getDayType()).isEqualTo(DayType.WEEKDAY);
+        }
+    }
+
+    @Test
+    void loadDayConfig_afterHolidaySave_reflectsMercantileHoliday(@TempDir Path tempDir) throws IOException {
+        try (var db = new DatabaseManager(tempDir)) {
+            var repos = repos(db);
+            var service = repos.service();
+            LocalDate weekday = nextWeekday();
+
+            service.saveAll(weekday, true, true, List.of(), "superadmin", null);
+
+            // What OtSwitchScreen.loadDayLevelConfig ticks the checkbox from
+            var loaded = service.loadDayConfig(weekday);
+            assertThat(loaded).isPresent();
+            assertThat(loaded.get().getDayType()).isEqualTo(DayType.MERCANTILE_HOLIDAY);
+        }
+    }
+
+    @Test
+    void saveAll_retroactiveHolidayWithEmptyReason_rejected(@TempDir Path tempDir) throws IOException {
+        try (var db = new DatabaseManager(tempDir)) {
+            var service = repos(db).service();
+
+            assertThatThrownBy(() -> service.saveAll(PAST, true, true, List.of(), "superadmin", ""))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("reason");
+
+            assertThatThrownBy(() -> service.saveAll(PAST, true, true, List.of(), "superadmin", null))
+                    .isInstanceOf(IllegalArgumentException.class)
+                    .hasMessageContaining("reason");
         }
     }
 

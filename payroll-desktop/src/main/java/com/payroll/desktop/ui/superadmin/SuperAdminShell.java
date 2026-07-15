@@ -112,7 +112,7 @@ public class SuperAdminShell extends BorderPane {
                 () -> setCenter(new TimestampCorrectionsScreen(
                         session, employeeRepository, attendanceRepository, timestampCorrectionService)));
         addNavButton(sidebar, "Notes",
-                () -> setCenter(new NotesScreen(session, employeeRepository, employeeNoteService)));
+                () -> setCenter(new NotesScreen(employeeRepository, employeeNoteService)));
         return sidebar;
     }
 

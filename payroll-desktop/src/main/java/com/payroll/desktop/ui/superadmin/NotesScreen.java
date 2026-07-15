@@ -4,49 +4,47 @@ import com.payroll.core.entity.Employee;
 import com.payroll.core.entity.EmployeeNote;
 import com.payroll.desktop.repository.EmployeeRepository;
 import com.payroll.desktop.ui.admin.EmployeeNoteService;
-import com.payroll.desktop.ui.auth.UserSession;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 
 import java.time.LocalDate;
+import java.time.Month;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.stream.Collectors;
 
+/** Read-only notes viewer, filtered by month and (optionally) employee. Notes are added from the Dashboard. */
 public class NotesScreen extends BorderPane {
 
     private static final DateTimeFormatter DT_FMT = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 
-    private final UserSession session;
     private final EmployeeRepository employeeRepo;
     private final EmployeeNoteService noteService;
 
+    private final ComboBox<Integer> yearBox = new ComboBox<>();
+    private final ComboBox<MonthItem> monthBox = new ComboBox<>();
     private final ComboBox<Employee> employeeCombo = new ComboBox<>();
     private final ObservableList<EmployeeNote> noteItems = FXCollections.observableArrayList();
     private final TableView<EmployeeNote> noteTable = new TableView<>(noteItems);
-    private final DatePicker noteDatePicker = new DatePicker(LocalDate.now());
-    private final TextArea noteTextArea = new TextArea();
     private final Label statusLabel = new Label();
 
-    public NotesScreen(UserSession session,
-                       EmployeeRepository employeeRepo,
-                       EmployeeNoteService noteService) {
-        this.session = session;
+    private Map<Long, Employee> employeesById = Map.of();
+
+    public NotesScreen(EmployeeRepository employeeRepo, EmployeeNoteService noteService) {
         this.employeeRepo = employeeRepo;
         this.noteService = noteService;
 
-        SplitPane split = new SplitPane();
-        split.setOrientation(Orientation.VERTICAL);
-        split.getItems().addAll(buildTopPanel(), buildAddPanel());
-        split.setDividerPositions(0.65);
-
         setTop(buildFilterBar());
-        setCenter(split);
+        setCenter(buildTable());
         setPadding(new Insets(16));
 
         loadEmployees();
@@ -55,15 +53,28 @@ public class NotesScreen extends BorderPane {
     // ── filter bar ────────────────────────────────────────────────────────────────
 
     private HBox buildFilterBar() {
-        employeeCombo.setPromptText("Select employee…");
+        int currentYear = LocalDate.now().getYear();
+        for (int y = currentYear - 2; y <= currentYear + 2; y++) yearBox.getItems().add(y);
+        yearBox.setValue(currentYear);
+        yearBox.setPrefWidth(90);
+
+        for (Month m : Month.values()) monthBox.getItems().add(new MonthItem(m));
+        monthBox.setValue(new MonthItem(LocalDate.now().getMonth()));
+        monthBox.setPrefWidth(140);
+
         employeeCombo.setMinWidth(220);
         employeeCombo.setCellFactory(lv -> employeeCell());
         employeeCombo.setButtonCell(employeeCell());
 
-        Button loadBtn = new Button("Load Notes");
+        Button loadBtn = new Button("Load");
+        loadBtn.setDefaultButton(true);
         loadBtn.setOnAction(e -> loadNotes());
 
-        HBox bar = new HBox(12, new Label("Employee:"), employeeCombo, loadBtn, statusLabel);
+        HBox bar = new HBox(12,
+                new Label("Year:"), yearBox,
+                new Label("Month:"), monthBox,
+                new Label("Employee:"), employeeCombo,
+                loadBtn, statusLabel);
         bar.setAlignment(Pos.CENTER_LEFT);
         bar.setPadding(new Insets(0, 0, 12, 0));
         return bar;
@@ -73,28 +84,40 @@ public class NotesScreen extends BorderPane {
         return new ListCell<>() {
             @Override protected void updateItem(Employee e, boolean empty) {
                 super.updateItem(e, empty);
-                setText(empty || e == null ? null : e.getEmployeeCode() + " — " + e.getName());
+                if (empty) {
+                    setText(null);
+                } else {
+                    setText(e == null ? "All employees" : e.getEmployeeCode() + " — " + e.getName());
+                }
             }
         };
     }
 
-    // ── notes table (top half) ────────────────────────────────────────────────────
+    // ── notes table ──────────────────────────────────────────────────────────────
 
-    private VBox buildTopPanel() {
+    @SuppressWarnings("unchecked")
+    private TableView<EmployeeNote> buildTable() {
         TableColumn<EmployeeNote, String> dateCol = new TableColumn<>("Date");
         dateCol.setCellValueFactory(cd ->
-                new javafx.beans.property.SimpleStringProperty(
-                        cd.getValue().getNoteDate().toString()));
+                new SimpleStringProperty(cd.getValue().getNoteDate().toString()));
         dateCol.setPrefWidth(100);
 
+        TableColumn<EmployeeNote, String> employeeCol = new TableColumn<>("Employee");
+        employeeCol.setCellValueFactory(cd -> {
+            Employee e = employeesById.get(cd.getValue().getEmployeeId());
+            String label = e == null
+                    ? "Employee #" + cd.getValue().getEmployeeId()
+                    : e.getEmployeeCode() + " — " + e.getName();
+            return new SimpleStringProperty(label);
+        });
+        employeeCol.setPrefWidth(200);
+
         TableColumn<EmployeeNote, String> textCol = new TableColumn<>("Note");
-        textCol.setCellValueFactory(cd ->
-                new javafx.beans.property.SimpleStringProperty(cd.getValue().getNoteText()));
-        textCol.setPrefWidth(380);
+        textCol.setCellValueFactory(cd -> new SimpleStringProperty(cd.getValue().getNoteText()));
+        textCol.setPrefWidth(320);
 
         TableColumn<EmployeeNote, String> byCol = new TableColumn<>("Created By");
-        byCol.setCellValueFactory(cd ->
-                new javafx.beans.property.SimpleStringProperty(cd.getValue().getCreatedBy()));
+        byCol.setCellValueFactory(cd -> new SimpleStringProperty(cd.getValue().getCreatedBy()));
         byCol.setPrefWidth(110);
 
         TableColumn<EmployeeNote, String> atCol = new TableColumn<>("Created At");
@@ -103,82 +126,53 @@ public class NotesScreen extends BorderPane {
                     .atZone(ZoneId.systemDefault())
                     .toLocalDateTime()
                     .format(DT_FMT);
-            return new javafx.beans.property.SimpleStringProperty(ts);
+            return new SimpleStringProperty(ts);
         });
         atCol.setPrefWidth(140);
 
-        noteTable.getColumns().setAll(dateCol, textCol, byCol, atCol);
+        noteTable.getColumns().setAll(dateCol, employeeCol, textCol, byCol, atCol);
         noteTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY_FLEX_LAST_COLUMN);
-        noteTable.setPlaceholder(new Label("Select an employee and click Load Notes."));
+        noteTable.setPlaceholder(new Label("Select a month and click Load."));
         VBox.setVgrow(noteTable, Priority.ALWAYS);
-
-        VBox panel = new VBox(new Label("Existing Notes"), noteTable);
-        panel.setSpacing(6);
-        panel.setPadding(new Insets(0, 0, 8, 0));
-        VBox.setVgrow(noteTable, Priority.ALWAYS);
-        return panel;
-    }
-
-    // ── add note form (bottom half) ───────────────────────────────────────────────
-
-    private VBox buildAddPanel() {
-        noteTextArea.setPromptText("Enter note text…");
-        noteTextArea.setPrefHeight(80);
-        noteTextArea.setWrapText(true);
-
-        Label errLabel = new Label();
-        errLabel.setStyle("-fx-text-fill: red;");
-
-        Button saveBtn = new Button("Save Note");
-        saveBtn.setOnAction(e -> saveNote(errLabel));
-
-        GridPane form = new GridPane();
-        form.setHgap(12);
-        form.setVgap(8);
-        form.add(new Label("Note Date:"), 0, 0);
-        form.add(noteDatePicker, 1, 0);
-        form.add(new Label("Note Text:"), 0, 1);
-        form.add(noteTextArea, 1, 1);
-        GridPane.setHgrow(noteTextArea, Priority.ALWAYS);
-
-        VBox panel = new VBox(8, new Label("Add Note"), form, errLabel, saveBtn, statusLabel);
-        panel.setPadding(new Insets(8, 0, 0, 0));
-        return panel;
+        return noteTable;
     }
 
     // ── data ops ──────────────────────────────────────────────────────────────────
 
     private void loadEmployees() {
-        employeeCombo.getItems().setAll(employeeRepo.findAll());
+        List<Employee> all = employeeRepo.findAll();
+        employeesById = all.stream().collect(Collectors.toMap(Employee::getId, e -> e));
+
+        employeeCombo.getItems().add(null);
+        employeeCombo.getItems().addAll(all);
+        employeeCombo.setValue(null);
     }
 
     private void loadNotes() {
-        Employee emp = employeeCombo.getValue();
-        if (emp == null) {
-            statusLabel.setText("Select an employee first.");
+        Integer year = yearBox.getValue();
+        MonthItem month = monthBox.getValue();
+        if (year == null || month == null) {
+            statusLabel.setText("Select a year and month.");
             return;
         }
-        List<EmployeeNote> notes = noteService.findByEmployee(emp.getId());
+        String periodMonth = String.format("%04d-%02d", year, month.number());
+        Employee emp = employeeCombo.getValue();
+
+        List<EmployeeNote> notes = emp == null
+                ? noteService.findByMonth(periodMonth)
+                : noteService.findByEmployeeAndMonth(emp.getId(), periodMonth);
+
         noteItems.setAll(notes);
-        statusLabel.setText(notes.size() + " note(s) for " + emp.getName());
+        statusLabel.setText(notes.size() + " note(s) for "
+                + (emp == null ? "all employees" : emp.getName()) + " in " + periodMonth);
     }
 
-    private void saveNote(Label errLabel) {
-        Employee emp = employeeCombo.getValue();
-        if (emp == null) { errLabel.setText("Select an employee first."); return; }
-        String text = noteTextArea.getText().trim();
-        if (text.isEmpty()) { errLabel.setText("Note text cannot be empty."); return; }
-        LocalDate noteDate = noteDatePicker.getValue();
-        if (noteDate == null) { errLabel.setText("Select a note date."); return; }
+    // ── helper record ──────────────────────────────────────────────────────────
 
-        try {
-            noteService.addNote(emp.getId(), noteDate, text, session.getUsername());
-            noteTextArea.clear();
-            errLabel.setText("");
-            statusLabel.setText("Note saved.");
-            loadNotes();
-        } catch (Exception ex) {
-            errLabel.setText("Error: " + ex.getMessage());
+    private record MonthItem(Month month) {
+        int number() { return month.getValue(); }
+        @Override public String toString() {
+            return month.getDisplayName(TextStyle.FULL, Locale.getDefault());
         }
     }
 }

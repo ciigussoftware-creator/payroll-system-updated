@@ -13,7 +13,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.layout.*;
 
-import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,12 +27,11 @@ public class OtSwitchScreen extends BorderPane {
     private final TextField reasonField = new TextField();
     private final VBox retroBox = new VBox(6);
 
-    private final ComboBox<DayType> dayTypeCombo = new ComboBox<>();
     private final CheckBox allStaffOtCheck = new CheckBox("All Staff OT");
-    private final Label dayLevelStatus = new Label();
+    private final CheckBox holidayCheck = new CheckBox("Treat as holiday (no day credit)");
+    private final Label statusLabel = new Label();
 
     private final ObservableList<EmployeeAuthRow> employeeRows = FXCollections.observableArrayList();
-    private final Label employeeStatus = new Label();
     private Map<Long, Boolean> originalAuthorized = new HashMap<>();
 
     public OtSwitchScreen(UserSession session,
@@ -63,7 +61,7 @@ public class OtSwitchScreen extends BorderPane {
         retroBox.setManaged(false);
 
         VBox content = new VBox(20, title, dateRow, retroBox,
-                buildDayLevelSection(), buildEmployeeSection());
+                buildDayLevelSection(), buildEmployeeSection(), buildSaveBar());
 
         ScrollPane scroll = new ScrollPane(content);
         scroll.setFitToWidth(true);
@@ -75,26 +73,32 @@ public class OtSwitchScreen extends BorderPane {
         Label sectionTitle = new Label("Day-Level OT Configuration");
         sectionTitle.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
 
-        dayTypeCombo.getItems().addAll(DayType.values());
-        dayTypeCombo.setValue(DayType.WEEKDAY);
+        // Ticking this auto-authorizes every employee below; individual boxes stay editable
+        // afterward, and unticking this does NOT force-untick anyone.
+        allStaffOtCheck.setOnAction(e -> {
+            if (allStaffOtCheck.isSelected()) {
+                tickAllEmployeesAuthorized();
+            }
+        });
+
+        // A holiday is an all-staff OT day, so ticking this also ticks All Staff OT (and
+        // authorizes everyone) — same "tick propagates, untick doesn't force anyone off" rule.
+        holidayCheck.setOnAction(e -> {
+            if (holidayCheck.isSelected()) {
+                allStaffOtCheck.setSelected(true);
+                tickAllEmployeesAuthorized();
+            }
+        });
 
         GridPane grid = new GridPane();
         grid.setHgap(12);
         grid.setVgap(8);
-        grid.add(new Label("Day Type:"), 0, 0);
-        grid.add(dayTypeCombo, 1, 0);
-        grid.add(new Label("All Staff OT:"), 0, 1);
-        grid.add(allStaffOtCheck, 1, 1);
+        grid.add(new Label("All Staff OT:"), 0, 0);
+        grid.add(allStaffOtCheck, 1, 0);
+        grid.add(new Label("Holiday:"), 0, 1);
+        grid.add(holidayCheck, 1, 1);
 
-        Button saveBtn = new Button("Save Day-Level Config");
-        saveBtn.setOnAction(e -> saveDayLevel());
-
-        dayLevelStatus.setWrapText(true);
-
-        HBox actionRow = new HBox(12, saveBtn, dayLevelStatus);
-        actionRow.setAlignment(Pos.CENTER_LEFT);
-
-        VBox box = new VBox(10, sectionTitle, grid, actionRow);
+        VBox box = new VBox(10, sectionTitle, grid);
         box.setStyle("-fx-border-color: #cccccc; -fx-border-radius: 4; -fx-padding: 12;");
         return box;
     }
@@ -130,23 +134,24 @@ public class OtSwitchScreen extends BorderPane {
 
         table.getColumns().addAll(codeCol, nameCol, authCol);
 
-        Button saveBtn = new Button("Save Employee Authorizations");
-        saveBtn.setOnAction(e -> saveEmployeeAuthorizations());
-
-        employeeStatus.setWrapText(true);
-
-        HBox actionRow = new HBox(12, saveBtn, employeeStatus);
-        actionRow.setAlignment(Pos.CENTER_LEFT);
-
-        VBox box = new VBox(10, sectionTitle, table, actionRow);
+        VBox box = new VBox(10, sectionTitle, table);
         box.setStyle("-fx-border-color: #cccccc; -fx-border-radius: 4; -fx-padding: 12;");
         VBox.setVgrow(table, Priority.ALWAYS);
         return box;
     }
 
+    private HBox buildSaveBar() {
+        Button saveBtn = new Button("Save");
+        saveBtn.setOnAction(e -> save());
+        statusLabel.setWrapText(true);
+        HBox bar = new HBox(12, saveBtn, statusLabel);
+        bar.setAlignment(Pos.CENTER_LEFT);
+        return bar;
+    }
+
     private void loadForDate(LocalDate date) {
         if (date == null) return;
-        clearFeedback();
+        statusLabel.setText("");
 
         boolean isRetro = date.isBefore(LocalDate.now());
         retroBox.setVisible(isRetro);
@@ -158,14 +163,18 @@ public class OtSwitchScreen extends BorderPane {
     }
 
     private void loadDayLevelConfig(LocalDate date) {
-        boolean isSunday = date.getDayOfWeek() == DayOfWeek.SUNDAY;
-        dayTypeCombo.setValue(isSunday ? DayType.SUNDAY : DayType.WEEKDAY);
-        allStaffOtCheck.setSelected(isSunday);
-
+        allStaffOtCheck.setSelected(false);
+        holidayCheck.setSelected(false);
         otSwitchService.loadDayConfig(date).ifPresent(config -> {
-            dayTypeCombo.setValue(config.getDayType());
             allStaffOtCheck.setSelected(config.isAllStaffOt());
+            holidayCheck.setSelected(config.getDayType() == DayType.MERCANTILE_HOLIDAY);
         });
+    }
+
+    private void tickAllEmployeesAuthorized() {
+        for (EmployeeAuthRow row : employeeRows) {
+            row.authorizedProperty().set(true);
+        }
     }
 
     private void loadEmployeeAuthorizations(LocalDate date) {
@@ -184,51 +193,28 @@ public class OtSwitchScreen extends BorderPane {
         }
     }
 
-    private void saveDayLevel() {
+    private void save() {
         LocalDate date = datePicker.getValue();
         if (date == null) return;
         String reason = reasonField.getText().trim();
+
+        var authInputs = employeeRows.stream()
+                .map(row -> new OtSwitchService.EmployeeAuth(
+                        row.getEmployeeId(), row.getEmployeeCode(), row.isAuthorized()))
+                .toList();
+
         try {
-            otSwitchService.saveDayLevel(date, dayTypeCombo.getValue(),
-                    allStaffOtCheck.isSelected(), session.getUsername(), reason);
-            dayLevelStatus.setText("Saved.");
-            dayLevelStatus.setStyle("-fx-text-fill: #2a7f2a;");
-        } catch (IllegalArgumentException ex) {
-            dayLevelStatus.setText(ex.getMessage());
-            dayLevelStatus.setStyle("-fx-text-fill: #cc0000;");
-        }
-    }
-
-    private void saveEmployeeAuthorizations() {
-        LocalDate date = datePicker.getValue();
-        if (date == null) return;
-        String reason = reasonField.getText().trim();
-
-        int savedCount = 0;
-        for (EmployeeAuthRow row : employeeRows) {
-            boolean original = originalAuthorized.getOrDefault(row.getEmployeeId(), false);
-            if (original == row.isAuthorized()) continue;
-            try {
-                otSwitchService.saveEmployeeAuthorization(date, row.getEmployeeId(),
-                        row.isAuthorized(), row.getEmployeeCode(), session.getUsername(), reason);
-                savedCount++;
-            } catch (IllegalArgumentException ex) {
-                employeeStatus.setText(ex.getMessage());
-                employeeStatus.setStyle("-fx-text-fill: #cc0000;");
-                return;
+            otSwitchService.saveAll(date, allStaffOtCheck.isSelected(), holidayCheck.isSelected(),
+                    authInputs, session.getUsername(), reason);
+            for (EmployeeAuthRow row : employeeRows) {
+                originalAuthorized.put(row.getEmployeeId(), row.isAuthorized());
             }
+            statusLabel.setText("Saved.");
+            statusLabel.setStyle("-fx-text-fill: #2a7f2a;");
+        } catch (IllegalArgumentException ex) {
+            statusLabel.setText(ex.getMessage());
+            statusLabel.setStyle("-fx-text-fill: #cc0000;");
         }
-        for (EmployeeAuthRow row : employeeRows) {
-            originalAuthorized.put(row.getEmployeeId(), row.isAuthorized());
-        }
-        String msg = savedCount == 0 ? "No changes to save." : "Saved " + savedCount + " authorization(s).";
-        employeeStatus.setText(msg);
-        employeeStatus.setStyle("-fx-text-fill: #2a7f2a;");
-    }
-
-    private void clearFeedback() {
-        dayLevelStatus.setText("");
-        employeeStatus.setText("");
     }
 
     // ── row model ─────────────────────────────────────────────────────────────────
