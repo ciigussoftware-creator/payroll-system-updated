@@ -145,6 +145,16 @@ public class AttendanceRecordRepository {
         }
     }
 
+    public long countByEmployee(Long employeeId) {
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery(
+                            "SELECT COUNT(r) FROM AttendanceRecord r WHERE r.employee.id = :empId",
+                            Long.class)
+                    .setParameter("empId", employeeId)
+                    .getSingleResult();
+        }
+    }
+
     public List<AttendanceRecord> findByDateRange(LocalDate from, LocalDate to) {
         LocalDateTime fromDt = from.atStartOfDay();
         LocalDateTime toDt = to.plusDays(1).atStartOfDay();

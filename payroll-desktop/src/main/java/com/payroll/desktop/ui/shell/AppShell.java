@@ -91,7 +91,8 @@ public class AppShell {
         BorderPane shell = switch (session.getRole()) {
             case ADMIN       -> new AdminShell(session, onLogout, employeeRepository,
                                                workingDaysRepository, attendanceRepository,
-                                               statutoryService, overrideRepository);
+                                               statutoryService, overrideRepository,
+                                               auditLogRepository, employeeNoteRepository);
             case SUPER_ADMIN -> new SuperAdminShell(session, onLogout, employeeRepository,
                                                     workingDaysRepository, attendanceRepository,
                                                     statutoryService, overrideRepository,

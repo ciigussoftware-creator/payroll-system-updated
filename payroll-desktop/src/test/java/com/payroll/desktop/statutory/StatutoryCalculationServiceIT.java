@@ -1,6 +1,8 @@
 package com.payroll.desktop.statutory;
 
 import com.payroll.core.entity.AttendanceRecord;
+import com.payroll.core.entity.DayLevelOTConfig;
+import com.payroll.core.entity.DayType;
 import com.payroll.core.entity.Employee;
 import com.payroll.core.entity.EmployeeCategory;
 import com.payroll.core.entity.ScanType;
@@ -20,6 +22,7 @@ import org.junit.jupiter.api.io.TempDir;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.file.Path;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -185,6 +188,58 @@ class StatutoryCalculationServiceIT {
             StatutoryRow row = rows.get(0);
             assertThat(row.computedDaysWorked()).isEqualByComparingTo("18.5");
             assertThat(row.gross()).isEqualByComparingTo("24600"); // 30000 - 4.5×1200
+        }
+    }
+
+    // ── mercantile holiday: zero day credit, all worked time is OT ────────────
+
+    @Test
+    void mercantileHoliday_fullShift_earnsZeroDayCreditAndAllTimeIsOt(@TempDir Path tempDir)
+            throws IOException {
+        try (var db = new DatabaseManager(tempDir)) {
+            var repos = new Repos(db);
+            Employee emp = repos.saveEmployee("EMP-HOL", "Holiday Worker");
+            repos.workingDays.upsert("2026-04", 23, "admin");
+
+            LocalDate holiday = LocalDate.of(2026, 4, 8); // otherwise a normal Wednesday
+            repos.saveAttendance(emp, holiday, LocalTime.of(8, 0), LocalTime.of(17, 0)); // full shift
+
+            // Mark the day a mercantile holiday with all-staff OT on — what
+            // OtSwitchService.saveAll(date, true, true, ..., ...) persists.
+            DayLevelOTConfig config = new DayLevelOTConfig();
+            config.setConfigDate(holiday);
+            config.setDayType(DayType.MERCANTILE_HOLIDAY);
+            config.setAllStaffOt(true);
+            config.setSetBy(0L);
+            config.setSetAt(Instant.now());
+            repos.dayLevelOT.save(config);
+
+            List<StatutoryRow> rows = repos.service().computeForMonth("2026-04");
+
+            assertThat(rows).hasSize(1);
+            StatutoryRow row = rows.get(0);
+            // The full shift earns ZERO day credit — the monthly days-worked tally is unaffected
+            assertThat(row.computedDaysWorked()).isEqualByComparingTo("0");
+            assertThat(row.effectiveDaysWorked()).isEqualByComparingTo("0");
+
+            // Same day, straight through the attendance engine: all worked time is OT, not day credit
+            var engineResult = new com.payroll.core.attendance.AttendanceEngine().classifyDay(
+                    new com.payroll.core.attendance.DayInput(
+                            EmployeeCategory.STANDARD,
+                            holiday,
+                            com.payroll.core.attendance.DayType.MERCANTILE_HOLIDAY,
+                            List.of(
+                                    new com.payroll.core.attendance.Scan(
+                                            holiday.atTime(8, 0), com.payroll.core.attendance.ScanType.ENTRY),
+                                    new com.payroll.core.attendance.Scan(
+                                            holiday.atTime(17, 0), com.payroll.core.attendance.ScanType.EXIT)),
+                            true,
+                            null,
+                            false,
+                            List.of()));
+
+            assertThat(engineResult.getDayCredit()).isEqualByComparingTo("0");
+            assertThat(engineResult.getOtMinutes()).isGreaterThan(0);
         }
     }
 

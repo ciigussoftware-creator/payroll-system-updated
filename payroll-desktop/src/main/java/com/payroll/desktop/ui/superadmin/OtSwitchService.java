@@ -8,6 +8,7 @@ import com.payroll.desktop.repository.AuditLogRepository;
 import com.payroll.desktop.repository.DayLevelOTConfigRepository;
 import com.payroll.desktop.repository.OtEmployeeAuthorizationRepository;
 
+import java.time.DayOfWeek;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
@@ -102,5 +103,43 @@ public class OtSwitchService {
 
     private static String blankToNull(String s) {
         return (s == null || s.isBlank()) ? null : s;
+    }
+
+    /** Desired OT-authorized state for one employee, used by {@link #saveAll}. */
+    public record EmployeeAuth(Long employeeId, String employeeCode, boolean authorized) {
+    }
+
+    /**
+     * Derives DayType from the calendar (Sunday vs. weekday) — the OT Switch screen no longer
+     * lets an admin pick this manually, but the field and its meaning to the statutory/attendance
+     * engine are unchanged.
+     */
+    public static DayType deriveDayType(LocalDate date) {
+        return date.getDayOfWeek() == DayOfWeek.SUNDAY ? DayType.SUNDAY : DayType.WEEKDAY;
+    }
+
+    /**
+     * Saves the day-level All-Staff-OT flag and every listed employee's authorization for a
+     * date in one operation — the screen now has a single "Save" button instead of two.
+     * Retroactive changes require a reason, checked once up front so the whole save either
+     * succeeds or fails together (no partial writes).
+     *
+     * <p>When {@code isHoliday} is true, dayType is stored as MERCANTILE_HOLIDAY so the
+     * attendance engine treats the day like a Sunday (all worked time is OT, zero day credit).
+     * Otherwise dayType falls back to {@link #deriveDayType(LocalDate)} as before.
+     */
+    public void saveAll(LocalDate date, boolean isAllStaffOt, boolean isHoliday,
+                        List<EmployeeAuth> employeeAuthorizations,
+                        String username, String reason) {
+        if (date.isBefore(LocalDate.now()) && (reason == null || reason.isBlank())) {
+            throw new IllegalArgumentException("Retroactive changes require a reason");
+        }
+
+        DayType dayType = isHoliday ? DayType.MERCANTILE_HOLIDAY : deriveDayType(date);
+        saveDayLevel(date, dayType, isAllStaffOt, username, reason);
+        for (EmployeeAuth auth : employeeAuthorizations) {
+            saveEmployeeAuthorization(date, auth.employeeId(), auth.authorized(),
+                    auth.employeeCode(), username, reason);
+        }
     }
 }

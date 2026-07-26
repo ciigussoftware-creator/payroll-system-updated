@@ -11,7 +11,7 @@ import com.payroll.desktop.repository.AttendanceRecordRepository;
 import com.payroll.desktop.repository.AuditLogRepository;
 import com.payroll.desktop.repository.EmployeeNoteRepository;
 import com.payroll.desktop.repository.EmployeeRepository;
-import com.payroll.desktop.ui.superadmin.EmployeeNoteService;
+import com.payroll.desktop.ui.admin.EmployeeNoteService;
 import com.payroll.desktop.ui.superadmin.TimestampCorrectionService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;

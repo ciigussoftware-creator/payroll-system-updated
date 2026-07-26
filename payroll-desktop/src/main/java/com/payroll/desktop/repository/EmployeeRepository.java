@@ -81,4 +81,42 @@ public class EmployeeRepository {
             session.getTransaction().commit();
         }
     }
+
+    public void reactivate(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            session.createMutationQuery(
+                            "UPDATE Employee SET isActive = true WHERE id = :id")
+                    .setParameter("id", id)
+                    .executeUpdate();
+            session.getTransaction().commit();
+        }
+    }
+
+    /**
+     * Permanently deletes an employee and cascades to every dependent row
+     * (attendance records, statutory overrides, notes, OT authorizations)
+     * so no orphaned records remain.
+     */
+    public void deleteById(Long id) {
+        try (Session session = sessionFactory.openSession()) {
+            session.beginTransaction();
+            session.createMutationQuery("DELETE FROM AttendanceRecord WHERE employee.id = :id")
+                    .setParameter("id", id)
+                    .executeUpdate();
+            session.createMutationQuery("DELETE FROM StatutoryOverride WHERE employeeId = :id")
+                    .setParameter("id", id)
+                    .executeUpdate();
+            session.createMutationQuery("DELETE FROM EmployeeNote WHERE employeeId = :id")
+                    .setParameter("id", id)
+                    .executeUpdate();
+            session.createMutationQuery("DELETE FROM OtEmployeeAuthorization WHERE employeeId = :id")
+                    .setParameter("id", id)
+                    .executeUpdate();
+            session.createMutationQuery("DELETE FROM Employee WHERE id = :id")
+                    .setParameter("id", id)
+                    .executeUpdate();
+            session.getTransaction().commit();
+        }
+    }
 }
