@@ -16,6 +16,7 @@
     <modules>
         <module>payroll-core</module>
         <module>payroll-desktop</module>
+        <module>payroll-web-backend</module>
     </modules>
 
     <properties>

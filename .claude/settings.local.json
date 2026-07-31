@@ -10,7 +10,22 @@
       "Bash(echo \"EXIT:$?\")",
       "Read(//tmp/**)",
       "Bash(mvn -o -q compile test-compile)",
-      "Bash(mvn -o clean verify)"
+      "Bash(mvn -o clean verify)",
+      "Bash(java -version)",
+      "Bash(mvn -version)",
+      "Bash(docker --version)",
+      "Bash(curl -s \"https://search.maven.org/solrsearch/select?q=g:org.springframework.boot+AND+a:spring-boot-dependencies&rows=5&core=gav&sort=v+desc\")",
+      "Bash(curl -s \"https://search.maven.org/solrsearch/select?q=g:org.springframework.boot+AND+a:spring-boot-dependencies&rows=30&core=gav&sort=timestamp+desc\")",
+      "Bash(python3 -c ' *)",
+      "Bash(curl *)",
+      "Bash(openssl rand *)",
+      "Bash(mvn -q -pl payroll-core,payroll-web-backend -am compile)",
+      "Bash(mvn -pl payroll-web-backend -am verify)",
+      "Bash(mvn -pl payroll-web-backend -am -Dtest=AuthControllerIT -DfailIfNoTests=false verify -X)",
+      "Bash(mvn -pl payroll-web-backend -am verify -X)",
+      "Bash(wc -l /tmp_verify_x.log)",
+      "Bash(grep -n \"failsafe:3.3.0:integration-test\" /tmp_verify_x.log)",
+      "Bash(mvn -pl payroll-web-backend -am clean verify)"
     ]
   }
 }
