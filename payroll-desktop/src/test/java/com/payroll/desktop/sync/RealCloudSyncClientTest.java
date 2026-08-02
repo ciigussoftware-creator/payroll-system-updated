@@ -14,6 +14,7 @@ import java.math.BigDecimal;
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -127,6 +128,66 @@ class RealCloudSyncClientTest {
         RealCloudSyncClient client = new RealCloudSyncClient(baseUrl, "bad-key");
 
         assertThatThrownBy(() -> client.pushRecord(sampleRecord()))
+                .isInstanceOf(SyncException.class);
+    }
+
+    private String startEmployeesServerRespondingWith(int statusCode, String responseBody) throws IOException {
+        server = HttpServer.create(new InetSocketAddress("localhost", 0), 0);
+        server.createContext("/api/sync/employees", exchange -> {
+            exchange.getRequestBody().readAllBytes(); // drain
+            byte[] bytes = responseBody.getBytes(StandardCharsets.UTF_8);
+            exchange.getResponseHeaders().add("Content-Type", "application/json");
+            exchange.sendResponseHeaders(statusCode, bytes.length);
+            try (OutputStream os = exchange.getResponseBody()) {
+                os.write(bytes);
+            }
+        });
+        server.start();
+        return "http://localhost:" + server.getAddress().getPort();
+    }
+
+    private Employee sampleEmployee(String code) {
+        Employee employee = new Employee();
+        employee.setEmployeeCode(code);
+        employee.setName("Worker " + code);
+        employee.setCategory(EmployeeCategory.STANDARD);
+        employee.setGrossDailySalary(new BigDecimal("1200.00"));
+        return employee;
+    }
+
+    @Test
+    void employeePushCountsAcceptedAndUpdatedAsSynced() throws Exception {
+        String baseUrl = startEmployeesServerRespondingWith(200,
+                "[{\"employeeCode\":\"E1\",\"status\":\"ACCEPTED\",\"reason\":null},"
+                        + "{\"employeeCode\":\"E2\",\"status\":\"UPDATED\",\"reason\":null}]");
+        RealCloudSyncClient client = new RealCloudSyncClient(baseUrl, "key");
+
+        EmployeeSyncPushResult result = client.pushEmployees(List.of(sampleEmployee("E1"), sampleEmployee("E2")));
+
+        assertThat(result.accepted()).isEqualTo(1);
+        assertThat(result.updated()).isEqualTo(1);
+        assertThat(result.rejected()).isEqualTo(0);
+        assertThat(result.synced()).isEqualTo(2);
+    }
+
+    @Test
+    void employeePushCountsRejectedWithReason() throws Exception {
+        String baseUrl = startEmployeesServerRespondingWith(200,
+                "[{\"employeeCode\":\"E1\",\"status\":\"REJECTED\",\"reason\":\"duplicate rfidCardId\"}]");
+        RealCloudSyncClient client = new RealCloudSyncClient(baseUrl, "key");
+
+        EmployeeSyncPushResult result = client.pushEmployees(List.of(sampleEmployee("E1")));
+
+        assertThat(result.rejected()).isEqualTo(1);
+        assertThat(result.rejectedReasons()).containsExactly("E1: duplicate rfidCardId");
+    }
+
+    @Test
+    void employeePushNon200StatusThrowsSyncException() throws Exception {
+        String baseUrl = startEmployeesServerRespondingWith(401, "{\"message\":\"Unauthorized\"}");
+        RealCloudSyncClient client = new RealCloudSyncClient(baseUrl, "bad-key");
+
+        assertThatThrownBy(() -> client.pushEmployees(List.of(sampleEmployee("E1"))))
                 .isInstanceOf(SyncException.class);
     }
 

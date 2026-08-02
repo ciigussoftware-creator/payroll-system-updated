@@ -11,6 +11,7 @@ import com.payroll.desktop.repository.StatutoryOverrideRepository;
 import com.payroll.desktop.repository.UserAccountRepository;
 import com.payroll.desktop.repository.WorkingDaysConfigRepository;
 import com.payroll.desktop.statutory.StatutoryCalculationService;
+import com.payroll.desktop.sync.SyncScheduler;
 import com.payroll.desktop.ui.auth.AuthService;
 import com.payroll.desktop.ui.auth.FirstRunSetup;
 import com.payroll.desktop.ui.auth.LoginScreen;
@@ -37,6 +38,7 @@ public class AppShell {
     private final AuditLogRepository auditLogRepository;
     private final OtEmployeeAuthorizationRepository otAuthRepository;
     private final EmployeeNoteRepository employeeNoteRepository;
+    private final SyncScheduler syncScheduler;
 
     public AppShell(Stage stage,
                     UserAccountRepository userAccountRepository,
@@ -50,7 +52,8 @@ public class AppShell {
                     DayLevelOTConfigRepository dayLevelOTRepository,
                     AuditLogRepository auditLogRepository,
                     OtEmployeeAuthorizationRepository otAuthRepository,
-                    EmployeeNoteRepository employeeNoteRepository) {
+                    EmployeeNoteRepository employeeNoteRepository,
+                    SyncScheduler syncScheduler) {
         this.stage = stage;
         this.userAccountRepository = userAccountRepository;
         this.passwordHasher = passwordHasher;
@@ -64,6 +67,7 @@ public class AppShell {
         this.auditLogRepository = auditLogRepository;
         this.otAuthRepository = otAuthRepository;
         this.employeeNoteRepository = employeeNoteRepository;
+        this.syncScheduler = syncScheduler;
     }
 
     public void start() {
@@ -92,12 +96,14 @@ public class AppShell {
             case ADMIN       -> new AdminShell(session, onLogout, employeeRepository,
                                                workingDaysRepository, attendanceRepository,
                                                statutoryService, overrideRepository,
-                                               auditLogRepository, employeeNoteRepository);
+                                               auditLogRepository, employeeNoteRepository,
+                                               syncScheduler);
             case SUPER_ADMIN -> new SuperAdminShell(session, onLogout, employeeRepository,
                                                     workingDaysRepository, attendanceRepository,
                                                     statutoryService, overrideRepository,
                                                     dayLevelOTRepository, auditLogRepository,
-                                                    otAuthRepository, employeeNoteRepository);
+                                                    otAuthRepository, employeeNoteRepository,
+                                                    syncScheduler);
         };
         stage.setScene(styledScene(shell, 1280, 800));
     }

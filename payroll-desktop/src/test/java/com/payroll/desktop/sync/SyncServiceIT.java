@@ -59,7 +59,7 @@ class SyncServiceIT {
             EmployeeRepository empRepo = new EmployeeRepository(db.getSessionFactory());
             AttendanceRecordRepository repo = new AttendanceRecordRepository(db.getSessionFactory());
             StubCloudSyncClient stub = new StubCloudSyncClient();
-            SyncService service = new SyncService(repo, stub);
+            SyncService service = new SyncService(empRepo, repo, stub);
 
             Employee emp = savedEmployee(empRepo, "EMP-001");
             savedRecord(repo, emp, LocalDateTime.of(2026, 6, 20, 8, 0), ScanType.ENTRY);
@@ -82,7 +82,7 @@ class SyncServiceIT {
             AttendanceRecordRepository repo = new AttendanceRecordRepository(db.getSessionFactory());
             StubCloudSyncClient stub = new StubCloudSyncClient();
             stub.setCloudReachable(false);
-            SyncService service = new SyncService(repo, stub);
+            SyncService service = new SyncService(empRepo, repo, stub);
 
             Employee emp = savedEmployee(empRepo, "EMP-001");
             savedRecord(repo, emp, LocalDateTime.of(2026, 6, 20, 8, 0), ScanType.ENTRY);
@@ -102,7 +102,7 @@ class SyncServiceIT {
             EmployeeRepository empRepo = new EmployeeRepository(db.getSessionFactory());
             AttendanceRecordRepository repo = new AttendanceRecordRepository(db.getSessionFactory());
             StubCloudSyncClient stub = new StubCloudSyncClient();
-            SyncService service = new SyncService(repo, stub);
+            SyncService service = new SyncService(empRepo, repo, stub);
 
             Employee emp = savedEmployee(empRepo, "EMP-001");
             AttendanceRecord r1 = savedRecord(repo, emp, LocalDateTime.of(2026, 6, 20, 8, 0), ScanType.ENTRY);
@@ -138,7 +138,7 @@ class SyncServiceIT {
             EmployeeRepository empRepo = new EmployeeRepository(db.getSessionFactory());
             AttendanceRecordRepository repo = new AttendanceRecordRepository(db.getSessionFactory());
             StubCloudSyncClient stub = new StubCloudSyncClient();
-            SyncService service = new SyncService(repo, stub);
+            SyncService service = new SyncService(empRepo, repo, stub);
 
             Employee emp = savedEmployee(empRepo, "EMP-001");
             AttendanceRecord r = savedRecord(repo, emp, LocalDateTime.of(2026, 6, 20, 8, 0), ScanType.ENTRY);
@@ -173,7 +173,7 @@ class SyncServiceIT {
             EmployeeRepository empRepo = new EmployeeRepository(db.getSessionFactory());
             AttendanceRecordRepository repo = new AttendanceRecordRepository(db.getSessionFactory());
             StubCloudSyncClient stub = new StubCloudSyncClient();
-            SyncService service = new SyncService(repo, stub);
+            SyncService service = new SyncService(empRepo, repo, stub);
 
             Employee emp = savedEmployee(empRepo, "EMP-001");
             AttendanceRecord r = savedRecord(repo, emp, LocalDateTime.of(2026, 6, 20, 8, 0), ScanType.ENTRY);
@@ -190,6 +190,49 @@ class SyncServiceIT {
 
             // uuid on the persisted record is unchanged
             assertThat(repo.findById(r.getId()).get().getSyncUuid()).isEqualTo(originalUuid);
+        }
+    }
+
+    @Test
+    void employeesArePushedBeforeAttendanceRecords(@TempDir Path tempDir) throws IOException {
+        try (DatabaseManager db = new DatabaseManager(tempDir)) {
+            EmployeeRepository empRepo = new EmployeeRepository(db.getSessionFactory());
+            AttendanceRecordRepository repo = new AttendanceRecordRepository(db.getSessionFactory());
+            StubCloudSyncClient stub = new StubCloudSyncClient();
+            SyncService service = new SyncService(empRepo, repo, stub);
+
+            Employee emp = savedEmployee(empRepo, "EMP-001");
+            AttendanceRecord r1 = savedRecord(repo, emp, LocalDateTime.of(2026, 6, 20, 8, 0), ScanType.ENTRY);
+            AttendanceRecord r2 = savedRecord(repo, emp, LocalDateTime.of(2026, 6, 20, 17, 0), ScanType.EXIT);
+
+            SyncRunResult result = service.syncUnsyncedRecords();
+
+            assertThat(result.employeesSynced()).isEqualTo(1);
+            assertThat(result.synced()).isEqualTo(2);
+            assertThat(stub.getCallLog()).containsExactly(
+                    "employees:1", "attendance:" + r1.getSyncUuid(), "attendance:" + r2.getSyncUuid());
+        }
+    }
+
+    @Test
+    void employeePushFailureSkipsAttendanceSyncForThatRun(@TempDir Path tempDir) throws IOException {
+        try (DatabaseManager db = new DatabaseManager(tempDir)) {
+            EmployeeRepository empRepo = new EmployeeRepository(db.getSessionFactory());
+            AttendanceRecordRepository repo = new AttendanceRecordRepository(db.getSessionFactory());
+            StubCloudSyncClient stub = new StubCloudSyncClient();
+            stub.setFailEmployeePush(true);
+            SyncService service = new SyncService(empRepo, repo, stub);
+
+            Employee emp = savedEmployee(empRepo, "EMP-001");
+            savedRecord(repo, emp, LocalDateTime.of(2026, 6, 20, 8, 0), ScanType.ENTRY);
+
+            SyncRunResult result = service.syncUnsyncedRecords();
+
+            assertThat(result.attendanceSkippedDueToEmployeeFailure()).isTrue();
+            assertThat(result.attempted()).isEqualTo(0);
+            assertThat(result.synced()).isEqualTo(0);
+            assertThat(stub.getCallLog()).containsExactly("employees:1");
+            assertThat(repo.findUnsynced()).hasSize(1);
         }
     }
 }

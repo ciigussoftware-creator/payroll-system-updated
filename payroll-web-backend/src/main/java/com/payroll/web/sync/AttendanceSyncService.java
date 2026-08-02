@@ -47,8 +47,9 @@ public class AttendanceSyncService {
             Optional<Employee> employee =
                     employeeRepository.findByEmployeeCodeAndCompanyId(request.employeeCode(), companyId);
             if (employee.isEmpty()) {
-                return AttendanceSyncResult.rejected(request.syncUuid(),
-                        "Unknown employeeCode '" + request.employeeCode() + "' for this company");
+                String reason = "Unknown employeeCode '" + request.employeeCode() + "' for this company";
+                log.warn("Rejecting sync record syncUuid={}: {}", request.syncUuid(), reason);
+                return AttendanceSyncResult.rejected(request.syncUuid(), reason);
             }
 
             Optional<AttendanceRecord> existing = attendanceRecordRepository.findBySyncUuid(request.syncUuid());

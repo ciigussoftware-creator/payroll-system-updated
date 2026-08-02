@@ -97,6 +97,12 @@ class SyncControllerIT {
         return new AttendanceSyncRequest(uuid, employeeCode, dt, type, null, null, null);
     }
 
+    private EmployeeSyncRequest employeeRequestFor(String employeeCode, String name, String rfidCardId) {
+        return new EmployeeSyncRequest(employeeCode, name, rfidCardId, EmployeeCategory.STANDARD,
+                new BigDecimal("1500.00"), new BigDecimal("0.08"), new BigDecimal("0.12"),
+                new BigDecimal("0.03"), true);
+    }
+
     // --- auth ---
 
     @Test
@@ -270,5 +276,148 @@ class SyncControllerIT {
                         .content(objectMapper.writeValueAsString(List.of(req))))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].status").value("REJECTED"));
+    }
+
+    // --- employee sync: auth ---
+
+    @Test
+    void employeesMissingApiKeyReturns401() throws Exception {
+        mockMvc.perform(post("/api/sync/employees")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(List.of())))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void employeesInvalidApiKeyReturns401() throws Exception {
+        mockMvc.perform(post("/api/sync/employees")
+                        .header("X-API-Key", "not-a-real-key")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(List.of())))
+                .andExpect(status().isUnauthorized());
+    }
+
+    // --- employee sync: insert / update / segregation / partial failure ---
+
+    @Test
+    void newEmployeeInsertedWithCorrectCompanyId() throws Exception {
+        var req = employeeRequestFor("EMP-100", "New Worker", "RFID-100");
+
+        mockMvc.perform(post("/api/sync/employees")
+                        .header("X-API-Key", apiKeyA)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(List.of(req))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].employeeCode").value("EMP-100"))
+                .andExpect(jsonPath("$[0].status").value("ACCEPTED"));
+
+        var saved = employeeRepository.findByEmployeeCodeAndCompanyId("EMP-100", companyA.getId()).orElseThrow();
+        assertThat(saved.getName()).isEqualTo("New Worker");
+        assertThat(saved.getCompanyId()).isEqualTo(companyA.getId());
+    }
+
+    @Test
+    void existingEmployeeIsUpdatedNotDuplicated() throws Exception {
+        var initial = employeeRequestFor("EMP-001", "Worker EMP-001", "RFID-EMP-001-v1");
+        mockMvc.perform(post("/api/sync/employees")
+                        .header("X-API-Key", apiKeyA)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(List.of(initial))))
+                .andExpect(status().isOk());
+
+        var updated = new EmployeeSyncRequest("EMP-001", "Updated Name", "RFID-EMP-001-v2",
+                EmployeeCategory.PEELING, new BigDecimal("2000.00"), new BigDecimal("0.08"),
+                new BigDecimal("0.12"), new BigDecimal("0.03"), false);
+
+        mockMvc.perform(post("/api/sync/employees")
+                        .header("X-API-Key", apiKeyA)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(List.of(updated))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].status").value("UPDATED"));
+
+        var all = employeeRepository.findAll();
+        assertThat(all).hasSize(1);
+        var saved = all.get(0);
+        assertThat(saved.getId()).isEqualTo(employeeA.getId());
+        assertThat(saved.getName()).isEqualTo("Updated Name");
+        assertThat(saved.getCategory()).isEqualTo(EmployeeCategory.PEELING);
+        assertThat(saved.getGrossDailySalary()).isEqualByComparingTo("2000.00");
+        assertThat(saved.isActive()).isFalse();
+    }
+
+    @Test
+    void twoCompaniesSameEmployeeCodeStaySegregated() throws Exception {
+        var reqA = employeeRequestFor("SHARED-CODE", "Worker A", "RFID-SHARED-A");
+        var reqB = employeeRequestFor("SHARED-CODE", "Worker B", "RFID-SHARED-B");
+
+        mockMvc.perform(post("/api/sync/employees")
+                        .header("X-API-Key", apiKeyA)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(List.of(reqA))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].status").value("ACCEPTED"));
+
+        mockMvc.perform(post("/api/sync/employees")
+                        .header("X-API-Key", apiKeyB)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(List.of(reqB))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].status").value("ACCEPTED"));
+
+        var savedA = employeeRepository.findByEmployeeCodeAndCompanyId("SHARED-CODE", companyA.getId()).orElseThrow();
+        var savedB = employeeRepository.findByEmployeeCodeAndCompanyId("SHARED-CODE", companyB.getId()).orElseThrow();
+        assertThat(savedA.getId()).isNotEqualTo(savedB.getId());
+        assertThat(savedA.getName()).isEqualTo("Worker A");
+        assertThat(savedB.getName()).isEqualTo("Worker B");
+    }
+
+    @Test
+    void oneBadRecordInEmployeeBatchDoesNotBlockOthers() throws Exception {
+        // employeeA already has no rfidCardId set; give a duplicate rfidCardId to two
+        // records in the same batch so the second collides on the global unique constraint.
+        var good1 = employeeRequestFor("EMP-200", "Good Worker 1", "RFID-DUP");
+        var bad = employeeRequestFor("EMP-201", "Bad Worker", "RFID-DUP");
+        var good2 = employeeRequestFor("EMP-202", "Good Worker 2", "RFID-202");
+
+        mockMvc.perform(post("/api/sync/employees")
+                        .header("X-API-Key", apiKeyA)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(List.of(good1, bad, good2))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].employeeCode").value("EMP-200"))
+                .andExpect(jsonPath("$[0].status").value("ACCEPTED"))
+                .andExpect(jsonPath("$[1].employeeCode").value("EMP-201"))
+                .andExpect(jsonPath("$[1].status").value("REJECTED"))
+                .andExpect(jsonPath("$[1].reason").isNotEmpty())
+                .andExpect(jsonPath("$[2].employeeCode").value("EMP-202"))
+                .andExpect(jsonPath("$[2].status").value("ACCEPTED"));
+
+        assertThat(employeeRepository.findByEmployeeCodeAndCompanyId("EMP-200", companyA.getId())).isPresent();
+        assertThat(employeeRepository.findByEmployeeCodeAndCompanyId("EMP-201", companyA.getId())).isEmpty();
+        assertThat(employeeRepository.findByEmployeeCodeAndCompanyId("EMP-202", companyA.getId())).isPresent();
+    }
+
+    // --- integration: employee sync unblocks attendance sync for the same employeeCode ---
+
+    @Test
+    void employeeSyncThenAttendanceSyncForNewEmployeeCodeIsAccepted() throws Exception {
+        var employeeReq = employeeRequestFor("EMP-300", "Brand New Worker", "RFID-300");
+        mockMvc.perform(post("/api/sync/employees")
+                        .header("X-API-Key", apiKeyA)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(List.of(employeeReq))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].status").value("ACCEPTED"));
+
+        var attendanceReq = recordFor("uuid-300", "EMP-300", LocalDateTime.of(2026, 8, 2, 8, 0), ScanType.ENTRY);
+        mockMvc.perform(post("/api/sync/attendance")
+                        .header("X-API-Key", apiKeyA)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(List.of(attendanceReq))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].status").value("ACCEPTED"));
+
+        assertThat(attendanceRecordRepository.findBySyncUuid("uuid-300")).isPresent();
     }
 }

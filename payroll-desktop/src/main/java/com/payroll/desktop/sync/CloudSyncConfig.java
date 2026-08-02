@@ -14,7 +14,7 @@ final class CloudSyncConfig {
     static final String BASE_URL = "http://localhost:8080";
 
     // Replace with the key printed by SyncClientBootstrapRunner on the backend for this factory.
-    static final String API_KEY = "REPLACE_WITH_FACTORY_API_KEY";
+    static final String API_KEY = "P0Psnr1KZvBUmwhyW9Csi35uXI0uP5FuxmtvY4T6UZw";
 
     private CloudSyncConfig() {}
 }

@@ -15,9 +15,11 @@ import java.util.List;
 public class SyncController {
 
     private final AttendanceSyncService attendanceSyncService;
+    private final EmployeeSyncService employeeSyncService;
 
-    public SyncController(AttendanceSyncService attendanceSyncService) {
+    public SyncController(AttendanceSyncService attendanceSyncService, EmployeeSyncService employeeSyncService) {
         this.attendanceSyncService = attendanceSyncService;
+        this.employeeSyncService = employeeSyncService;
     }
 
     @PostMapping("/attendance")
@@ -26,5 +28,13 @@ public class SyncController {
             Authentication authentication) {
         Long companyId = ((SyncClientAuthentication) authentication).getCompanyId();
         return ResponseEntity.ok(attendanceSyncService.processBatch(companyId, records));
+    }
+
+    @PostMapping("/employees")
+    public ResponseEntity<List<EmployeeSyncResult>> syncEmployees(
+            @RequestBody List<EmployeeSyncRequest> records,
+            Authentication authentication) {
+        Long companyId = ((SyncClientAuthentication) authentication).getCompanyId();
+        return ResponseEntity.ok(employeeSyncService.processBatch(companyId, records));
     }
 }
