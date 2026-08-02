@@ -34,6 +34,12 @@
             <artifactId>hibernate-core</artifactId>
         </dependency>
 
+        <!-- Argon2 password hashing — shared by desktop and web-backend account stores -->
+        <dependency>
+            <groupId>de.mkammerer</groupId>
+            <artifactId>argon2-jvm</artifactId>
+        </dependency>
+
         <!-- Testing -->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
