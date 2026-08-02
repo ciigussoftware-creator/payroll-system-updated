@@ -12,15 +12,23 @@ import com.payroll.desktop.repository.StatutoryOverrideRepository;
 import com.payroll.desktop.repository.UserAccountRepository;
 import com.payroll.desktop.repository.WorkingDaysConfigRepository;
 import com.payroll.desktop.statutory.StatutoryCalculationService;
+import com.payroll.desktop.sync.RealCloudSyncClient;
+import com.payroll.desktop.sync.SyncScheduler;
+import com.payroll.desktop.sync.SyncService;
 import com.payroll.desktop.ui.auth.AuthService;
 import com.payroll.desktop.ui.auth.PasswordHasher;
 import com.payroll.desktop.ui.shell.AppShell;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class PayrollApp extends Application {
 
+    private static final Logger LOG = LoggerFactory.getLogger(PayrollApp.class);
+
     private DatabaseManager databaseManager;
+    private SyncScheduler syncScheduler;
 
     public static final String APP_CSS =
             PayrollApp.class.getResource("/com/payroll/desktop/css/app.css").toExternalForm();
@@ -50,10 +58,25 @@ public class PayrollApp extends Application {
                      employeeRepo, workingDaysRepo, attendanceRepo,
                      statutoryService, overrideRepo,
                      dayLevelOTRepo, auditLogRepo, otAuthRepo, employeeNoteRepo).start();
+
+        var syncService = new SyncService(attendanceRepo, new RealCloudSyncClient());
+        syncScheduler = new SyncScheduler(syncService);
+        try {
+            syncScheduler.start();
+        } catch (Exception e) {
+            LOG.warn("Cloud sync scheduler failed to start; sync will not run automatically", e);
+        }
     }
 
     @Override
     public void stop() {
+        if (syncScheduler != null) {
+            try {
+                syncScheduler.shutdown();
+            } catch (Exception e) {
+                LOG.warn("Cloud sync scheduler failed to shut down cleanly", e);
+            }
+        }
         if (databaseManager != null) {
             databaseManager.close();
         }

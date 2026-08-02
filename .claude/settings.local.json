@@ -25,7 +25,9 @@
       "Bash(mvn -pl payroll-web-backend -am verify -X)",
       "Bash(wc -l /tmp_verify_x.log)",
       "Bash(grep -n \"failsafe:3.3.0:integration-test\" /tmp_verify_x.log)",
-      "Bash(mvn -pl payroll-web-backend -am clean verify)"
+      "Bash(mvn -pl payroll-web-backend -am clean verify)",
+      "Bash(xargs -I{} sh -c 'echo ==={}===; cat {}')",
+      "Bash(mvn -q -pl payroll-core,payroll-desktop -am compile test-compile)"
     ]
   }
 }
