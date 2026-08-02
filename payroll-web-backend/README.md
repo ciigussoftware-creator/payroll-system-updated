@@ -13,13 +13,43 @@ docker run --name payroll-postgres -e POSTGRES_USER=payroll -e POSTGRES_PASSWORD
 ```
 
 `application.yml` points at `jdbc:postgresql://localhost:5432/payroll` with
-user/pass `payroll`/`payroll`, matching the command above. Schema is
+user/pass `payroll`/`payroll` by default, matching the command above. Schema is
 auto-generated on startup (`spring.jpa.hibernate.ddl-auto=update`).
 
+Override the credentials via env vars for anything beyond local dev:
+
+```
+DB_USERNAME=<your-username>
+DB_PASSWORD=<your-password>
+```
+
 On first startup with an empty account table, `AdminBootstrapRunner` creates
-a default `admin` account with a randomly generated password, logged once to
+a default `admin` account with a randomly generated password, printed once to
 the console. This is a dev/bootstrap convenience only — log in and rotate it
 before relying on it for anything real.
+
+## JWT secret
+
+`jwt.secret` has no default — the app fails to start if `JWT_SECRET` isn't
+set, so a known/guessable signing key never accidentally ships. Generate one
+and export it before running the backend:
+
+```
+openssl rand -base64 32
+```
+
+Then set it as an environment variable in the shell you run the backend from:
+
+```
+# bash/zsh
+export JWT_SECRET=<the-generated-value>
+
+# PowerShell
+$env:JWT_SECRET = "<the-generated-value>"
+```
+
+Use a different secret per environment; rotating it invalidates all
+outstanding tokens.
 
 ## Tests
 

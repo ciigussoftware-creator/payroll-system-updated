@@ -9,8 +9,10 @@ spring:
 
   datasource:
     url: jdbc:postgresql://localhost:5432/payroll
-    username: payroll
-    password: payroll
+    # Dev-only defaults pointing at a local Postgres. Override via DB_USERNAME /
+    # DB_PASSWORD env vars for anything beyond local dev.
+    username: ${DB_USERNAME:payroll}
+    password: ${DB_PASSWORD:payroll}
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -25,7 +27,13 @@ server:
   port: 8080
 
 jwt:
-  # Dev-only default secret (Base64, 256-bit). Override via the JWT_SECRET
-  # env var in any real deployment — never ship this default to production.
-  secret: ${JWT_SECRET:/cYWUqXGnhh2cgH1TwkgOBUYMjuEU7aVYvnIhO0MdB8=}
+  # No default on purpose: a fallback secret baked into source control would let
+  # anyone who has read the repo forge valid tokens. Spring fails fast at startup
+  # if JWT_SECRET isn't set, rather than silently signing tokens with a known key.
+  secret: ${JWT_SECRET}
   expiration-ms: 3600000
+
+security:
+  login-rate-limit:
+    max-attempts: 5
+    window-ms: 900000 # 15 minutes
