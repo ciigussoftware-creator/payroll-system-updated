@@ -2,9 +2,13 @@ package com.payroll.desktop.ui.admin;
 
 import com.payroll.core.entity.AttendanceRecord;
 import com.payroll.core.entity.Employee;
+import com.payroll.desktop.sync.SyncRunResult;
+import com.payroll.desktop.sync.SyncScheduler;
+import com.payroll.desktop.sync.SyncStatusFormatter;
 import com.payroll.desktop.ui.auth.UserSession;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -12,6 +16,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.*;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +31,7 @@ public class DashboardScreen extends BorderPane {
     private final DashboardService dashboardService;
     private final EmployeeNoteService noteService;
     private final UserSession session;
+    private final SyncScheduler syncScheduler;
 
     private Label titleLabel;
     private ComboBox<DayOption> dayCombo;
@@ -37,13 +43,17 @@ public class DashboardScreen extends BorderPane {
     private VBox currentlyInList;
     private Label scansTitle;
     private TableView<AttendanceRecord> scansTable;
+    private Button syncNowButton;
+    private Label syncStatusLabel;
 
     public DashboardScreen(DashboardService dashboardService,
                            EmployeeNoteService noteService,
-                           UserSession session) {
+                           UserSession session,
+                           SyncScheduler syncScheduler) {
         this.dashboardService = dashboardService;
         this.noteService = noteService;
         this.session = session;
+        this.syncScheduler = syncScheduler;
         setPadding(new Insets(20));
         buildLayout();
         loadData();
@@ -65,6 +75,14 @@ public class DashboardScreen extends BorderPane {
         HBox.setHgrow(spacer, Priority.ALWAYS);
         HBox titleBar = new HBox(8, titleLabel, spacer, new Label("Day:"), dayCombo, refreshBtn);
         titleBar.setAlignment(Pos.CENTER_LEFT);
+
+        syncNowButton = new Button("Sync Now");
+        syncNowButton.setOnAction(e -> onSyncNow());
+        syncStatusLabel = new Label(SyncStatusFormatter.NEVER_SYNCED_THIS_SESSION);
+        syncStatusLabel.setStyle("-fx-text-fill: #555;");
+        HBox syncBar = new HBox(8, syncNowButton, syncStatusLabel);
+        syncBar.setAlignment(Pos.CENTER_LEFT);
+        syncBar.setPadding(new Insets(6, 0, 0, 0));
 
         countInLabel      = summaryValue();
         countActiveLabel  = summaryValue();
@@ -89,9 +107,35 @@ public class DashboardScreen extends BorderPane {
         VBox scansSection = new VBox(6, scansTitle, scansTable);
         VBox.setVgrow(scansSection, Priority.ALWAYS);
 
-        VBox top = new VBox(0, titleBar, summary, inSection);
+        VBox top = new VBox(0, titleBar, syncBar, summary, inSection);
         setTop(top);
         setCenter(scansSection);
+    }
+
+    // ── sync now ─────────────────────────────────────────────────────────────────
+
+    private void onSyncNow() {
+        syncNowButton.setDisable(true);
+        syncStatusLabel.setText(SyncStatusFormatter.SYNCING);
+
+        Task<SyncRunResult> syncTask = new Task<>() {
+            @Override
+            protected SyncRunResult call() {
+                return syncScheduler.triggerNow();
+            }
+        };
+        syncTask.setOnSucceeded(e -> {
+            syncStatusLabel.setText(SyncStatusFormatter.format(syncTask.getValue(), LocalTime.now()));
+            syncNowButton.setDisable(false);
+        });
+        syncTask.setOnFailed(e -> {
+            syncStatusLabel.setText("Last sync: failed unexpectedly — " + syncTask.getException().getMessage());
+            syncNowButton.setDisable(false);
+        });
+
+        Thread syncThread = new Thread(syncTask, "sync-now");
+        syncThread.setDaemon(true);
+        syncThread.start();
     }
 
     // ── day selector ──────────────────────────────────────────────────────────────

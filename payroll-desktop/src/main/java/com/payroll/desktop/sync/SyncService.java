@@ -1,23 +1,41 @@
 package com.payroll.desktop.sync;
 
 import com.payroll.core.entity.AttendanceRecord;
+import com.payroll.core.entity.Employee;
 import com.payroll.desktop.repository.AttendanceRecordRepository;
+import com.payroll.desktop.repository.EmployeeRepository;
 
 import java.util.List;
 
+/**
+ * Runs a full sync: employees are pushed first (the cloud must know about an
+ * employee before it can accept attendance for that employeeCode), and attendance
+ * is only pushed once the employee push succeeds. If the cloud is unreachable or
+ * the employee push itself fails, attendance sync is skipped for that run.
+ */
 public class SyncService {
 
+    private final EmployeeRepository employeeRepo;
     private final AttendanceRecordRepository recordRepo;
     private final CloudSyncClient client;
 
-    public SyncService(AttendanceRecordRepository recordRepo, CloudSyncClient client) {
+    public SyncService(EmployeeRepository employeeRepo, AttendanceRecordRepository recordRepo, CloudSyncClient client) {
+        this.employeeRepo = employeeRepo;
         this.recordRepo = recordRepo;
         this.client = client;
     }
 
     public SyncRunResult syncUnsyncedRecords() {
         if (!client.isCloudReachable()) {
-            return new SyncRunResult(0, 0, 0, true);
+            return new SyncRunResult(0, 0, 0, 0, 0, true, false);
+        }
+
+        List<Employee> employees = employeeRepo.findAll();
+        EmployeeSyncPushResult employeeResult;
+        try {
+            employeeResult = client.pushEmployees(employees);
+        } catch (SyncException e) {
+            return new SyncRunResult(0, employees.size(), 0, 0, 0, false, true);
         }
 
         List<AttendanceRecord> pending = recordRepo.findUnsynced();
@@ -35,6 +53,7 @@ public class SyncService {
             }
         }
 
-        return new SyncRunResult(attempted, synced, failed, false);
+        return new SyncRunResult(employeeResult.synced(), employeeResult.rejected(),
+                attempted, synced, failed, false, false);
     }
 }

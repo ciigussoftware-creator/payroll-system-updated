@@ -5,14 +5,24 @@ import java.math.BigDecimal;
 import java.time.Instant;
 
 @Entity
-@Table(name = "employees")
+@Table(name = "employees",
+        uniqueConstraints = @UniqueConstraint(columnNames = {"company_id", "employee_code"}))
 public class Employee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "employee_code", nullable = false, unique = true)
+    /**
+     * FK to {@link Company}, stored as a plain id (not a JPA relationship) to match
+     * the rest of this entity model. Nullable so existing desktop installations and
+     * test data (single-tenant, no company concept) keep working unmigrated; the web
+     * backend's multi-tenant sync endpoint requires it to resolve employees per factory.
+     */
+    @Column(name = "company_id")
+    private Long companyId;
+
+    @Column(name = "employee_code", nullable = false)
     private String employeeCode;
 
     @Column(nullable = false)
@@ -54,6 +64,9 @@ public class Employee {
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
+
+    public Long getCompanyId() { return companyId; }
+    public void setCompanyId(Long companyId) { this.companyId = companyId; }
 
     public String getEmployeeCode() { return employeeCode; }
     public void setEmployeeCode(String employeeCode) { this.employeeCode = employeeCode; }

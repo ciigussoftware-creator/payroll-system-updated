@@ -34,6 +34,7 @@
         <javafx.version>21.0.4</javafx.version>
         <atlantafx.version>2.0.1</atlantafx.version>
         <argon2jvm.version>2.11</argon2jvm.version>
+        <jackson.version>2.17.2</jackson.version>
     </properties>
 
     <dependencyManagement>
@@ -95,6 +96,18 @@
                 <groupId>de.mkammerer</groupId>
                 <artifactId>argon2-jvm</artifactId>
                 <version>${argon2jvm.version}</version>
+            </dependency>
+
+            <!-- Jackson JSON, used by payroll-desktop's real cloud sync HTTP client -->
+            <dependency>
+                <groupId>com.fasterxml.jackson.core</groupId>
+                <artifactId>jackson-databind</artifactId>
+                <version>${jackson.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.fasterxml.jackson.datatype</groupId>
+                <artifactId>jackson-datatype-jsr310</artifactId>
+                <version>${jackson.version}</version>
             </dependency>
 
             <!-- Apache POI for xlsx export -->

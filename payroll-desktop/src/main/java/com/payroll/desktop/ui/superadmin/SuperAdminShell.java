@@ -9,6 +9,7 @@ import com.payroll.desktop.repository.OtEmployeeAuthorizationRepository;
 import com.payroll.desktop.repository.StatutoryOverrideRepository;
 import com.payroll.desktop.repository.WorkingDaysConfigRepository;
 import com.payroll.desktop.statutory.StatutoryCalculationService;
+import com.payroll.desktop.sync.SyncScheduler;
 import com.payroll.desktop.ui.admin.DashboardScreen;
 import com.payroll.desktop.ui.admin.DashboardService;
 import com.payroll.desktop.ui.admin.EmployeeManagementService;
@@ -39,6 +40,7 @@ public class SuperAdminShell extends BorderPane {
     private final EmployeeNoteService employeeNoteService;
     private final EmployeeManagementService employeeManagementService;
     private final DashboardService dashboardService;
+    private final SyncScheduler syncScheduler;
 
     public SuperAdminShell(UserSession session,
                            Runnable onLogout,
@@ -50,7 +52,8 @@ public class SuperAdminShell extends BorderPane {
                            DayLevelOTConfigRepository dayLevelOTRepository,
                            AuditLogRepository auditLogRepository,
                            OtEmployeeAuthorizationRepository otAuthRepository,
-                           EmployeeNoteRepository employeeNoteRepository) {
+                           EmployeeNoteRepository employeeNoteRepository,
+                           SyncScheduler syncScheduler) {
         this.session = session;
         this.onLogout = onLogout;
         this.employeeRepository = employeeRepository;
@@ -66,9 +69,10 @@ public class SuperAdminShell extends BorderPane {
         this.employeeManagementService = new EmployeeManagementService(
                 employeeRepository, attendanceRepository, auditLogRepository);
         this.dashboardService = new DashboardService(attendanceRepository, employeeRepository);
+        this.syncScheduler = syncScheduler;
         setTop(buildTopBar());
         setLeft(buildSidebar());
-        setCenter(new DashboardScreen(dashboardService, employeeNoteService, session));
+        setCenter(new DashboardScreen(dashboardService, employeeNoteService, session, syncScheduler));
     }
 
     private HBox buildTopBar() {
@@ -93,7 +97,7 @@ public class SuperAdminShell extends BorderPane {
 
         // Shared admin screens (dependency flows superadmin → admin only)
         addNavButton(sidebar, "Dashboard",
-                () -> setCenter(new DashboardScreen(dashboardService, employeeNoteService, session)));
+                () -> setCenter(new DashboardScreen(dashboardService, employeeNoteService, session, syncScheduler)));
         addNavButton(sidebar, "Scan Entry",
                 () -> setCenter(new ScanEntryScreen(attendanceRepository, employeeRepository)));
         addNavButton(sidebar, "Employees",

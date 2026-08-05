@@ -45,20 +45,51 @@ class SyncSchedulerIT {
             EmployeeRepository empRepo = new EmployeeRepository(db.getSessionFactory());
             AttendanceRecordRepository repo = new AttendanceRecordRepository(db.getSessionFactory());
             StubCloudSyncClient stub = new StubCloudSyncClient();
-            SyncService service = new SyncService(repo, stub);
+            SyncService service = new SyncService(empRepo, repo, stub);
             SyncScheduler scheduler = new SyncScheduler(service);
 
             scheduler.start();
             try {
                 Employee emp = savedEmployee(empRepo, "EMP-S01");
-                savedRecord(repo, emp, LocalDateTime.of(2026, 6, 22, 8, 0), ScanType.ENTRY);
-                savedRecord(repo, emp, LocalDateTime.of(2026, 6, 22, 17, 0), ScanType.EXIT);
+                AttendanceRecord r1 = savedRecord(repo, emp, LocalDateTime.of(2026, 6, 22, 8, 0), ScanType.ENTRY);
+                AttendanceRecord r2 = savedRecord(repo, emp, LocalDateTime.of(2026, 6, 22, 17, 0), ScanType.EXIT);
 
                 SyncRunResult result = scheduler.triggerNow();
 
                 assertThat(result.synced()).isEqualTo(2);
                 assertThat(result.skippedOffline()).isFalse();
                 assertThat(repo.findUnsynced()).isEmpty();
+                assertThat(stub.getCallLog()).containsExactly(
+                        "employees:1",
+                        "attendance:" + r1.getSyncUuid(),
+                        "attendance:" + r2.getSyncUuid());
+            } finally {
+                scheduler.shutdown();
+            }
+        }
+    }
+
+    @Test
+    void triggerNowSkipsAttendanceWhenEmployeePushFails(@TempDir Path tempDir) throws Exception {
+        try (DatabaseManager db = new DatabaseManager(tempDir)) {
+            EmployeeRepository empRepo = new EmployeeRepository(db.getSessionFactory());
+            AttendanceRecordRepository repo = new AttendanceRecordRepository(db.getSessionFactory());
+            StubCloudSyncClient stub = new StubCloudSyncClient();
+            stub.setFailEmployeePush(true);
+            SyncService service = new SyncService(empRepo, repo, stub);
+            SyncScheduler scheduler = new SyncScheduler(service);
+
+            scheduler.start();
+            try {
+                Employee emp = savedEmployee(empRepo, "EMP-S03");
+                savedRecord(repo, emp, LocalDateTime.of(2026, 6, 22, 8, 0), ScanType.ENTRY);
+
+                SyncRunResult result = scheduler.triggerNow();
+
+                assertThat(result.attendanceSkippedDueToEmployeeFailure()).isTrue();
+                assertThat(result.attempted()).isEqualTo(0);
+                assertThat(repo.findUnsynced()).hasSize(1);
+                assertThat(stub.getCallLog()).containsExactly("employees:1");
             } finally {
                 scheduler.shutdown();
             }
@@ -72,7 +103,7 @@ class SyncSchedulerIT {
             AttendanceRecordRepository repo = new AttendanceRecordRepository(db.getSessionFactory());
             StubCloudSyncClient stub = new StubCloudSyncClient();
             stub.setCloudReachable(false);
-            SyncService service = new SyncService(repo, stub);
+            SyncService service = new SyncService(empRepo, repo, stub);
             SyncScheduler scheduler = new SyncScheduler(service);
 
             scheduler.start();
@@ -94,7 +125,7 @@ class SyncSchedulerIT {
     @Test
     void schedulerStartsAndShutsDownCleanly() throws Exception {
         SyncScheduler scheduler = new SyncScheduler(
-                new SyncService(null, new StubCloudSyncClient()));
+                new SyncService(null, null, new StubCloudSyncClient()));
         scheduler.start();
         scheduler.shutdown();
     }
@@ -102,7 +133,7 @@ class SyncSchedulerIT {
     @Test
     void dailyTriggerIsRegisteredWithExpectedCronExpression() throws Exception {
         SyncScheduler scheduler = new SyncScheduler(
-                new SyncService(null, new StubCloudSyncClient()));
+                new SyncService(null, null, new StubCloudSyncClient()));
         scheduler.start();
         try {
             TriggerKey key = TriggerKey.triggerKey(SyncScheduler.TRIGGER_NAME, SyncScheduler.GROUP);
