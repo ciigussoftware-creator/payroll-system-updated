@@ -10,6 +10,7 @@ import com.payroll.core.entity.SyncClient;
 import com.payroll.web.repository.AttendanceRecordRepository;
 import com.payroll.web.repository.CloudDayLevelOTConfigRepository;
 import com.payroll.web.repository.CloudOtEmployeeAuthorizationRepository;
+import com.payroll.web.repository.CloudWorkingDaysConfigRepository;
 import com.payroll.web.repository.CompanyRepository;
 import com.payroll.web.repository.EmployeeRepository;
 import com.payroll.web.repository.SyncClientRepository;
@@ -49,6 +50,7 @@ class SyncControllerIT {
     @Autowired private AttendanceRecordRepository attendanceRecordRepository;
     @Autowired private CloudDayLevelOTConfigRepository dayLevelOTConfigRepository;
     @Autowired private CloudOtEmployeeAuthorizationRepository otAuthorizationRepository;
+    @Autowired private CloudWorkingDaysConfigRepository workingDaysConfigRepository;
     @Autowired private ApiKeyHasher apiKeyHasher;
 
     private Company companyA;
@@ -61,6 +63,7 @@ class SyncControllerIT {
     void seed() {
         attendanceRecordRepository.deleteAll();
         otAuthorizationRepository.deleteAll();
+        workingDaysConfigRepository.deleteAll();
         dayLevelOTConfigRepository.deleteAll();
         employeeRepository.deleteAll();
         syncClientRepository.deleteAll();
@@ -118,6 +121,11 @@ class SyncControllerIT {
 
     private OtAuthorizationSyncRequest otAuthRequestFor(String employeeCode, LocalDate authDate, boolean authorized) {
         return new OtAuthorizationSyncRequest(employeeCode, authDate, authorized, "admin",
+                Instant.parse("2026-08-01T00:00:00Z"));
+    }
+
+    private WorkingDaysSyncRequest workingDaysRequestFor(String periodMonth, int availableWorkingDays) {
+        return new WorkingDaysSyncRequest(periodMonth, availableWorkingDays, "admin",
                 Instant.parse("2026-08-01T00:00:00Z"));
     }
 
@@ -670,5 +678,117 @@ class SyncControllerIT {
         assertThat(otAuthorizationRepository
                 .findByCompanyIdAndEmployeeCodeAndAuthDate(companyA.getId(), "NO-SUCH-EMPLOYEE", LocalDate.of(2026, 8, 5)))
                 .isEmpty();
+    }
+
+    // --- working-days sync: auth ---
+
+    @Test
+    void workingDaysMissingApiKeyReturns401() throws Exception {
+        mockMvc.perform(post("/api/sync/working-days")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(List.of())))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void workingDaysInvalidApiKeyReturns401() throws Exception {
+        mockMvc.perform(post("/api/sync/working-days")
+                        .header("X-API-Key", "not-a-real-key")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(List.of())))
+                .andExpect(status().isUnauthorized());
+    }
+
+    // --- working-days sync: upsert / segregation / partial failure ---
+
+    @Test
+    void workingDaysUpsertInsertsNewConfig() throws Exception {
+        var req = workingDaysRequestFor("2026-08", 25);
+
+        mockMvc.perform(post("/api/sync/working-days")
+                        .header("X-API-Key", apiKeyA)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(List.of(req))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].periodMonth").value("2026-08"))
+                .andExpect(jsonPath("$[0].status").value("ACCEPTED"));
+
+        var saved = workingDaysConfigRepository
+                .findByCompanyIdAndPeriodMonth(companyA.getId(), "2026-08").orElseThrow();
+        assertThat(saved.getAvailableWorkingDays()).isEqualTo(25);
+        assertThat(saved.getUpdatedBy()).isEqualTo("admin");
+    }
+
+    @Test
+    void workingDaysUpsertUpdatesExistingConfig() throws Exception {
+        var initial = workingDaysRequestFor("2026-09", 24);
+        mockMvc.perform(post("/api/sync/working-days")
+                        .header("X-API-Key", apiKeyA)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(List.of(initial))))
+                .andExpect(status().isOk());
+
+        // Corrected after a public holiday was reclassified.
+        var updated = workingDaysRequestFor("2026-09", 23);
+        mockMvc.perform(post("/api/sync/working-days")
+                        .header("X-API-Key", apiKeyA)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(List.of(updated))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].status").value("UPDATED"));
+
+        assertThat(workingDaysConfigRepository.findAll()).hasSize(1);
+        var saved = workingDaysConfigRepository
+                .findByCompanyIdAndPeriodMonth(companyA.getId(), "2026-09").orElseThrow();
+        assertThat(saved.getAvailableWorkingDays()).isEqualTo(23);
+    }
+
+    @Test
+    void twoCompaniesSamePeriodMonthStaySegregatedForWorkingDays() throws Exception {
+        var reqA = workingDaysRequestFor("2026-10", 26);
+        var reqB = workingDaysRequestFor("2026-10", 22);
+
+        mockMvc.perform(post("/api/sync/working-days")
+                        .header("X-API-Key", apiKeyA)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(List.of(reqA))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].status").value("ACCEPTED"));
+
+        mockMvc.perform(post("/api/sync/working-days")
+                        .header("X-API-Key", apiKeyB)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(List.of(reqB))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].status").value("ACCEPTED"));
+
+        var savedA = workingDaysConfigRepository
+                .findByCompanyIdAndPeriodMonth(companyA.getId(), "2026-10").orElseThrow();
+        var savedB = workingDaysConfigRepository
+                .findByCompanyIdAndPeriodMonth(companyB.getId(), "2026-10").orElseThrow();
+        assertThat(savedA.getAvailableWorkingDays()).isEqualTo(26);
+        assertThat(savedB.getAvailableWorkingDays()).isEqualTo(22);
+    }
+
+    @Test
+    void workingDaysBatchWithOneBadRecordRejectsOnlyThatRecord() throws Exception {
+        var good1 = workingDaysRequestFor("2026-11", 25);
+        var bad = new WorkingDaysSyncRequest(null, 25, "admin", Instant.parse("2026-08-01T00:00:00Z"));
+        var good2 = workingDaysRequestFor("2026-12", 24);
+
+        mockMvc.perform(post("/api/sync/working-days")
+                        .header("X-API-Key", apiKeyA)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(List.of(good1, bad, good2))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].status").value("ACCEPTED"))
+                .andExpect(jsonPath("$[1].status").value("REJECTED"))
+                .andExpect(jsonPath("$[1].reason").isNotEmpty())
+                .andExpect(jsonPath("$[2].status").value("ACCEPTED"));
+
+        assertThat(workingDaysConfigRepository.findByCompanyIdAndPeriodMonth(companyA.getId(), "2026-11"))
+                .isPresent();
+        assertThat(workingDaysConfigRepository.findByCompanyIdAndPeriodMonth(companyA.getId(), "2026-12"))
+                .isPresent();
     }
 }
