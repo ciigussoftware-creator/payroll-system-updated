@@ -9,6 +9,7 @@ import com.payroll.desktop.repository.AttendanceRecordRepository;
 import com.payroll.desktop.repository.DayLevelOTConfigRepository;
 import com.payroll.desktop.repository.EmployeeRepository;
 import com.payroll.desktop.repository.OtEmployeeAuthorizationRepository;
+import com.payroll.desktop.repository.WorkingDaysConfigRepository;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.quartz.CronTrigger;
@@ -48,8 +49,9 @@ class SyncSchedulerIT {
             AttendanceRecordRepository repo = new AttendanceRecordRepository(db.getSessionFactory());
             DayLevelOTConfigRepository otConfigRepo = new DayLevelOTConfigRepository(db.getSessionFactory());
             OtEmployeeAuthorizationRepository otAuthRepo = new OtEmployeeAuthorizationRepository(db.getSessionFactory());
+            WorkingDaysConfigRepository workingDaysRepo = new WorkingDaysConfigRepository(db.getSessionFactory());
             StubCloudSyncClient stub = new StubCloudSyncClient();
-            SyncService service = new SyncService(empRepo, otConfigRepo, otAuthRepo, repo, stub);
+            SyncService service = new SyncService(empRepo, workingDaysRepo, otConfigRepo, otAuthRepo, repo, stub);
             SyncScheduler scheduler = new SyncScheduler(service);
 
             scheduler.start();
@@ -65,6 +67,7 @@ class SyncSchedulerIT {
                 assertThat(repo.findUnsynced()).isEmpty();
                 assertThat(stub.getCallLog()).containsExactly(
                         "employees:1",
+                        "workingDays:0",
                         "otConfigs:0",
                         "otAuths:0",
                         "attendance:" + r1.getSyncUuid(),
@@ -82,9 +85,10 @@ class SyncSchedulerIT {
             AttendanceRecordRepository repo = new AttendanceRecordRepository(db.getSessionFactory());
             DayLevelOTConfigRepository otConfigRepo = new DayLevelOTConfigRepository(db.getSessionFactory());
             OtEmployeeAuthorizationRepository otAuthRepo = new OtEmployeeAuthorizationRepository(db.getSessionFactory());
+            WorkingDaysConfigRepository workingDaysRepo = new WorkingDaysConfigRepository(db.getSessionFactory());
             StubCloudSyncClient stub = new StubCloudSyncClient();
             stub.setFailEmployeePush(true);
-            SyncService service = new SyncService(empRepo, otConfigRepo, otAuthRepo, repo, stub);
+            SyncService service = new SyncService(empRepo, workingDaysRepo, otConfigRepo, otAuthRepo, repo, stub);
             SyncScheduler scheduler = new SyncScheduler(service);
 
             scheduler.start();
@@ -111,9 +115,10 @@ class SyncSchedulerIT {
             AttendanceRecordRepository repo = new AttendanceRecordRepository(db.getSessionFactory());
             DayLevelOTConfigRepository otConfigRepo = new DayLevelOTConfigRepository(db.getSessionFactory());
             OtEmployeeAuthorizationRepository otAuthRepo = new OtEmployeeAuthorizationRepository(db.getSessionFactory());
+            WorkingDaysConfigRepository workingDaysRepo = new WorkingDaysConfigRepository(db.getSessionFactory());
             StubCloudSyncClient stub = new StubCloudSyncClient();
             stub.setCloudReachable(false);
-            SyncService service = new SyncService(empRepo, otConfigRepo, otAuthRepo, repo, stub);
+            SyncService service = new SyncService(empRepo, workingDaysRepo, otConfigRepo, otAuthRepo, repo, stub);
             SyncScheduler scheduler = new SyncScheduler(service);
 
             scheduler.start();
@@ -135,7 +140,7 @@ class SyncSchedulerIT {
     @Test
     void schedulerStartsAndShutsDownCleanly() throws Exception {
         SyncScheduler scheduler = new SyncScheduler(
-                new SyncService(null, null, null, null, new StubCloudSyncClient()));
+                new SyncService(null, null, null, null, null, new StubCloudSyncClient()));
         scheduler.start();
         scheduler.shutdown();
     }
@@ -143,7 +148,7 @@ class SyncSchedulerIT {
     @Test
     void dailyTriggerIsRegisteredWithExpectedCronExpression() throws Exception {
         SyncScheduler scheduler = new SyncScheduler(
-                new SyncService(null, null, null, null, new StubCloudSyncClient()));
+                new SyncService(null, null, null, null, null, new StubCloudSyncClient()));
         scheduler.start();
         try {
             TriggerKey key = TriggerKey.triggerKey(SyncScheduler.TRIGGER_NAME, SyncScheduler.GROUP);
