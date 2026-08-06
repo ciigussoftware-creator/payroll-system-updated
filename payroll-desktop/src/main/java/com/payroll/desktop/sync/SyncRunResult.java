@@ -3,9 +3,14 @@ package com.payroll.desktop.sync;
 public record SyncRunResult(
         int employeesSynced,
         int employeesFailed,
+        int otConfigsSynced,
+        int otConfigsFailed,
+        int otAuthsSynced,
+        int otAuthsFailed,
         int attempted,
         int synced,
         int failed,
         boolean skippedOffline,
-        boolean attendanceSkippedDueToEmployeeFailure
+        boolean attendanceSkippedDueToEmployeeFailure,
+        boolean attendanceSkippedDueToOtPushFailure
 ) {}
