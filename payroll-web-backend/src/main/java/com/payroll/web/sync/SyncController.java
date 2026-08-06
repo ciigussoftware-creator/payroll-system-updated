@@ -18,15 +18,18 @@ public class SyncController {
     private final EmployeeSyncService employeeSyncService;
     private final DayLevelOtSyncService dayLevelOtSyncService;
     private final OtAuthorizationSyncService otAuthorizationSyncService;
+    private final WorkingDaysSyncService workingDaysSyncService;
 
     public SyncController(AttendanceSyncService attendanceSyncService,
                            EmployeeSyncService employeeSyncService,
                            DayLevelOtSyncService dayLevelOtSyncService,
-                           OtAuthorizationSyncService otAuthorizationSyncService) {
+                           OtAuthorizationSyncService otAuthorizationSyncService,
+                           WorkingDaysSyncService workingDaysSyncService) {
         this.attendanceSyncService = attendanceSyncService;
         this.employeeSyncService = employeeSyncService;
         this.dayLevelOtSyncService = dayLevelOtSyncService;
         this.otAuthorizationSyncService = otAuthorizationSyncService;
+        this.workingDaysSyncService = workingDaysSyncService;
     }
 
     @PostMapping("/attendance")
@@ -59,5 +62,13 @@ public class SyncController {
             Authentication authentication) {
         Long companyId = ((SyncClientAuthentication) authentication).getCompanyId();
         return ResponseEntity.ok(otAuthorizationSyncService.processBatch(companyId, records));
+    }
+
+    @PostMapping("/working-days")
+    public ResponseEntity<List<WorkingDaysSyncResult>> syncWorkingDays(
+            @RequestBody List<WorkingDaysSyncRequest> records,
+            Authentication authentication) {
+        Long companyId = ((SyncClientAuthentication) authentication).getCompanyId();
+        return ResponseEntity.ok(workingDaysSyncService.processBatch(companyId, records));
     }
 }
