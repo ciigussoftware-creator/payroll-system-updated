@@ -11,5 +11,8 @@
         <module name="payroll-desktop" />
       </profile>
     </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="payroll-web-backend" target="21" />
+    </bytecodeTargetLevel>
   </component>
 </project>
