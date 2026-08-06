@@ -4,10 +4,12 @@ import com.payroll.core.entity.AttendanceRecord;
 import com.payroll.core.entity.DayLevelOTConfig;
 import com.payroll.core.entity.Employee;
 import com.payroll.core.entity.OtEmployeeAuthorization;
+import com.payroll.core.entity.WorkingDaysConfig;
 import com.payroll.desktop.repository.AttendanceRecordRepository;
 import com.payroll.desktop.repository.DayLevelOTConfigRepository;
 import com.payroll.desktop.repository.EmployeeRepository;
 import com.payroll.desktop.repository.OtEmployeeAuthorizationRepository;
+import com.payroll.desktop.repository.WorkingDaysConfigRepository;
 
 import java.util.HashMap;
 import java.util.List;
@@ -16,25 +18,31 @@ import java.util.Map;
 /**
  * Runs a full sync in dependency order: employees first (the cloud must know about an
  * employee before it can accept attendance or OT authorizations for that employeeCode),
- * then day-level OT configs and OT authorizations (so the cloud's OT-pay calculation has
- * the authorization switches available before or alongside attendance), and finally
- * attendance. A failure pushing employees or either OT data set skips attendance for that
- * run, since the cloud can't yet correctly interpret attendance without it.
+ * then working-days config, then day-level OT configs and OT authorizations (so the cloud's
+ * OT-pay calculation has the authorization switches available before or alongside
+ * attendance), and finally attendance. A failure pushing employees or either OT data set
+ * skips attendance for that run, since the cloud can't yet correctly interpret attendance
+ * without it. Working-days config has no such dependency — a failure there is recorded but
+ * does not block OT data or attendance from syncing, since a stale working-days count only
+ * affects that month's eventual salary calculation, not attendance capture.
  */
 public class SyncService {
 
     private final EmployeeRepository employeeRepo;
+    private final WorkingDaysConfigRepository workingDaysConfigRepo;
     private final DayLevelOTConfigRepository dayLevelOTConfigRepo;
     private final OtEmployeeAuthorizationRepository otAuthRepo;
     private final AttendanceRecordRepository recordRepo;
     private final CloudSyncClient client;
 
     public SyncService(EmployeeRepository employeeRepo,
+                        WorkingDaysConfigRepository workingDaysConfigRepo,
                         DayLevelOTConfigRepository dayLevelOTConfigRepo,
                         OtEmployeeAuthorizationRepository otAuthRepo,
                         AttendanceRecordRepository recordRepo,
                         CloudSyncClient client) {
         this.employeeRepo = employeeRepo;
+        this.workingDaysConfigRepo = workingDaysConfigRepo;
         this.dayLevelOTConfigRepo = dayLevelOTConfigRepo;
         this.otAuthRepo = otAuthRepo;
         this.recordRepo = recordRepo;
@@ -43,7 +51,7 @@ public class SyncService {
 
     public SyncRunResult syncUnsyncedRecords() {
         if (!client.isCloudReachable()) {
-            return new SyncRunResult(0, 0, 0, 0, 0, 0, 0, 0, 0, true, false, false);
+            return new SyncRunResult(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, true, false, false);
         }
 
         List<Employee> employees = employeeRepo.findAll();
@@ -51,7 +59,15 @@ public class SyncService {
         try {
             employeeResult = client.pushEmployees(employees);
         } catch (SyncException e) {
-            return new SyncRunResult(0, employees.size(), 0, 0, 0, 0, 0, 0, 0, false, true, false);
+            return new SyncRunResult(0, employees.size(), 0, 0, 0, 0, 0, 0, 0, 0, 0, false, true, false);
+        }
+
+        List<WorkingDaysConfig> workingDaysConfigs = workingDaysConfigRepo.findAll();
+        WorkingDaysSyncPushResult workingDaysResult;
+        try {
+            workingDaysResult = client.pushWorkingDaysConfig(workingDaysConfigs);
+        } catch (SyncException e) {
+            workingDaysResult = new WorkingDaysSyncPushResult(0, 0, workingDaysConfigs.size(), List.of(e.getMessage()));
         }
 
         List<DayLevelOTConfig> otConfigs = dayLevelOTConfigRepo.findAll();
@@ -60,6 +76,7 @@ public class SyncService {
             otConfigResult = client.pushDayLevelOtConfigs(otConfigs);
         } catch (SyncException e) {
             return new SyncRunResult(employeeResult.synced(), employeeResult.rejected(),
+                    workingDaysResult.synced(), workingDaysResult.rejected(),
                     0, otConfigs.size(), 0, 0, 0, 0, 0, false, false, true);
         }
 
@@ -69,6 +86,7 @@ public class SyncService {
             otAuthResult = client.pushOtAuthorizations(toOtAuthorizationRecords(otAuths, employees));
         } catch (SyncException e) {
             return new SyncRunResult(employeeResult.synced(), employeeResult.rejected(),
+                    workingDaysResult.synced(), workingDaysResult.rejected(),
                     otConfigResult.synced(), otConfigResult.rejected(),
                     0, otAuths.size(), 0, 0, 0, false, false, true);
         }
@@ -89,6 +107,7 @@ public class SyncService {
         }
 
         return new SyncRunResult(employeeResult.synced(), employeeResult.rejected(),
+                workingDaysResult.synced(), workingDaysResult.rejected(),
                 otConfigResult.synced(), otConfigResult.rejected(),
                 otAuthResult.synced(), otAuthResult.rejected(),
                 attempted, synced, failed, false, false, false);

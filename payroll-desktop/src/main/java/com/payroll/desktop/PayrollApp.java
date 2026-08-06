@@ -54,7 +54,7 @@ public class PayrollApp extends Application {
         var statutoryService = new StatutoryCalculationService(
                 attendanceRepo, employeeRepo, workingDaysRepo, dayLevelOTRepo, overrideRepo);
 
-        var syncService = new SyncService(employeeRepo, dayLevelOTRepo, otAuthRepo, attendanceRepo, new RealCloudSyncClient());
+        var syncService = new SyncService(employeeRepo, workingDaysRepo, dayLevelOTRepo, otAuthRepo, attendanceRepo, new RealCloudSyncClient());
         syncScheduler = new SyncScheduler(syncService);
 
         new AppShell(primaryStage, userAccountRepo, hasher, authService,

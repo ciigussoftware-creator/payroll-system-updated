@@ -25,6 +25,11 @@ public final class SyncStatusFormatter {
             sb.append(", ").append(result.employeesFailed()).append(" failed");
         }
 
+        sb.append(". Working days: ").append(result.workingDaysSynced()).append(" synced");
+        if (result.workingDaysFailed() > 0) {
+            sb.append(", ").append(result.workingDaysFailed()).append(" failed");
+        }
+
         int otSynced = result.otConfigsSynced() + result.otAuthsSynced();
         int otFailed = result.otConfigsFailed() + result.otAuthsFailed();
         sb.append(". OT data: ").append(otSynced).append(" synced");

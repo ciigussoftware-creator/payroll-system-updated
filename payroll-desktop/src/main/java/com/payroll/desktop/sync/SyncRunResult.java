@@ -3,6 +3,8 @@ package com.payroll.desktop.sync;
 public record SyncRunResult(
         int employeesSynced,
         int employeesFailed,
+        int workingDaysSynced,
+        int workingDaysFailed,
         int otConfigsSynced,
         int otConfigsFailed,
         int otAuthsSynced,
