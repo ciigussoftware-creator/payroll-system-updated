@@ -3,10 +3,16 @@ package com.payroll.core.attendance;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
+import java.util.List;
 
 public final class AttendanceConstants {
 
     private AttendanceConstants() {}
+
+    public static final List<BreakPeriod> STANDARD_BREAK_SCHEDULE = List.of(
+            new BreakPeriod(LocalTime.of(10, 0), LocalTime.of(10, 20), "Morning tea"),
+            new BreakPeriod(LocalTime.of(12, 30), LocalTime.of(13, 0), "Lunch"),
+            new BreakPeriod(LocalTime.of(15, 0), LocalTime.of(15, 10), "Afternoon tea"));
 
     public static final LocalTime FLEX_ARRIVAL_START    = LocalTime.of(7, 0);
     public static final LocalTime FLEX_ARRIVAL_END      = LocalTime.of(8, 0);
