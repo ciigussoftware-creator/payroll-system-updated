@@ -68,6 +68,12 @@
             <scope>runtime</scope>
         </dependency>
 
+        <!-- Apache POI — confidential payroll .xlsx export -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+        </dependency>
+
         <!-- Argon2 password hashing, shared with the desktop account store -->
         <dependency>
             <groupId>de.mkammerer</groupId>
