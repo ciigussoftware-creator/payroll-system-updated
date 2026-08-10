@@ -5,7 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.payroll.core.entity.AttendanceRecord;
+import com.payroll.core.entity.DayLevelOTConfig;
 import com.payroll.core.entity.Employee;
+import com.payroll.core.entity.WorkingDaysConfig;
 
 import java.io.IOException;
 import java.net.URI;
@@ -152,6 +154,161 @@ public class RealCloudSyncClient implements CloudSyncClient {
                 Thread.currentThread().interrupt();
             }
             throw new SyncException("Cloud employee sync request failed: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public DayLevelOtSyncPushResult pushDayLevelOtConfigs(List<DayLevelOTConfig> configs) throws SyncException {
+        List<CloudDayLevelOtDto> dtos = configs.stream()
+                .map(c -> new CloudDayLevelOtDto(
+                        c.getConfigDate(),
+                        c.isAllStaffOt(),
+                        c.getDayType(),
+                        c.getSetBy(),
+                        c.getSetAt()))
+                .toList();
+
+        try {
+            String body = MAPPER.writeValueAsString(dtos);
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(baseUrl + "/api/sync/day-level-ot"))
+                    .timeout(REQUEST_TIMEOUT)
+                    .header("Content-Type", "application/json")
+                    .header("X-API-Key", apiKey)
+                    .POST(HttpRequest.BodyPublishers.ofString(body))
+                    .build();
+
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() != 200) {
+                throw new SyncException("Cloud day-level OT sync HTTP " + response.statusCode() + ": " + response.body());
+            }
+
+            List<CloudDayLevelOtSyncResultDto> results =
+                    MAPPER.readValue(response.body(), MAPPER.getTypeFactory()
+                            .constructCollectionType(List.class, CloudDayLevelOtSyncResultDto.class));
+
+            int accepted = 0, updated = 0, rejected = 0;
+            List<String> reasons = new ArrayList<>();
+            for (CloudDayLevelOtSyncResultDto result : results) {
+                switch (result.status()) {
+                    case "ACCEPTED" -> accepted++;
+                    case "UPDATED" -> updated++;
+                    default -> {
+                        rejected++;
+                        reasons.add(result.configDate() + ": " + result.reason());
+                    }
+                }
+            }
+            return new DayLevelOtSyncPushResult(accepted, updated, rejected, reasons);
+        } catch (IOException | InterruptedException e) {
+            if (e instanceof InterruptedException) {
+                Thread.currentThread().interrupt();
+            }
+            throw new SyncException("Cloud day-level OT sync request failed: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public OtAuthorizationSyncPushResult pushOtAuthorizations(List<OtAuthorizationRecord> authorizations) throws SyncException {
+        List<CloudOtAuthDto> dtos = authorizations.stream()
+                .map(a -> new CloudOtAuthDto(
+                        a.employeeCode(),
+                        a.authDate(),
+                        a.authorized(),
+                        a.setBy(),
+                        a.setAt()))
+                .toList();
+
+        try {
+            String body = MAPPER.writeValueAsString(dtos);
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(baseUrl + "/api/sync/ot-authorizations"))
+                    .timeout(REQUEST_TIMEOUT)
+                    .header("Content-Type", "application/json")
+                    .header("X-API-Key", apiKey)
+                    .POST(HttpRequest.BodyPublishers.ofString(body))
+                    .build();
+
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() != 200) {
+                throw new SyncException("Cloud OT authorization sync HTTP " + response.statusCode() + ": " + response.body());
+            }
+
+            List<CloudOtAuthSyncResultDto> results =
+                    MAPPER.readValue(response.body(), MAPPER.getTypeFactory()
+                            .constructCollectionType(List.class, CloudOtAuthSyncResultDto.class));
+
+            int accepted = 0, updated = 0, rejected = 0;
+            List<String> reasons = new ArrayList<>();
+            for (CloudOtAuthSyncResultDto result : results) {
+                switch (result.status()) {
+                    case "ACCEPTED" -> accepted++;
+                    case "UPDATED" -> updated++;
+                    default -> {
+                        rejected++;
+                        reasons.add(result.employeeCode() + "/" + result.authDate() + ": " + result.reason());
+                    }
+                }
+            }
+            return new OtAuthorizationSyncPushResult(accepted, updated, rejected, reasons);
+        } catch (IOException | InterruptedException e) {
+            if (e instanceof InterruptedException) {
+                Thread.currentThread().interrupt();
+            }
+            throw new SyncException("Cloud OT authorization sync request failed: " + e.getMessage(), e);
+        }
+    }
+
+    @Override
+    public WorkingDaysSyncPushResult pushWorkingDaysConfig(List<WorkingDaysConfig> configs) throws SyncException {
+        List<CloudWorkingDaysDto> dtos = configs.stream()
+                .map(c -> new CloudWorkingDaysDto(
+                        c.getPeriodMonth(),
+                        c.getAvailableWorkingDays(),
+                        c.getUpdatedBy(),
+                        c.getUpdatedAt()))
+                .toList();
+
+        try {
+            String body = MAPPER.writeValueAsString(dtos);
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(baseUrl + "/api/sync/working-days"))
+                    .timeout(REQUEST_TIMEOUT)
+                    .header("Content-Type", "application/json")
+                    .header("X-API-Key", apiKey)
+                    .POST(HttpRequest.BodyPublishers.ofString(body))
+                    .build();
+
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() != 200) {
+                throw new SyncException("Cloud working-days sync HTTP " + response.statusCode() + ": " + response.body());
+            }
+
+            List<CloudWorkingDaysSyncResultDto> results =
+                    MAPPER.readValue(response.body(), MAPPER.getTypeFactory()
+                            .constructCollectionType(List.class, CloudWorkingDaysSyncResultDto.class));
+
+            int accepted = 0, updated = 0, rejected = 0;
+            List<String> reasons = new ArrayList<>();
+            for (CloudWorkingDaysSyncResultDto result : results) {
+                switch (result.status()) {
+                    case "ACCEPTED" -> accepted++;
+                    case "UPDATED" -> updated++;
+                    default -> {
+                        rejected++;
+                        reasons.add(result.periodMonth() + ": " + result.reason());
+                    }
+                }
+            }
+            return new WorkingDaysSyncPushResult(accepted, updated, rejected, reasons);
+        } catch (IOException | InterruptedException e) {
+            if (e instanceof InterruptedException) {
+                Thread.currentThread().interrupt();
+            }
+            throw new SyncException("Cloud working-days sync request failed: " + e.getMessage(), e);
         }
     }
 

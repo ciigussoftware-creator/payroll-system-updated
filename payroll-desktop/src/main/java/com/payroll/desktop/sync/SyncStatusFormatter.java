@@ -25,9 +25,23 @@ public final class SyncStatusFormatter {
             sb.append(", ").append(result.employeesFailed()).append(" failed");
         }
 
+        sb.append(". Working days: ").append(result.workingDaysSynced()).append(" synced");
+        if (result.workingDaysFailed() > 0) {
+            sb.append(", ").append(result.workingDaysFailed()).append(" failed");
+        }
+
+        int otSynced = result.otConfigsSynced() + result.otAuthsSynced();
+        int otFailed = result.otConfigsFailed() + result.otAuthsFailed();
+        sb.append(". OT data: ").append(otSynced).append(" synced");
+        if (otFailed > 0) {
+            sb.append(", ").append(otFailed).append(" failed");
+        }
+
         sb.append(". Attendance: ");
         if (result.attendanceSkippedDueToEmployeeFailure()) {
             sb.append("skipped (employee sync failed)");
+        } else if (result.attendanceSkippedDueToOtPushFailure()) {
+            sb.append("skipped (OT sync failed)");
         } else {
             sb.append(result.synced()).append(" pushed, ").append(result.failed()).append(" failed");
         }

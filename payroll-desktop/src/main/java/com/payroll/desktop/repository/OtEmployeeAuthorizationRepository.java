@@ -46,6 +46,12 @@ public class OtEmployeeAuthorizationRepository {
         }
     }
 
+    public List<OtEmployeeAuthorization> findAll() {
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("FROM OtEmployeeAuthorization", OtEmployeeAuthorization.class).list();
+        }
+    }
+
     public List<OtEmployeeAuthorization> findByDate(LocalDate date) {
         try (Session session = sessionFactory.openSession()) {
             return session.createQuery(

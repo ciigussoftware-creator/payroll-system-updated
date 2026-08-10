@@ -6,7 +6,10 @@ import com.payroll.core.entity.EmployeeCategory;
 import com.payroll.core.entity.ScanType;
 import com.payroll.desktop.db.DatabaseManager;
 import com.payroll.desktop.repository.AttendanceRecordRepository;
+import com.payroll.desktop.repository.DayLevelOTConfigRepository;
 import com.payroll.desktop.repository.EmployeeRepository;
+import com.payroll.desktop.repository.OtEmployeeAuthorizationRepository;
+import com.payroll.desktop.repository.WorkingDaysConfigRepository;
 import org.hibernate.Session;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -58,8 +61,11 @@ class SyncServiceIT {
         try (DatabaseManager db = new DatabaseManager(tempDir)) {
             EmployeeRepository empRepo = new EmployeeRepository(db.getSessionFactory());
             AttendanceRecordRepository repo = new AttendanceRecordRepository(db.getSessionFactory());
+            DayLevelOTConfigRepository otConfigRepo = new DayLevelOTConfigRepository(db.getSessionFactory());
+            OtEmployeeAuthorizationRepository otAuthRepo = new OtEmployeeAuthorizationRepository(db.getSessionFactory());
+            WorkingDaysConfigRepository workingDaysRepo = new WorkingDaysConfigRepository(db.getSessionFactory());
             StubCloudSyncClient stub = new StubCloudSyncClient();
-            SyncService service = new SyncService(empRepo, repo, stub);
+            SyncService service = new SyncService(empRepo, workingDaysRepo, otConfigRepo, otAuthRepo, repo, stub);
 
             Employee emp = savedEmployee(empRepo, "EMP-001");
             savedRecord(repo, emp, LocalDateTime.of(2026, 6, 20, 8, 0), ScanType.ENTRY);
@@ -80,9 +86,12 @@ class SyncServiceIT {
         try (DatabaseManager db = new DatabaseManager(tempDir)) {
             EmployeeRepository empRepo = new EmployeeRepository(db.getSessionFactory());
             AttendanceRecordRepository repo = new AttendanceRecordRepository(db.getSessionFactory());
+            DayLevelOTConfigRepository otConfigRepo = new DayLevelOTConfigRepository(db.getSessionFactory());
+            OtEmployeeAuthorizationRepository otAuthRepo = new OtEmployeeAuthorizationRepository(db.getSessionFactory());
+            WorkingDaysConfigRepository workingDaysRepo = new WorkingDaysConfigRepository(db.getSessionFactory());
             StubCloudSyncClient stub = new StubCloudSyncClient();
             stub.setCloudReachable(false);
-            SyncService service = new SyncService(empRepo, repo, stub);
+            SyncService service = new SyncService(empRepo, workingDaysRepo, otConfigRepo, otAuthRepo, repo, stub);
 
             Employee emp = savedEmployee(empRepo, "EMP-001");
             savedRecord(repo, emp, LocalDateTime.of(2026, 6, 20, 8, 0), ScanType.ENTRY);
@@ -101,8 +110,11 @@ class SyncServiceIT {
         try (DatabaseManager db = new DatabaseManager(tempDir)) {
             EmployeeRepository empRepo = new EmployeeRepository(db.getSessionFactory());
             AttendanceRecordRepository repo = new AttendanceRecordRepository(db.getSessionFactory());
+            DayLevelOTConfigRepository otConfigRepo = new DayLevelOTConfigRepository(db.getSessionFactory());
+            OtEmployeeAuthorizationRepository otAuthRepo = new OtEmployeeAuthorizationRepository(db.getSessionFactory());
+            WorkingDaysConfigRepository workingDaysRepo = new WorkingDaysConfigRepository(db.getSessionFactory());
             StubCloudSyncClient stub = new StubCloudSyncClient();
-            SyncService service = new SyncService(empRepo, repo, stub);
+            SyncService service = new SyncService(empRepo, workingDaysRepo, otConfigRepo, otAuthRepo, repo, stub);
 
             Employee emp = savedEmployee(empRepo, "EMP-001");
             AttendanceRecord r1 = savedRecord(repo, emp, LocalDateTime.of(2026, 6, 20, 8, 0), ScanType.ENTRY);
@@ -137,8 +149,11 @@ class SyncServiceIT {
         try (DatabaseManager db = new DatabaseManager(tempDir)) {
             EmployeeRepository empRepo = new EmployeeRepository(db.getSessionFactory());
             AttendanceRecordRepository repo = new AttendanceRecordRepository(db.getSessionFactory());
+            DayLevelOTConfigRepository otConfigRepo = new DayLevelOTConfigRepository(db.getSessionFactory());
+            OtEmployeeAuthorizationRepository otAuthRepo = new OtEmployeeAuthorizationRepository(db.getSessionFactory());
+            WorkingDaysConfigRepository workingDaysRepo = new WorkingDaysConfigRepository(db.getSessionFactory());
             StubCloudSyncClient stub = new StubCloudSyncClient();
-            SyncService service = new SyncService(empRepo, repo, stub);
+            SyncService service = new SyncService(empRepo, workingDaysRepo, otConfigRepo, otAuthRepo, repo, stub);
 
             Employee emp = savedEmployee(empRepo, "EMP-001");
             AttendanceRecord r = savedRecord(repo, emp, LocalDateTime.of(2026, 6, 20, 8, 0), ScanType.ENTRY);
@@ -172,8 +187,11 @@ class SyncServiceIT {
         try (DatabaseManager db = new DatabaseManager(tempDir)) {
             EmployeeRepository empRepo = new EmployeeRepository(db.getSessionFactory());
             AttendanceRecordRepository repo = new AttendanceRecordRepository(db.getSessionFactory());
+            DayLevelOTConfigRepository otConfigRepo = new DayLevelOTConfigRepository(db.getSessionFactory());
+            OtEmployeeAuthorizationRepository otAuthRepo = new OtEmployeeAuthorizationRepository(db.getSessionFactory());
+            WorkingDaysConfigRepository workingDaysRepo = new WorkingDaysConfigRepository(db.getSessionFactory());
             StubCloudSyncClient stub = new StubCloudSyncClient();
-            SyncService service = new SyncService(empRepo, repo, stub);
+            SyncService service = new SyncService(empRepo, workingDaysRepo, otConfigRepo, otAuthRepo, repo, stub);
 
             Employee emp = savedEmployee(empRepo, "EMP-001");
             AttendanceRecord r = savedRecord(repo, emp, LocalDateTime.of(2026, 6, 20, 8, 0), ScanType.ENTRY);
@@ -194,12 +212,15 @@ class SyncServiceIT {
     }
 
     @Test
-    void employeesArePushedBeforeAttendanceRecords(@TempDir Path tempDir) throws IOException {
+    void employeesThenOtDataThenAttendanceRecordsArePushedInOrder(@TempDir Path tempDir) throws IOException {
         try (DatabaseManager db = new DatabaseManager(tempDir)) {
             EmployeeRepository empRepo = new EmployeeRepository(db.getSessionFactory());
             AttendanceRecordRepository repo = new AttendanceRecordRepository(db.getSessionFactory());
+            DayLevelOTConfigRepository otConfigRepo = new DayLevelOTConfigRepository(db.getSessionFactory());
+            OtEmployeeAuthorizationRepository otAuthRepo = new OtEmployeeAuthorizationRepository(db.getSessionFactory());
+            WorkingDaysConfigRepository workingDaysRepo = new WorkingDaysConfigRepository(db.getSessionFactory());
             StubCloudSyncClient stub = new StubCloudSyncClient();
-            SyncService service = new SyncService(empRepo, repo, stub);
+            SyncService service = new SyncService(empRepo, workingDaysRepo, otConfigRepo, otAuthRepo, repo, stub);
 
             Employee emp = savedEmployee(empRepo, "EMP-001");
             AttendanceRecord r1 = savedRecord(repo, emp, LocalDateTime.of(2026, 6, 20, 8, 0), ScanType.ENTRY);
@@ -210,7 +231,8 @@ class SyncServiceIT {
             assertThat(result.employeesSynced()).isEqualTo(1);
             assertThat(result.synced()).isEqualTo(2);
             assertThat(stub.getCallLog()).containsExactly(
-                    "employees:1", "attendance:" + r1.getSyncUuid(), "attendance:" + r2.getSyncUuid());
+                    "employees:1", "workingDays:0", "otConfigs:0", "otAuths:0",
+                    "attendance:" + r1.getSyncUuid(), "attendance:" + r2.getSyncUuid());
         }
     }
 
@@ -219,9 +241,12 @@ class SyncServiceIT {
         try (DatabaseManager db = new DatabaseManager(tempDir)) {
             EmployeeRepository empRepo = new EmployeeRepository(db.getSessionFactory());
             AttendanceRecordRepository repo = new AttendanceRecordRepository(db.getSessionFactory());
+            DayLevelOTConfigRepository otConfigRepo = new DayLevelOTConfigRepository(db.getSessionFactory());
+            OtEmployeeAuthorizationRepository otAuthRepo = new OtEmployeeAuthorizationRepository(db.getSessionFactory());
+            WorkingDaysConfigRepository workingDaysRepo = new WorkingDaysConfigRepository(db.getSessionFactory());
             StubCloudSyncClient stub = new StubCloudSyncClient();
             stub.setFailEmployeePush(true);
-            SyncService service = new SyncService(empRepo, repo, stub);
+            SyncService service = new SyncService(empRepo, workingDaysRepo, otConfigRepo, otAuthRepo, repo, stub);
 
             Employee emp = savedEmployee(empRepo, "EMP-001");
             savedRecord(repo, emp, LocalDateTime.of(2026, 6, 20, 8, 0), ScanType.ENTRY);
@@ -233,6 +258,87 @@ class SyncServiceIT {
             assertThat(result.synced()).isEqualTo(0);
             assertThat(stub.getCallLog()).containsExactly("employees:1");
             assertThat(repo.findUnsynced()).hasSize(1);
+        }
+    }
+
+    @Test
+    void otConfigPushFailureSkipsAttendanceSyncForThatRun(@TempDir Path tempDir) throws IOException {
+        try (DatabaseManager db = new DatabaseManager(tempDir)) {
+            EmployeeRepository empRepo = new EmployeeRepository(db.getSessionFactory());
+            AttendanceRecordRepository repo = new AttendanceRecordRepository(db.getSessionFactory());
+            DayLevelOTConfigRepository otConfigRepo = new DayLevelOTConfigRepository(db.getSessionFactory());
+            OtEmployeeAuthorizationRepository otAuthRepo = new OtEmployeeAuthorizationRepository(db.getSessionFactory());
+            WorkingDaysConfigRepository workingDaysRepo = new WorkingDaysConfigRepository(db.getSessionFactory());
+            StubCloudSyncClient stub = new StubCloudSyncClient();
+            stub.setFailOtConfigPush(true);
+            SyncService service = new SyncService(empRepo, workingDaysRepo, otConfigRepo, otAuthRepo, repo, stub);
+
+            Employee emp = savedEmployee(empRepo, "EMP-001");
+            savedRecord(repo, emp, LocalDateTime.of(2026, 6, 20, 8, 0), ScanType.ENTRY);
+
+            SyncRunResult result = service.syncUnsyncedRecords();
+
+            assertThat(result.attendanceSkippedDueToOtPushFailure()).isTrue();
+            assertThat(result.attendanceSkippedDueToEmployeeFailure()).isFalse();
+            assertThat(result.attempted()).isEqualTo(0);
+            assertThat(result.synced()).isEqualTo(0);
+            assertThat(stub.getCallLog()).containsExactly("employees:1", "workingDays:0", "otConfigs:0");
+            assertThat(repo.findUnsynced()).hasSize(1);
+        }
+    }
+
+    @Test
+    void otAuthPushFailureSkipsAttendanceSyncForThatRun(@TempDir Path tempDir) throws IOException {
+        try (DatabaseManager db = new DatabaseManager(tempDir)) {
+            EmployeeRepository empRepo = new EmployeeRepository(db.getSessionFactory());
+            AttendanceRecordRepository repo = new AttendanceRecordRepository(db.getSessionFactory());
+            DayLevelOTConfigRepository otConfigRepo = new DayLevelOTConfigRepository(db.getSessionFactory());
+            OtEmployeeAuthorizationRepository otAuthRepo = new OtEmployeeAuthorizationRepository(db.getSessionFactory());
+            WorkingDaysConfigRepository workingDaysRepo = new WorkingDaysConfigRepository(db.getSessionFactory());
+            StubCloudSyncClient stub = new StubCloudSyncClient();
+            stub.setFailOtAuthPush(true);
+            SyncService service = new SyncService(empRepo, workingDaysRepo, otConfigRepo, otAuthRepo, repo, stub);
+
+            Employee emp = savedEmployee(empRepo, "EMP-001");
+            savedRecord(repo, emp, LocalDateTime.of(2026, 6, 20, 8, 0), ScanType.ENTRY);
+
+            SyncRunResult result = service.syncUnsyncedRecords();
+
+            assertThat(result.attendanceSkippedDueToOtPushFailure()).isTrue();
+            assertThat(result.attempted()).isEqualTo(0);
+            assertThat(result.synced()).isEqualTo(0);
+            assertThat(stub.getCallLog()).containsExactly("employees:1", "workingDays:0", "otConfigs:0", "otAuths:0");
+            assertThat(repo.findUnsynced()).hasSize(1);
+        }
+    }
+
+    @Test
+    void workingDaysPushFailureDoesNotSkipAttendanceSyncForThatRun(@TempDir Path tempDir) throws IOException {
+        try (DatabaseManager db = new DatabaseManager(tempDir)) {
+            EmployeeRepository empRepo = new EmployeeRepository(db.getSessionFactory());
+            AttendanceRecordRepository repo = new AttendanceRecordRepository(db.getSessionFactory());
+            DayLevelOTConfigRepository otConfigRepo = new DayLevelOTConfigRepository(db.getSessionFactory());
+            OtEmployeeAuthorizationRepository otAuthRepo = new OtEmployeeAuthorizationRepository(db.getSessionFactory());
+            WorkingDaysConfigRepository workingDaysRepo = new WorkingDaysConfigRepository(db.getSessionFactory());
+            StubCloudSyncClient stub = new StubCloudSyncClient();
+            stub.setFailWorkingDaysPush(true);
+            SyncService service = new SyncService(empRepo, workingDaysRepo, otConfigRepo, otAuthRepo, repo, stub);
+
+            workingDaysRepo.upsert("2026-06", 22, "admin");
+            Employee emp = savedEmployee(empRepo, "EMP-001");
+            AttendanceRecord r = savedRecord(repo, emp, LocalDateTime.of(2026, 6, 20, 8, 0), ScanType.ENTRY);
+
+            SyncRunResult result = service.syncUnsyncedRecords();
+
+            assertThat(result.workingDaysSynced()).isEqualTo(0);
+            assertThat(result.workingDaysFailed()).isEqualTo(1);
+            assertThat(result.attendanceSkippedDueToEmployeeFailure()).isFalse();
+            assertThat(result.attendanceSkippedDueToOtPushFailure()).isFalse();
+            assertThat(result.attempted()).isEqualTo(1);
+            assertThat(result.synced()).isEqualTo(1);
+            assertThat(stub.getCallLog()).containsExactly(
+                    "employees:1", "workingDays:1", "otConfigs:0", "otAuths:0", "attendance:" + r.getSyncUuid());
+            assertThat(repo.findUnsynced()).isEmpty();
         }
     }
 }

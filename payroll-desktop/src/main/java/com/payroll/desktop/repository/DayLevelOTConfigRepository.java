@@ -43,6 +43,12 @@ public class DayLevelOTConfigRepository {
         }
     }
 
+    public List<DayLevelOTConfig> findAll() {
+        try (Session session = sessionFactory.openSession()) {
+            return session.createQuery("FROM DayLevelOTConfig", DayLevelOTConfig.class).list();
+        }
+    }
+
     public List<DayLevelOTConfig> findByDateRange(LocalDate from, LocalDate to) {
         try (Session session = sessionFactory.openSession()) {
             return session.createQuery(

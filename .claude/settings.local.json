@@ -32,7 +32,11 @@
       "Bash(awk -F'[ ,]+' '{run+=$3; fail+=$5; err+=$7; skip+=$9} END {print \"Tests run:\", run, \"Failures:\", fail, \"Errors:\", err, \"Skipped:\", skip}')",
       "Bash(xargs cat)",
       "Bash(mvn -q -pl payroll-web-backend,payroll-desktop -am compile)",
-      "Bash(mvn -q -pl payroll-web-backend,payroll-desktop -am test-compile)"
+      "Bash(mvn -q -pl payroll-web-backend,payroll-desktop -am test-compile)",
+      "Bash(mvn -q -DskipTests compile)",
+      "Bash(tee /c/Users/User/AppData/Local/Temp/claude/C--Personal-Cigus-woodLanka-payroll-system-updated/1735a269-8184-4280-99f9-e54ff6c48286/scratchpad/verify.log)",
+      "PowerShell(mvn *)",
+      "PowerShell(if \\($env:JWT_SECRET\\) { Write-Output \"SET \\(length=$\\($env:JWT_SECRET.Length\\)\\)\" } else { Write-Output \"NOT SET\" })"
     ]
   }
 }

@@ -2,11 +2,15 @@ package com.payroll.web.sync;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.payroll.core.entity.Company;
+import com.payroll.core.entity.DayType;
 import com.payroll.core.entity.Employee;
 import com.payroll.core.entity.EmployeeCategory;
 import com.payroll.core.entity.ScanType;
 import com.payroll.core.entity.SyncClient;
 import com.payroll.web.repository.AttendanceRecordRepository;
+import com.payroll.web.repository.CloudDayLevelOTConfigRepository;
+import com.payroll.web.repository.CloudOtEmployeeAuthorizationRepository;
+import com.payroll.web.repository.CloudWorkingDaysConfigRepository;
 import com.payroll.web.repository.CompanyRepository;
 import com.payroll.web.repository.EmployeeRepository;
 import com.payroll.web.repository.SyncClientRepository;
@@ -21,6 +25,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.math.BigDecimal;
+import java.time.Instant;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -42,6 +48,9 @@ class SyncControllerIT {
     @Autowired private SyncClientRepository syncClientRepository;
     @Autowired private EmployeeRepository employeeRepository;
     @Autowired private AttendanceRecordRepository attendanceRecordRepository;
+    @Autowired private CloudDayLevelOTConfigRepository dayLevelOTConfigRepository;
+    @Autowired private CloudOtEmployeeAuthorizationRepository otAuthorizationRepository;
+    @Autowired private CloudWorkingDaysConfigRepository workingDaysConfigRepository;
     @Autowired private ApiKeyHasher apiKeyHasher;
 
     private Company companyA;
@@ -53,6 +62,9 @@ class SyncControllerIT {
     @BeforeEach
     void seed() {
         attendanceRecordRepository.deleteAll();
+        otAuthorizationRepository.deleteAll();
+        workingDaysConfigRepository.deleteAll();
+        dayLevelOTConfigRepository.deleteAll();
         employeeRepository.deleteAll();
         syncClientRepository.deleteAll();
         companyRepository.deleteAll();
@@ -101,6 +113,20 @@ class SyncControllerIT {
         return new EmployeeSyncRequest(employeeCode, name, rfidCardId, EmployeeCategory.STANDARD,
                 new BigDecimal("1500.00"), new BigDecimal("0.08"), new BigDecimal("0.12"),
                 new BigDecimal("0.03"), true);
+    }
+
+    private DayLevelOtSyncRequest dayLevelOtRequestFor(LocalDate date, boolean isAllStaffOt, DayType dayType) {
+        return new DayLevelOtSyncRequest(date, isAllStaffOt, dayType, 1L, Instant.parse("2026-08-01T00:00:00Z"));
+    }
+
+    private OtAuthorizationSyncRequest otAuthRequestFor(String employeeCode, LocalDate authDate, boolean authorized) {
+        return new OtAuthorizationSyncRequest(employeeCode, authDate, authorized, "admin",
+                Instant.parse("2026-08-01T00:00:00Z"));
+    }
+
+    private WorkingDaysSyncRequest workingDaysRequestFor(String periodMonth, int availableWorkingDays) {
+        return new WorkingDaysSyncRequest(periodMonth, availableWorkingDays, "admin",
+                Instant.parse("2026-08-01T00:00:00Z"));
     }
 
     // --- auth ---
@@ -419,5 +445,350 @@ class SyncControllerIT {
                 .andExpect(jsonPath("$[0].status").value("ACCEPTED"));
 
         assertThat(attendanceRecordRepository.findBySyncUuid("uuid-300")).isPresent();
+    }
+
+    // --- day-level OT sync: auth ---
+
+    @Test
+    void dayLevelOtMissingApiKeyReturns401() throws Exception {
+        mockMvc.perform(post("/api/sync/day-level-ot")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(List.of())))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void dayLevelOtInvalidApiKeyReturns401() throws Exception {
+        mockMvc.perform(post("/api/sync/day-level-ot")
+                        .header("X-API-Key", "not-a-real-key")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(List.of())))
+                .andExpect(status().isUnauthorized());
+    }
+
+    // --- day-level OT sync: upsert / segregation / partial failure ---
+
+    @Test
+    void dayLevelOtUpsertInsertsNewConfig() throws Exception {
+        var req = dayLevelOtRequestFor(LocalDate.of(2026, 8, 2), false, DayType.SUNDAY);
+
+        mockMvc.perform(post("/api/sync/day-level-ot")
+                        .header("X-API-Key", apiKeyA)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(List.of(req))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].configDate").value("2026-08-02"))
+                .andExpect(jsonPath("$[0].status").value("ACCEPTED"));
+
+        var saved = dayLevelOTConfigRepository
+                .findByCompanyIdAndConfigDate(companyA.getId(), LocalDate.of(2026, 8, 2)).orElseThrow();
+        assertThat(saved.getDayType()).isEqualTo(DayType.SUNDAY);
+        assertThat(saved.isAllStaffOt()).isFalse();
+    }
+
+    @Test
+    void dayLevelOtUpsertUpdatesExistingConfig() throws Exception {
+        var initial = dayLevelOtRequestFor(LocalDate.of(2026, 8, 3), false, DayType.WEEKDAY);
+        mockMvc.perform(post("/api/sync/day-level-ot")
+                        .header("X-API-Key", apiKeyA)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(List.of(initial))))
+                .andExpect(status().isOk());
+
+        // Retroactively marked as a mercantile holiday.
+        var updated = dayLevelOtRequestFor(LocalDate.of(2026, 8, 3), true, DayType.MERCANTILE_HOLIDAY);
+        mockMvc.perform(post("/api/sync/day-level-ot")
+                        .header("X-API-Key", apiKeyA)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(List.of(updated))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].status").value("UPDATED"));
+
+        assertThat(dayLevelOTConfigRepository.findAll()).hasSize(1);
+        var saved = dayLevelOTConfigRepository
+                .findByCompanyIdAndConfigDate(companyA.getId(), LocalDate.of(2026, 8, 3)).orElseThrow();
+        assertThat(saved.getDayType()).isEqualTo(DayType.MERCANTILE_HOLIDAY);
+        assertThat(saved.isAllStaffOt()).isTrue();
+    }
+
+    @Test
+    void twoCompaniesSameConfigDateStaySegregated() throws Exception {
+        var reqA = dayLevelOtRequestFor(LocalDate.of(2026, 8, 4), false, DayType.SPECIAL);
+        var reqB = dayLevelOtRequestFor(LocalDate.of(2026, 8, 4), true, DayType.MERCANTILE_HOLIDAY);
+
+        mockMvc.perform(post("/api/sync/day-level-ot")
+                        .header("X-API-Key", apiKeyA)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(List.of(reqA))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].status").value("ACCEPTED"));
+
+        mockMvc.perform(post("/api/sync/day-level-ot")
+                        .header("X-API-Key", apiKeyB)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(List.of(reqB))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].status").value("ACCEPTED"));
+
+        var savedA = dayLevelOTConfigRepository
+                .findByCompanyIdAndConfigDate(companyA.getId(), LocalDate.of(2026, 8, 4)).orElseThrow();
+        var savedB = dayLevelOTConfigRepository
+                .findByCompanyIdAndConfigDate(companyB.getId(), LocalDate.of(2026, 8, 4)).orElseThrow();
+        assertThat(savedA.getDayType()).isEqualTo(DayType.SPECIAL);
+        assertThat(savedB.getDayType()).isEqualTo(DayType.MERCANTILE_HOLIDAY);
+    }
+
+    @Test
+    void dayLevelOtBatchWithOneBadRecordRejectsOnlyThatRecord() throws Exception {
+        var good1 = dayLevelOtRequestFor(LocalDate.of(2026, 8, 5), false, DayType.WEEKDAY);
+        var bad = new DayLevelOtSyncRequest(null, false, DayType.WEEKDAY, 1L, Instant.parse("2026-08-01T00:00:00Z"));
+        var good2 = dayLevelOtRequestFor(LocalDate.of(2026, 8, 6), false, DayType.WEEKDAY);
+
+        mockMvc.perform(post("/api/sync/day-level-ot")
+                        .header("X-API-Key", apiKeyA)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(List.of(good1, bad, good2))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].status").value("ACCEPTED"))
+                .andExpect(jsonPath("$[1].status").value("REJECTED"))
+                .andExpect(jsonPath("$[1].reason").isNotEmpty())
+                .andExpect(jsonPath("$[2].status").value("ACCEPTED"));
+
+        assertThat(dayLevelOTConfigRepository.findByCompanyIdAndConfigDate(companyA.getId(), LocalDate.of(2026, 8, 5)))
+                .isPresent();
+        assertThat(dayLevelOTConfigRepository.findByCompanyIdAndConfigDate(companyA.getId(), LocalDate.of(2026, 8, 6)))
+                .isPresent();
+    }
+
+    // --- OT authorization sync: auth ---
+
+    @Test
+    void otAuthMissingApiKeyReturns401() throws Exception {
+        mockMvc.perform(post("/api/sync/ot-authorizations")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(List.of())))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void otAuthInvalidApiKeyReturns401() throws Exception {
+        mockMvc.perform(post("/api/sync/ot-authorizations")
+                        .header("X-API-Key", "not-a-real-key")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(List.of())))
+                .andExpect(status().isUnauthorized());
+    }
+
+    // --- OT authorization sync: upsert / segregation / partial failure ---
+
+    @Test
+    void otAuthUpsertInsertsNewAuthorization() throws Exception {
+        var req = otAuthRequestFor("EMP-001", LocalDate.of(2026, 8, 2), true);
+
+        mockMvc.perform(post("/api/sync/ot-authorizations")
+                        .header("X-API-Key", apiKeyA)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(List.of(req))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].employeeCode").value("EMP-001"))
+                .andExpect(jsonPath("$[0].status").value("ACCEPTED"));
+
+        var saved = otAuthorizationRepository
+                .findByCompanyIdAndEmployeeCodeAndAuthDate(companyA.getId(), "EMP-001", LocalDate.of(2026, 8, 2))
+                .orElseThrow();
+        assertThat(saved.isAuthorized()).isTrue();
+    }
+
+    @Test
+    void otAuthUpsertUpdatesExistingAuthorization() throws Exception {
+        var initial = otAuthRequestFor("EMP-001", LocalDate.of(2026, 8, 3), true);
+        mockMvc.perform(post("/api/sync/ot-authorizations")
+                        .header("X-API-Key", apiKeyA)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(List.of(initial))))
+                .andExpect(status().isOk());
+
+        var revoked = otAuthRequestFor("EMP-001", LocalDate.of(2026, 8, 3), false);
+        mockMvc.perform(post("/api/sync/ot-authorizations")
+                        .header("X-API-Key", apiKeyA)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(List.of(revoked))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].status").value("UPDATED"));
+
+        assertThat(otAuthorizationRepository.findAll()).hasSize(1);
+        var saved = otAuthorizationRepository
+                .findByCompanyIdAndEmployeeCodeAndAuthDate(companyA.getId(), "EMP-001", LocalDate.of(2026, 8, 3))
+                .orElseThrow();
+        assertThat(saved.isAuthorized()).isFalse();
+    }
+
+    @Test
+    void twoCompaniesSameEmployeeCodeAndDateStaySegregatedForOtAuth() throws Exception {
+        saveEmployee(companyB.getId(), "EMP-001");
+        var reqA = otAuthRequestFor("EMP-001", LocalDate.of(2026, 8, 4), true);
+        var reqB = otAuthRequestFor("EMP-001", LocalDate.of(2026, 8, 4), false);
+
+        mockMvc.perform(post("/api/sync/ot-authorizations")
+                        .header("X-API-Key", apiKeyA)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(List.of(reqA))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].status").value("ACCEPTED"));
+
+        mockMvc.perform(post("/api/sync/ot-authorizations")
+                        .header("X-API-Key", apiKeyB)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(List.of(reqB))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].status").value("ACCEPTED"));
+
+        var savedA = otAuthorizationRepository
+                .findByCompanyIdAndEmployeeCodeAndAuthDate(companyA.getId(), "EMP-001", LocalDate.of(2026, 8, 4))
+                .orElseThrow();
+        var savedB = otAuthorizationRepository
+                .findByCompanyIdAndEmployeeCodeAndAuthDate(companyB.getId(), "EMP-001", LocalDate.of(2026, 8, 4))
+                .orElseThrow();
+        assertThat(savedA.isAuthorized()).isTrue();
+        assertThat(savedB.isAuthorized()).isFalse();
+    }
+
+    @Test
+    void otAuthBatchWithUnknownEmployeeCodeRejectsOnlyThatRecord() throws Exception {
+        var good1 = otAuthRequestFor("EMP-001", LocalDate.of(2026, 8, 5), true);
+        var bad = otAuthRequestFor("NO-SUCH-EMPLOYEE", LocalDate.of(2026, 8, 5), true);
+        var good2 = otAuthRequestFor("EMP-001", LocalDate.of(2026, 8, 6), true);
+
+        mockMvc.perform(post("/api/sync/ot-authorizations")
+                        .header("X-API-Key", apiKeyA)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(List.of(good1, bad, good2))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].status").value("ACCEPTED"))
+                .andExpect(jsonPath("$[1].status").value("REJECTED"))
+                .andExpect(jsonPath("$[1].reason").isNotEmpty())
+                .andExpect(jsonPath("$[2].status").value("ACCEPTED"));
+
+        assertThat(otAuthorizationRepository
+                .findByCompanyIdAndEmployeeCodeAndAuthDate(companyA.getId(), "EMP-001", LocalDate.of(2026, 8, 5)))
+                .isPresent();
+        assertThat(otAuthorizationRepository
+                .findByCompanyIdAndEmployeeCodeAndAuthDate(companyA.getId(), "EMP-001", LocalDate.of(2026, 8, 6)))
+                .isPresent();
+        assertThat(otAuthorizationRepository
+                .findByCompanyIdAndEmployeeCodeAndAuthDate(companyA.getId(), "NO-SUCH-EMPLOYEE", LocalDate.of(2026, 8, 5)))
+                .isEmpty();
+    }
+
+    // --- working-days sync: auth ---
+
+    @Test
+    void workingDaysMissingApiKeyReturns401() throws Exception {
+        mockMvc.perform(post("/api/sync/working-days")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(List.of())))
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
+    void workingDaysInvalidApiKeyReturns401() throws Exception {
+        mockMvc.perform(post("/api/sync/working-days")
+                        .header("X-API-Key", "not-a-real-key")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(List.of())))
+                .andExpect(status().isUnauthorized());
+    }
+
+    // --- working-days sync: upsert / segregation / partial failure ---
+
+    @Test
+    void workingDaysUpsertInsertsNewConfig() throws Exception {
+        var req = workingDaysRequestFor("2026-08", 25);
+
+        mockMvc.perform(post("/api/sync/working-days")
+                        .header("X-API-Key", apiKeyA)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(List.of(req))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].periodMonth").value("2026-08"))
+                .andExpect(jsonPath("$[0].status").value("ACCEPTED"));
+
+        var saved = workingDaysConfigRepository
+                .findByCompanyIdAndPeriodMonth(companyA.getId(), "2026-08").orElseThrow();
+        assertThat(saved.getAvailableWorkingDays()).isEqualTo(25);
+        assertThat(saved.getUpdatedBy()).isEqualTo("admin");
+    }
+
+    @Test
+    void workingDaysUpsertUpdatesExistingConfig() throws Exception {
+        var initial = workingDaysRequestFor("2026-09", 24);
+        mockMvc.perform(post("/api/sync/working-days")
+                        .header("X-API-Key", apiKeyA)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(List.of(initial))))
+                .andExpect(status().isOk());
+
+        // Corrected after a public holiday was reclassified.
+        var updated = workingDaysRequestFor("2026-09", 23);
+        mockMvc.perform(post("/api/sync/working-days")
+                        .header("X-API-Key", apiKeyA)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(List.of(updated))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].status").value("UPDATED"));
+
+        assertThat(workingDaysConfigRepository.findAll()).hasSize(1);
+        var saved = workingDaysConfigRepository
+                .findByCompanyIdAndPeriodMonth(companyA.getId(), "2026-09").orElseThrow();
+        assertThat(saved.getAvailableWorkingDays()).isEqualTo(23);
+    }
+
+    @Test
+    void twoCompaniesSamePeriodMonthStaySegregatedForWorkingDays() throws Exception {
+        var reqA = workingDaysRequestFor("2026-10", 26);
+        var reqB = workingDaysRequestFor("2026-10", 22);
+
+        mockMvc.perform(post("/api/sync/working-days")
+                        .header("X-API-Key", apiKeyA)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(List.of(reqA))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].status").value("ACCEPTED"));
+
+        mockMvc.perform(post("/api/sync/working-days")
+                        .header("X-API-Key", apiKeyB)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(List.of(reqB))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].status").value("ACCEPTED"));
+
+        var savedA = workingDaysConfigRepository
+                .findByCompanyIdAndPeriodMonth(companyA.getId(), "2026-10").orElseThrow();
+        var savedB = workingDaysConfigRepository
+                .findByCompanyIdAndPeriodMonth(companyB.getId(), "2026-10").orElseThrow();
+        assertThat(savedA.getAvailableWorkingDays()).isEqualTo(26);
+        assertThat(savedB.getAvailableWorkingDays()).isEqualTo(22);
+    }
+
+    @Test
+    void workingDaysBatchWithOneBadRecordRejectsOnlyThatRecord() throws Exception {
+        var good1 = workingDaysRequestFor("2026-11", 25);
+        var bad = new WorkingDaysSyncRequest(null, 25, "admin", Instant.parse("2026-08-01T00:00:00Z"));
+        var good2 = workingDaysRequestFor("2026-12", 24);
+
+        mockMvc.perform(post("/api/sync/working-days")
+                        .header("X-API-Key", apiKeyA)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(List.of(good1, bad, good2))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].status").value("ACCEPTED"))
+                .andExpect(jsonPath("$[1].status").value("REJECTED"))
+                .andExpect(jsonPath("$[1].reason").isNotEmpty())
+                .andExpect(jsonPath("$[2].status").value("ACCEPTED"));
+
+        assertThat(workingDaysConfigRepository.findByCompanyIdAndPeriodMonth(companyA.getId(), "2026-11"))
+                .isPresent();
+        assertThat(workingDaysConfigRepository.findByCompanyIdAndPeriodMonth(companyA.getId(), "2026-12"))
+                .isPresent();
     }
 }
