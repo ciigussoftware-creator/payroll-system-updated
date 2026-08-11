@@ -81,6 +81,10 @@ public class SecurityConfig {
         configuration.setAllowedOrigins(List.of("http://localhost:3000", "http://localhost:5173"));
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE"));
         configuration.setAllowedHeaders(List.of("Authorization", "Content-Type", "X-API-Key"));
+        // Exposed so the web frontend can read the export filename from the
+        // Content-Disposition header on the payroll Excel export response —
+        // browsers hide response headers from JS by default unless listed here.
+        configuration.setExposedHeaders(List.of("Content-Disposition"));
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);
