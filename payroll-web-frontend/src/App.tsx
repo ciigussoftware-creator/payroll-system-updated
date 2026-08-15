@@ -3,6 +3,7 @@ import { useAuth } from './auth/AuthContext'
 import { ProtectedRoute } from './auth/ProtectedRoute'
 import { DashboardPage } from './pages/DashboardPage'
 import { LoginPage } from './pages/LoginPage'
+import { TimestampsPage } from './pages/TimestampsPage'
 
 function App() {
   const { isAuthenticated } = useAuth()
@@ -15,6 +16,14 @@ function App() {
         element={
           <ProtectedRoute>
             <DashboardPage />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/timestamps"
+        element={
+          <ProtectedRoute>
+            <TimestampsPage />
           </ProtectedRoute>
         }
       />
