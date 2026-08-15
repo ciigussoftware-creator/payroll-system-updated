@@ -36,7 +36,29 @@
       "Bash(mvn -q -DskipTests compile)",
       "Bash(tee /c/Users/User/AppData/Local/Temp/claude/C--Personal-Cigus-woodLanka-payroll-system-updated/1735a269-8184-4280-99f9-e54ff6c48286/scratchpad/verify.log)",
       "PowerShell(mvn *)",
-      "PowerShell(if \\($env:JWT_SECRET\\) { Write-Output \"SET \\(length=$\\($env:JWT_SECRET.Length\\)\\)\" } else { Write-Output \"NOT SET\" })"
+      "PowerShell(if \\($env:JWT_SECRET\\) { Write-Output \"SET \\(length=$\\($env:JWT_SECRET.Length\\)\\)\" } else { Write-Output \"NOT SET\" })",
+      "Bash(npm -v)",
+      "Bash(npm create *)",
+      "Bash(npm install *)",
+      "Bash(npm ls *)",
+      "Bash(npm uninstall *)",
+      "Bash(rm -f src/App.css src/assets/hero.png src/assets/react.svg src/assets/vite.svg)",
+      "Bash(rmdir src/assets)",
+      "Bash(npm run *)",
+      "Bash(npm view *)",
+      "Bash(powershell -NoProfile -Command \"Get-NetTCPConnection -LocalPort 8080 -ErrorAction SilentlyContinue | Select-Object -First 5\" 2>&1)",
+      "Bash(powershell -NoProfile -Command \"Get-Process -Id \\(Get-NetTCPConnection -LocalPort 8080\\).OwningProcess | Select-Object Id,ProcessName,StartTime\" 2>&1)",
+      "Bash(powershell -NoProfile -Command \"\\(Get-CimInstance Win32_Process -Filter 'ProcessId=35432'\\).CommandLine\" 2>&1)",
+      "Bash(powershell -NoProfile -Command \"Get-Process java -ErrorAction SilentlyContinue | Select-Object Id,StartTime\")",
+      "Bash(powershell -NoProfile -Command \"\\(Get-CimInstance Win32_Process -Filter 'ProcessId=42528'\\).CommandLine\")",
+      "Bash(powershell -NoProfile -Command \"Get-NetTCPConnection -OwningProcess 42528 -ErrorAction SilentlyContinue\")",
+      "Bash(JWT_SECRET=\"local-dev-secret-key-for-manual-verification-only-not-for-prod-0123456789\" SERVER_PORT=8081 nohup mvn -q org.springframework.boot:spring-boot-maven-plugin:run)",
+      "Bash(disown)",
+      "Bash(mvn -q -pl payroll-web-backend -am install -DskipTests)",
+      "Bash(docker exec payroll-postgres *)",
+      "Bash(mvn -q dependency:build-classpath -Dmdep.outputFile=cp.txt)",
+      "Bash(powershell -NoProfile -Command \"Get-Process -Id \\(Get-NetTCPConnection -LocalPort 5173\\).OwningProcess -ErrorAction SilentlyContinue | Stop-Process -Force\")",
+      "Bash(nohup npm run dev -- --host 127.0.0.1)"
     ]
   }
 }
