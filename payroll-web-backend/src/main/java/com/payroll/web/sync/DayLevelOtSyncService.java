@@ -40,26 +40,33 @@ public class DayLevelOtSyncService {
 
     private DayLevelOtSyncResult processOne(Long companyId, DayLevelOtSyncRequest request) {
         try {
-            Optional<CloudDayLevelOTConfig> existing =
-                    repository.findByCompanyIdAndConfigDate(companyId, request.configDate());
-
-            if (existing.isEmpty()) {
-                CloudDayLevelOTConfig config = new CloudDayLevelOTConfig();
-                config.setCompanyId(companyId);
-                config.setConfigDate(request.configDate());
-                applyIncoming(config, request);
-                repository.save(config);
-                return DayLevelOtSyncResult.accepted(request.configDate());
-            }
-
-            CloudDayLevelOTConfig current = existing.get();
-            applyIncoming(current, request);
-            repository.save(current);
-            return DayLevelOtSyncResult.updated(request.configDate());
+            UpsertOutcome outcome = upsert(companyId, request);
+            return outcome.wasNew()
+                    ? DayLevelOtSyncResult.accepted(request.configDate())
+                    : DayLevelOtSyncResult.updated(request.configDate());
         } catch (Exception e) {
             log.warn("Rejecting day-level OT sync record configDate={}: {}", request.configDate(), e.getMessage());
             return DayLevelOtSyncResult.rejected(request.configDate(), "Processing error: " + e.getMessage());
         }
+    }
+
+    /**
+     * Upserts a single day-level OT config by (companyId, configDate) — shared by the sync
+     * batch path above and the web-write endpoints in {@code com.payroll.web.otconfig}, so
+     * there is exactly one place that knows how to correctly upsert this table.
+     */
+    public UpsertOutcome upsert(Long companyId, DayLevelOtSyncRequest request) {
+        Optional<CloudDayLevelOTConfig> existing =
+                repository.findByCompanyIdAndConfigDate(companyId, request.configDate());
+
+        CloudDayLevelOTConfig config = existing.orElseGet(CloudDayLevelOTConfig::new);
+        if (existing.isEmpty()) {
+            config.setCompanyId(companyId);
+            config.setConfigDate(request.configDate());
+        }
+        applyIncoming(config, request);
+        repository.save(config);
+        return new UpsertOutcome(config, existing.isEmpty());
     }
 
     private void applyIncoming(CloudDayLevelOTConfig config, DayLevelOtSyncRequest request) {
@@ -68,4 +75,6 @@ public class DayLevelOtSyncService {
         config.setSetBy(request.setBy());
         config.setSetAt(request.setAt());
     }
+
+    public record UpsertOutcome(CloudDayLevelOTConfig config, boolean wasNew) {}
 }

@@ -186,6 +186,7 @@ export function DashboardPage() {
       <h1>Payroll Admin</h1>
       <p>Logged in as {username}</p>
       <Link to="/timestamps">Timestamp Corrections</Link>
+      <Link to="/ot-management">OT Management</Link>
       <button type="button" onClick={logout}>
         Logout
       </button>

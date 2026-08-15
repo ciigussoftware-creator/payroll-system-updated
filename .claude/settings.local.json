@@ -58,7 +58,15 @@
       "Bash(docker exec payroll-postgres *)",
       "Bash(mvn -q dependency:build-classpath -Dmdep.outputFile=cp.txt)",
       "Bash(powershell -NoProfile -Command \"Get-Process -Id \\(Get-NetTCPConnection -LocalPort 5173\\).OwningProcess -ErrorAction SilentlyContinue | Stop-Process -Force\")",
-      "Bash(nohup npm run dev -- --host 127.0.0.1)"
+      "Bash(nohup npm run dev -- --host 127.0.0.1)",
+      "Bash(mvn -q -pl payroll-web-backend -am compile -DskipTests)",
+      "Bash(set JWT_SECRET=test-secret-key-for-local-verification-must-be-at-least-256-bits-long-0123456789)",
+      "Bash(mvn -q -pl payroll-web-backend -am test -Dtest=OtConfigControllerIT,SyncControllerIT)",
+      "Bash(mvn -q -pl payroll-core,payroll-web-backend install -DskipTests)",
+      "Bash(export JWT_SECRET=test-secret-key-for-local-verification-must-be-at-least-256-bits-long-0123456789)",
+      "Bash(mvn -q -pl payroll-web-backend test -Dtest=OtConfigControllerIT,SyncControllerIT)",
+      "Bash(npx vitest *)",
+      "Bash(mvn -q install -DskipTests)"
     ]
   }
 }
