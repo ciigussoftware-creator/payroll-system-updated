@@ -20,4 +20,13 @@ public interface AttendanceRecordRepository extends JpaRepository<AttendanceReco
             @Param("companyId") Long companyId,
             @Param("fromDt") LocalDateTime fromDt,
             @Param("toDt") LocalDateTime toDt);
+
+    @Query("SELECT r FROM AttendanceRecord r JOIN FETCH r.employee " +
+            "WHERE r.employee.id = :employeeId " +
+            "AND r.scanDatetime >= :fromDt AND r.scanDatetime < :toDt " +
+            "ORDER BY r.scanDatetime")
+    List<AttendanceRecord> findByEmployeeIdAndScanDatetimeRange(
+            @Param("employeeId") Long employeeId,
+            @Param("fromDt") LocalDateTime fromDt,
+            @Param("toDt") LocalDateTime toDt);
 }
