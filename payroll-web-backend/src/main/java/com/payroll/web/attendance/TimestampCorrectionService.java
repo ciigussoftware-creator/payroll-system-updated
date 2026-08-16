@@ -78,6 +78,7 @@ public class TimestampCorrectionService {
         attendanceRecordRepository.save(record);
 
         AuditLogEntry audit = new AuditLogEntry();
+        audit.setCompanyId(companyId);
         audit.setEntryDatetime(clock.instant());
         audit.setUsername(username);
         audit.setAction("TIMESTAMP_CORRECTED");

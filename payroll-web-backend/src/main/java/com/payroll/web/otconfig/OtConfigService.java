@@ -78,6 +78,7 @@ public class OtConfigService {
         String newValue = outcome.config().getDayType() + "/" + outcome.config().isAllStaffOt();
 
         AuditLogEntry audit = new AuditLogEntry();
+        audit.setCompanyId(companyId);
         audit.setEntryDatetime(clock.instant());
         audit.setUsername(username);
         audit.setAction("OT_DAYLEVEL_SET");
@@ -110,6 +111,7 @@ public class OtConfigService {
                 new OtAuthorizationSyncRequest(employeeCode, date, request.authorized(), username, clock.instant()));
 
         AuditLogEntry audit = new AuditLogEntry();
+        audit.setCompanyId(companyId);
         audit.setEntryDatetime(clock.instant());
         audit.setUsername(username);
         audit.setAction("OT_EMPLOYEE_SET");

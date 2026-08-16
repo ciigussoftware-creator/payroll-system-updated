@@ -187,6 +187,8 @@ export function DashboardPage() {
       <p>Logged in as {username}</p>
       <Link to="/timestamps">Timestamp Corrections</Link>
       <Link to="/ot-management">OT Management</Link>
+      <Link to="/notes">Notes</Link>
+      <Link to="/audit-log">Audit Log</Link>
       <button type="button" onClick={logout}>
         Logout
       </button>

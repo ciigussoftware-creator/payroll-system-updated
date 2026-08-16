@@ -66,7 +66,22 @@
       "Bash(export JWT_SECRET=test-secret-key-for-local-verification-must-be-at-least-256-bits-long-0123456789)",
       "Bash(mvn -q -pl payroll-web-backend test -Dtest=OtConfigControllerIT,SyncControllerIT)",
       "Bash(npx vitest *)",
-      "Bash(mvn -q install -DskipTests)"
+      "Bash(mvn -q install -DskipTests)",
+      "Bash(git -C \"D:/Projects/payroll\" status --porcelain=v1)",
+      "Bash(git *)",
+      "Bash(npm test *)",
+      "Bash(netstat -ano)",
+      "Bash(mvn install *)",
+      "Bash(export JWT_SECRET=\"dGVzdC1zZWNyZXQtZm9yLXBoYXNlLTZlLXZlcmlmaWNhdGlvbi1ydW4tb25seQ==\")",
+      "Bash(mvn clean *)",
+      "Bash(export JWT_SECRET=\"ZGV2LW1hbnVhbC12ZXJpZmljYXRpb24tc2VjcmV0LWZvci1waGFzZS02ZQ==\")",
+      "Bash(mvn -pl payroll-web-backend -am spring-boot:run)",
+      "Bash(echo \"started with pid $!\")",
+      "Bash(jobs)",
+      "Bash(tasklist //FI \"PID eq 21592\")",
+      "Bash(taskkill *)",
+      "Bash(xargs grep -l \"JwtService\\\\|@TestConfiguration\\\\|@MockBean\\\\|@SpyBean\\\\|SecretKey\")",
+      "Bash(python *)"
     ]
   }
 }
