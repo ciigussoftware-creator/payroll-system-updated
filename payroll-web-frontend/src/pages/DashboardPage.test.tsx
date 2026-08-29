@@ -222,7 +222,7 @@ describe('DashboardPage', () => {
     const dataRow = (await screen.findByText('EMP-NOWD')).closest('tr') as HTMLElement
     const naCells = within(dataRow).getAllByText('N/A')
     expect(naCells).toHaveLength(9)
-    expect(dataRow).toHaveStyle({ backgroundColor: '#fdecea' })
+    expect(dataRow).toHaveClass('row--flagged')
   })
 
   it('shows a loading state while the calculate fetch is pending', async () => {

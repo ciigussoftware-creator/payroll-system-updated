@@ -120,7 +120,7 @@ describe('NotesPage', () => {
 
     renderNotesPage()
     await loadWithEmployee(user, 'EMP-001')
-    await screen.findByText('No notes for this employee.')
+    await screen.findByText('No notes yet for EMP-001.')
 
     await user.type(screen.getByLabelText('Date'), '2026-06-22')
     await user.type(screen.getByLabelText('Note'), 'New note')
@@ -147,7 +147,7 @@ describe('NotesPage', () => {
 
     renderNotesPage()
     await loadWithEmployee(user, 'EMP-001')
-    await screen.findByText('No notes for this employee.')
+    await screen.findByText('No notes yet for EMP-001.')
 
     await user.type(screen.getByLabelText('Date'), '2026-06-22')
     expect(screen.getByRole('button', { name: 'Add Note' })).toBeDisabled()

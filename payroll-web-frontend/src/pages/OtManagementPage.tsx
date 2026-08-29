@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
 import { apiFetch } from '../api/client'
-import { useAuth } from '../auth/AuthContext'
+import { AppShell } from '../layout/AppShell'
 
 interface Company {
   id: number
@@ -27,16 +26,15 @@ interface EmployeeAuthorization {
 
 const DAY_TYPES: DayType[] = ['SUNDAY', 'WEEKDAY', 'MERCANTILE_HOLIDAY', 'SPECIAL']
 
-const LOAD_ERROR = 'Could not load OT configuration. Please try again.'
-const DAY_LEVEL_SAVE_ERROR = 'Could not save the day-level OT switch. Please try again.'
-const EMPLOYEE_SAVE_ERROR = 'Could not save the employee authorization. Please try again.'
+const LOAD_ERROR = 'Could not load OT configuration. Try again.'
+const DAY_LEVEL_SAVE_ERROR = 'Could not save the day-level OT switch. Try again.'
+const EMPLOYEE_SAVE_ERROR = 'Could not save the employee authorization. Try again.'
 
 function todayIsoDate(): string {
   return new Date().toISOString().slice(0, 10)
 }
 
 export function OtManagementPage() {
-  const { username, logout } = useAuth()
   const [companies, setCompanies] = useState<Company[]>([])
   const [companyId, setCompanyId] = useState('')
   const [date, setDate] = useState('')
@@ -200,18 +198,18 @@ export function OtManagementPage() {
     employeeSaving || newEmployeeCode.trim() === '' || (isRetroactive && employeeReason.trim() === '')
 
   return (
-    <main>
-      <h1>OT Management</h1>
-      <p>Logged in as {username}</p>
-      <Link to="/">Back to Dashboard</Link>
-      <button type="button" onClick={logout}>
-        Logout
-      </button>
-
-      <section>
-        <div>
-          <label htmlFor="company">Company</label>
-          <select id="company" value={companyId} onChange={(event) => setCompanyId(event.target.value)}>
+    <AppShell title="OT Management">
+      <section className="filters">
+        <div className="field">
+          <label className="field__label" htmlFor="company">
+            Company
+          </label>
+          <select
+            id="company"
+            className="select"
+            value={companyId}
+            onChange={(event) => setCompanyId(event.target.value)}
+          >
             <option value="">Select a company</option>
             {companies.map((company) => (
               <option key={company.id} value={company.id}>
@@ -221,25 +219,39 @@ export function OtManagementPage() {
           </select>
         </div>
 
-        <div>
-          <label htmlFor="date">Date</label>
-          <input id="date" type="date" value={date} onChange={(event) => setDate(event.target.value)} />
+        <div className="field">
+          <label className="field__label" htmlFor="date">
+            Date
+          </label>
+          <input
+            id="date"
+            type="date"
+            className="input"
+            value={date}
+            onChange={(event) => setDate(event.target.value)}
+          />
         </div>
 
-        <button type="button" onClick={loadAll} disabled={!canLoad || loading}>
+        <button type="button" className="btn btn--primary" onClick={loadAll} disabled={!canLoad || loading}>
           {loading ? 'Loading…' : 'Load'}
         </button>
       </section>
 
-      {loading && <p>Loading OT configuration…</p>}
-      {error && <p role="alert">{error}</p>}
+      {loading && <p className="state">Loading OT configuration…</p>}
+      {error && (
+        <p className="alert" role="alert">
+          {error}
+        </p>
+      )}
 
       {dayLevelState && !loading && (
-        <section>
+        <section className="panel">
           <h2>Day-Level OT Configuration</h2>
 
-          <div>
-            <label htmlFor="allStaffOt">All Staff OT</label>
+          <div className="field">
+            <label className="field__label" htmlFor="allStaffOt">
+              All Staff OT
+            </label>
             <input
               id="allStaffOt"
               type="checkbox"
@@ -248,10 +260,13 @@ export function OtManagementPage() {
             />
           </div>
 
-          <div>
-            <label htmlFor="dayType">Day Type</label>
+          <div className="field">
+            <label className="field__label" htmlFor="dayType">
+              Day Type
+            </label>
             <select
               id="dayType"
+              className="select"
               value={dayLevelDayType}
               onChange={(event) => setDayLevelDayType(event.target.value as DayType)}
             >
@@ -264,66 +279,80 @@ export function OtManagementPage() {
           </div>
 
           {isRetroactive && (
-            <div>
-              <label htmlFor="dayLevelReason">Reason (required for retroactive changes)</label>
+            <div className="field">
+              <label className="field__label" htmlFor="dayLevelReason">
+                Reason (required for retroactive changes)
+              </label>
               <input
                 id="dayLevelReason"
                 type="text"
+                className="input"
                 value={dayLevelReason}
                 onChange={(event) => setDayLevelReason(event.target.value)}
               />
             </div>
           )}
 
-          {dayLevelSaveError && <p role="alert">{dayLevelSaveError}</p>}
+          {dayLevelSaveError && (
+            <p className="alert" role="alert">
+              {dayLevelSaveError}
+            </p>
+          )}
 
-          <button type="button" onClick={handleSaveDayLevel} disabled={dayLevelSaveDisabled}>
+          <button type="button" className="btn btn--primary" onClick={handleSaveDayLevel} disabled={dayLevelSaveDisabled}>
             {dayLevelSaving ? 'Saving…' : 'Save Day-Level OT'}
           </button>
         </section>
       )}
 
       {employeeAuths && !loading && (
-        <section>
+        <section className="panel">
           <h2>Per-Employee OT Authorization</h2>
 
-          {employeeAuths.length === 0 && <p>No employee authorizations set for that date.</p>}
+          {employeeAuths.length === 0 && <p className="state">No employee overrides set for {date}.</p>}
 
           {employeeAuths.length > 0 && (
-            <table>
-              <thead>
-                <tr>
-                  <th>Employee Code</th>
-                  <th>Authorized</th>
-                  <th>Set By</th>
-                  <th>Set At</th>
-                </tr>
-              </thead>
-              <tbody>
-                {employeeAuths.map((auth) => (
-                  <tr key={auth.employeeCode}>
-                    <td>{auth.employeeCode}</td>
-                    <td>{auth.authorized ? 'Yes' : 'No'}</td>
-                    <td>{auth.setBy}</td>
-                    <td>{auth.setAt}</td>
+            <div className="table-wrap">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>Employee Code</th>
+                    <th>Authorized</th>
+                    <th>Set By</th>
+                    <th>Set At</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {employeeAuths.map((auth) => (
+                    <tr key={auth.employeeCode}>
+                      <td>{auth.employeeCode}</td>
+                      <td>{auth.authorized ? 'Yes' : 'No'}</td>
+                      <td>{auth.setBy}</td>
+                      <td>{auth.setAt}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
 
-          <div>
-            <label htmlFor="newEmployeeCode">Employee Code</label>
+          <div className="field">
+            <label className="field__label" htmlFor="newEmployeeCode">
+              Employee Code
+            </label>
             <input
               id="newEmployeeCode"
               type="text"
+              className="input"
               value={newEmployeeCode}
               onChange={(event) => setNewEmployeeCode(event.target.value)}
             />
           </div>
 
-          <div>
-            <label htmlFor="newEmployeeAuthorized">Authorized</label>
+          <div className="field">
+            <label className="field__label" htmlFor="newEmployeeAuthorized">
+              Authorized
+            </label>
             <input
               id="newEmployeeAuthorized"
               type="checkbox"
@@ -333,24 +362,36 @@ export function OtManagementPage() {
           </div>
 
           {isRetroactive && (
-            <div>
-              <label htmlFor="employeeReason">Reason (required for retroactive changes)</label>
+            <div className="field">
+              <label className="field__label" htmlFor="employeeReason">
+                Reason (required for retroactive changes)
+              </label>
               <input
                 id="employeeReason"
                 type="text"
+                className="input"
                 value={employeeReason}
                 onChange={(event) => setEmployeeReason(event.target.value)}
               />
             </div>
           )}
 
-          {employeeSaveError && <p role="alert">{employeeSaveError}</p>}
+          {employeeSaveError && (
+            <p className="alert" role="alert">
+              {employeeSaveError}
+            </p>
+          )}
 
-          <button type="button" onClick={handleSaveEmployeeAuth} disabled={employeeSaveDisabled}>
+          <button
+            type="button"
+            className="btn btn--primary"
+            onClick={handleSaveEmployeeAuth}
+            disabled={employeeSaveDisabled}
+          >
             {employeeSaving ? 'Saving…' : 'Save Employee Authorization'}
           </button>
         </section>
       )}
-    </main>
+    </AppShell>
   )
 }

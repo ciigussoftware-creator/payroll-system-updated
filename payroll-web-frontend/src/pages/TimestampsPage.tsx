@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
 import { apiFetch } from '../api/client'
-import { useAuth } from '../auth/AuthContext'
+import { AppShell } from '../layout/AppShell'
 
 interface Company {
   id: number
@@ -20,9 +19,8 @@ interface EditState {
   reason: string
 }
 
-const LOAD_ERROR = 'Could not load attendance records. Please try again.'
-const CORRECTION_ERROR = 'Could not save the correction. Please try again.'
-const MISSING_CLOCK_OUT_BACKGROUND = '#fdecea'
+const LOAD_ERROR = 'Could not load attendance records. Try again.'
+const CORRECTION_ERROR = 'Could not save the correction. Try again.'
 
 // datetime-local inputs use "YYYY-MM-DDTHH:mm" with no seconds; the backend's
 // LocalDateTime field accepts that directly.
@@ -31,7 +29,6 @@ function toDatetimeLocalValue(scanDatetime: string): string {
 }
 
 export function TimestampsPage() {
-  const { username, logout } = useAuth()
   const [companies, setCompanies] = useState<Company[]>([])
   const [companyId, setCompanyId] = useState('')
   const [employeeCode, setEmployeeCode] = useState('')
@@ -134,18 +131,18 @@ export function TimestampsPage() {
   }
 
   return (
-    <main>
-      <h1>Timestamp Corrections</h1>
-      <p>Logged in as {username}</p>
-      <Link to="/">Back to Dashboard</Link>
-      <button type="button" onClick={logout}>
-        Logout
-      </button>
-
-      <section>
-        <div>
-          <label htmlFor="company">Company</label>
-          <select id="company" value={companyId} onChange={(event) => setCompanyId(event.target.value)}>
+    <AppShell title="Timestamp Corrections">
+      <section className="filters">
+        <div className="field">
+          <label className="field__label" htmlFor="company">
+            Company
+          </label>
+          <select
+            id="company"
+            className="select"
+            value={companyId}
+            onChange={(event) => setCompanyId(event.target.value)}
+          >
             <option value="">Select a company</option>
             {companies.map((company) => (
               <option key={company.id} value={company.id}>
@@ -155,80 +152,129 @@ export function TimestampsPage() {
           </select>
         </div>
 
-        <div>
-          <label htmlFor="employeeCode">Employee Code</label>
+        <div className="field">
+          <label className="field__label" htmlFor="employeeCode">
+            Employee Code
+          </label>
           <input
             id="employeeCode"
             type="text"
+            className="input"
             value={employeeCode}
             onChange={(event) => setEmployeeCode(event.target.value)}
           />
         </div>
 
-        <div>
-          <label htmlFor="date">Date</label>
-          <input id="date" type="date" value={date} onChange={(event) => setDate(event.target.value)} />
+        <div className="field">
+          <label className="field__label" htmlFor="date">
+            Date
+          </label>
+          <input
+            id="date"
+            type="date"
+            className="input"
+            value={date}
+            onChange={(event) => setDate(event.target.value)}
+          />
         </div>
 
-        <button type="button" onClick={loadRecords} disabled={!canLoad || loading}>
+        <button type="button" className="btn btn--primary" onClick={loadRecords} disabled={!canLoad || loading}>
           {loading ? 'Loading…' : 'Load'}
         </button>
       </section>
 
-      {loading && <p>Loading attendance records…</p>}
-      {error && <p role="alert">{error}</p>}
-      {saveError && <p role="alert">{saveError}</p>}
-
-      {records && !loading && (
-        <table>
-          <thead>
-            <tr>
-              <th>Scan Type</th>
-              <th>Scan Time</th>
-              <th>Correction</th>
-            </tr>
-          </thead>
-          <tbody>
-            {records.map((record) => {
-              const edit = editStateFor(record)
-              const disabled = edit.reason.trim() === '' || savingId === record.id
-              return (
-                <tr
-                  key={record.id}
-                  style={record.missingClockOut ? { backgroundColor: MISSING_CLOCK_OUT_BACKGROUND } : undefined}
-                >
-                  <td>{record.scanType}</td>
-                  <td>
-                    {record.scanDatetime}
-                    {record.missingClockOut && ' (Missing Clock Out)'}
-                  </td>
-                  <td>
-                    <label htmlFor={`new-time-${record.id}`}>New Time</label>
-                    <input
-                      id={`new-time-${record.id}`}
-                      type="datetime-local"
-                      value={edit.newScanDatetime}
-                      onChange={(event) => updateEdit(record.id, { newScanDatetime: event.target.value }, record)}
-                    />
-                    <label htmlFor={`reason-${record.id}`}>Reason</label>
-                    <input
-                      id={`reason-${record.id}`}
-                      type="text"
-                      value={edit.reason}
-                      onChange={(event) => updateEdit(record.id, { reason: event.target.value }, record)}
-                    />
-                    <button type="button" onClick={() => handleCorrect(record)} disabled={disabled}>
-                      {savingId === record.id ? 'Saving…' : 'Correct'}
-                    </button>
-                  </td>
-                </tr>
-              )
-            })}
-          </tbody>
-        </table>
+      {loading && <p className="state">Loading attendance records…</p>}
+      {error && (
+        <p className="alert" role="alert">
+          {error}
+        </p>
+      )}
+      {saveError && (
+        <p className="alert" role="alert">
+          {saveError}
+        </p>
       )}
 
-      {records && !loading && records.length === 0 && <p>No attendance records for that date.</p>}
-    </main>
+      {records && !loading && records.length > 0 && (
+        <div className="table-wrap">
+          <table className="table">
+            <thead>
+              <tr>
+                <th>Scan Type</th>
+                <th>Scan Time</th>
+                <th>Correction</th>
+              </tr>
+            </thead>
+            <tbody>
+              {records.map((record, index) => {
+                const edit = editStateFor(record)
+                const disabled = edit.reason.trim() === '' || savingId === record.id
+                const isPairStart = index > 0 && record.scanType === 'ENTRY'
+                const rowClasses = [
+                  record.missingClockOut && 'row--flagged',
+                  isPairStart && 'row--pair-start',
+                ]
+                  .filter(Boolean)
+                  .join(' ')
+                return (
+                  <tr key={record.id} className={rowClasses || undefined}>
+                    <td>{record.scanType}</td>
+                    <td>
+                      {record.scanDatetime}
+                      {record.missingClockOut && ' (Missing Clock Out)'}
+                    </td>
+                    <td>
+                      <div className="field">
+                        <label className="field__label" htmlFor={`new-time-${record.id}`}>
+                          New Time
+                        </label>
+                        <input
+                          id={`new-time-${record.id}`}
+                          type="datetime-local"
+                          className="input"
+                          value={edit.newScanDatetime}
+                          onChange={(event) =>
+                            updateEdit(record.id, { newScanDatetime: event.target.value }, record)
+                          }
+                        />
+                      </div>
+                      <div className="field">
+                        <label className="field__label" htmlFor={`reason-${record.id}`}>
+                          Reason
+                        </label>
+                        <input
+                          id={`reason-${record.id}`}
+                          type="text"
+                          className="input"
+                          placeholder="Required to save"
+                          value={edit.reason}
+                          onChange={(event) => updateEdit(record.id, { reason: event.target.value }, record)}
+                        />
+                      </div>
+                      <button
+                        type="button"
+                        className="btn btn--primary"
+                        onClick={() => handleCorrect(record)}
+                        disabled={disabled}
+                      >
+                        {savingId === record.id ? 'Saving…' : 'Correct'}
+                      </button>
+                    </td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table>
+        </div>
+      )}
+
+      {records && !loading && records.length === 0 && (
+        <div className="panel">
+          <p className="state">
+            No attendance records for {employeeCode.trim()} on {date}.
+          </p>
+        </div>
+      )}
+    </AppShell>
   )
 }

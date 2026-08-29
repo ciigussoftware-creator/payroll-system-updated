@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
 import { apiFetch } from '../api/client'
-import { useAuth } from '../auth/AuthContext'
+import { AppShell } from '../layout/AppShell'
 
 interface Company {
   id: number
@@ -19,7 +18,7 @@ interface AuditLogEntry {
   reason: string | null
 }
 
-const LOAD_ERROR = 'Could not load the audit log. Please try again.'
+const LOAD_ERROR = 'Could not load the audit log. Try again.'
 
 const ENTITY_TYPES: { value: string; label: string }[] = [
   { value: '', label: 'All' },
@@ -37,7 +36,6 @@ function summarize(entry: AuditLogEntry): string {
 }
 
 export function AuditLogPage() {
-  const { username, logout } = useAuth()
   const [companies, setCompanies] = useState<Company[]>([])
   const [companyId, setCompanyId] = useState('')
   const [entityType, setEntityType] = useState('')
@@ -97,18 +95,18 @@ export function AuditLogPage() {
   }
 
   return (
-    <main>
-      <h1>Audit Log</h1>
-      <p>Logged in as {username}</p>
-      <Link to="/">Back to Dashboard</Link>
-      <button type="button" onClick={logout}>
-        Logout
-      </button>
-
-      <section>
-        <div>
-          <label htmlFor="company">Company</label>
-          <select id="company" value={companyId} onChange={(event) => setCompanyId(event.target.value)}>
+    <AppShell title="Audit Log">
+      <section className="filters">
+        <div className="field">
+          <label className="field__label" htmlFor="company">
+            Company
+          </label>
+          <select
+            id="company"
+            className="select"
+            value={companyId}
+            onChange={(event) => setCompanyId(event.target.value)}
+          >
             <option value="">Select a company</option>
             {companies.map((company) => (
               <option key={company.id} value={company.id}>
@@ -118,9 +116,16 @@ export function AuditLogPage() {
           </select>
         </div>
 
-        <div>
-          <label htmlFor="entityType">Entity Type</label>
-          <select id="entityType" value={entityType} onChange={(event) => setEntityType(event.target.value)}>
+        <div className="field">
+          <label className="field__label" htmlFor="entityType">
+            Entity Type
+          </label>
+          <select
+            id="entityType"
+            className="select"
+            value={entityType}
+            onChange={(event) => setEntityType(event.target.value)}
+          >
             {ENTITY_TYPES.map((et) => (
               <option key={et.value} value={et.value}>
                 {et.label}
@@ -129,52 +134,68 @@ export function AuditLogPage() {
           </select>
         </div>
 
-        <div>
-          <label htmlFor="from">From</label>
-          <input id="from" type="date" value={from} onChange={(event) => setFrom(event.target.value)} />
+        <div className="field">
+          <label className="field__label" htmlFor="from">
+            From
+          </label>
+          <input
+            id="from"
+            type="date"
+            className="input"
+            value={from}
+            onChange={(event) => setFrom(event.target.value)}
+          />
         </div>
 
-        <div>
-          <label htmlFor="to">To</label>
-          <input id="to" type="date" value={to} onChange={(event) => setTo(event.target.value)} />
+        <div className="field">
+          <label className="field__label" htmlFor="to">
+            To
+          </label>
+          <input id="to" type="date" className="input" value={to} onChange={(event) => setTo(event.target.value)} />
         </div>
 
-        <button type="button" onClick={loadEntries} disabled={!canLoad || loading}>
+        <button type="button" className="btn btn--primary" onClick={loadEntries} disabled={!canLoad || loading}>
           {loading ? 'Loading…' : 'Load'}
         </button>
       </section>
 
-      {loading && <p>Loading audit log…</p>}
-      {error && <p role="alert">{error}</p>}
+      {loading && <p className="state">Loading audit log…</p>}
+      {error && (
+        <p className="alert" role="alert">
+          {error}
+        </p>
+      )}
 
       {entries && !loading && (
         <>
-          {entries.length === 0 && <p>No audit entries found.</p>}
+          {entries.length === 0 && <p className="state">No audit entries match these filters.</p>}
 
           {entries.length > 0 && (
-            <table>
-              <thead>
-                <tr>
-                  <th>Timestamp</th>
-                  <th>Entity Type</th>
-                  <th>Changed By</th>
-                  <th>Summary</th>
-                </tr>
-              </thead>
-              <tbody>
-                {entries.map((entry) => (
-                  <tr key={entry.id}>
-                    <td>{entry.entryDatetime}</td>
-                    <td>{entry.action}</td>
-                    <td>{entry.username}</td>
-                    <td>{summarize(entry)}</td>
+            <div className="table-wrap">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>Timestamp</th>
+                    <th>Entity Type</th>
+                    <th>Changed By</th>
+                    <th>Summary</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {entries.map((entry) => (
+                    <tr key={entry.id}>
+                      <td>{entry.entryDatetime}</td>
+                      <td>{entry.action}</td>
+                      <td>{entry.username}</td>
+                      <td>{summarize(entry)}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
         </>
       )}
-    </main>
+    </AppShell>
   )
 }

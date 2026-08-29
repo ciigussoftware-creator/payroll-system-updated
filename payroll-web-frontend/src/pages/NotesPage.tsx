@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
 import { apiFetch } from '../api/client'
-import { useAuth } from '../auth/AuthContext'
+import { AppShell } from '../layout/AppShell'
 
 interface Company {
   id: number
@@ -17,11 +16,10 @@ interface Note {
   createdAt: string
 }
 
-const LOAD_ERROR = 'Could not load notes. Please try again.'
-const SAVE_ERROR = 'Could not save the note. Please try again.'
+const LOAD_ERROR = 'Could not load notes. Try again.'
+const SAVE_ERROR = 'Could not save the note. Try again.'
 
 export function NotesPage() {
-  const { username, logout } = useAuth()
   const [companies, setCompanies] = useState<Company[]>([])
   const [companyId, setCompanyId] = useState('')
   const [employeeCode, setEmployeeCode] = useState('')
@@ -115,18 +113,18 @@ export function NotesPage() {
   const addDisabled = saving || newText.trim() === '' || newDate === ''
 
   return (
-    <main>
-      <h1>Notes</h1>
-      <p>Logged in as {username}</p>
-      <Link to="/">Back to Dashboard</Link>
-      <button type="button" onClick={logout}>
-        Logout
-      </button>
-
-      <section>
-        <div>
-          <label htmlFor="company">Company</label>
-          <select id="company" value={companyId} onChange={(event) => setCompanyId(event.target.value)}>
+    <AppShell title="Notes">
+      <section className="filters">
+        <div className="field">
+          <label className="field__label" htmlFor="company">
+            Company
+          </label>
+          <select
+            id="company"
+            className="select"
+            value={companyId}
+            onChange={(event) => setCompanyId(event.target.value)}
+          >
             <option value="">Select a company</option>
             {companies.map((company) => (
               <option key={company.id} value={company.id}>
@@ -136,70 +134,98 @@ export function NotesPage() {
           </select>
         </div>
 
-        <div>
-          <label htmlFor="employeeCode">Employee Code</label>
+        <div className="field">
+          <label className="field__label" htmlFor="employeeCode">
+            Employee Code
+          </label>
           <input
             id="employeeCode"
             type="text"
+            className="input"
             value={employeeCode}
             onChange={(event) => setEmployeeCode(event.target.value)}
           />
         </div>
 
-        <button type="button" onClick={loadNotes} disabled={!canLoad || loading}>
+        <button type="button" className="btn btn--primary" onClick={loadNotes} disabled={!canLoad || loading}>
           {loading ? 'Loading…' : 'Load'}
         </button>
       </section>
 
-      {loading && <p>Loading notes…</p>}
-      {error && <p role="alert">{error}</p>}
+      {loading && <p className="state">Loading notes…</p>}
+      {error && (
+        <p className="alert" role="alert">
+          {error}
+        </p>
+      )}
 
       {notes && !loading && (
-        <section>
+        <section className="panel">
           <h2>Notes for {employeeCode}</h2>
 
-          {notes.length === 0 && <p>No notes for this employee.</p>}
+          {notes.length === 0 && <p className="state">No notes yet for {employeeCode}.</p>}
 
           {notes.length > 0 && (
-            <table>
-              <thead>
-                <tr>
-                  <th>Date</th>
-                  <th>Note</th>
-                  <th>Added By</th>
-                  <th>Added At</th>
-                </tr>
-              </thead>
-              <tbody>
-                {notes.map((note) => (
-                  <tr key={note.id}>
-                    <td>{note.noteDate}</td>
-                    <td>{note.text}</td>
-                    <td>{note.createdBy}</td>
-                    <td>{note.createdAt}</td>
+            <div className="table-wrap">
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>Note</th>
+                    <th>Added By</th>
+                    <th>Added At</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody>
+                  {notes.map((note) => (
+                    <tr key={note.id}>
+                      <td>{note.noteDate}</td>
+                      <td>{note.text}</td>
+                      <td>{note.createdBy}</td>
+                      <td>{note.createdAt}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           )}
 
-          <div>
-            <label htmlFor="newDate">Date</label>
-            <input id="newDate" type="date" value={newDate} onChange={(event) => setNewDate(event.target.value)} />
+          <div className="field">
+            <label className="field__label" htmlFor="newDate">
+              Date
+            </label>
+            <input
+              id="newDate"
+              type="date"
+              className="input"
+              value={newDate}
+              onChange={(event) => setNewDate(event.target.value)}
+            />
           </div>
 
-          <div>
-            <label htmlFor="newText">Note</label>
-            <textarea id="newText" value={newText} onChange={(event) => setNewText(event.target.value)} />
+          <div className="field">
+            <label className="field__label" htmlFor="newText">
+              Note
+            </label>
+            <textarea
+              id="newText"
+              className="textarea"
+              value={newText}
+              onChange={(event) => setNewText(event.target.value)}
+            />
           </div>
 
-          {saveError && <p role="alert">{saveError}</p>}
+          {saveError && (
+            <p className="alert" role="alert">
+              {saveError}
+            </p>
+          )}
 
-          <button type="button" onClick={handleAddNote} disabled={addDisabled}>
+          <button type="button" className="btn btn--primary" onClick={handleAddNote} disabled={addDisabled}>
             {saving ? 'Saving…' : 'Add Note'}
           </button>
         </section>
       )}
-    </main>
+    </AppShell>
   )
 }

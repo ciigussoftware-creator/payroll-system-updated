@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react'
-import { Link } from 'react-router-dom'
 import { apiFetch } from '../api/client'
-import { useAuth } from '../auth/AuthContext'
+import { AppShell } from '../layout/AppShell'
 
 interface Company {
   id: number
@@ -50,9 +49,8 @@ const MONEY_COLUMNS: MoneyColumn[] = [
   'takeHome',
 ]
 
-const CALCULATE_ERROR = 'Could not load payroll data. Please try again.'
-const EXPORT_ERROR = 'Could not export payroll data. Please try again.'
-const NOT_SET_ROW_BACKGROUND = '#fdecea'
+const CALCULATE_ERROR = 'Could not load payroll data. Try again.'
+const EXPORT_ERROR = 'Could not export payroll data. Try again.'
 
 const moneyFormatter = new Intl.NumberFormat('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })
 
@@ -99,7 +97,6 @@ function computeTotals(rows: PayrollRow[]): Record<MoneyColumn, number> {
 }
 
 export function DashboardPage() {
-  const { username, logout } = useAuth()
   const [companies, setCompanies] = useState<Company[]>([])
   const [companyId, setCompanyId] = useState('')
   const [month, setMonth] = useState('')
@@ -182,21 +179,18 @@ export function DashboardPage() {
   const totals = rows ? computeTotals(rows) : null
 
   return (
-    <main>
-      <h1>Payroll Admin</h1>
-      <p>Logged in as {username}</p>
-      <Link to="/timestamps">Timestamp Corrections</Link>
-      <Link to="/ot-management">OT Management</Link>
-      <Link to="/notes">Notes</Link>
-      <Link to="/audit-log">Audit Log</Link>
-      <button type="button" onClick={logout}>
-        Logout
-      </button>
-
-      <section>
-        <div>
-          <label htmlFor="company">Company</label>
-          <select id="company" value={companyId} onChange={(event) => setCompanyId(event.target.value)}>
+    <AppShell title="Dashboard">
+      <section className="filters">
+        <div className="field">
+          <label className="field__label" htmlFor="company">
+            Company
+          </label>
+          <select
+            id="company"
+            className="select"
+            value={companyId}
+            onChange={(event) => setCompanyId(event.target.value)}
+          >
             <option value="">Select a company</option>
             {companies.map((company) => (
               <option key={company.id} value={company.id}>
@@ -206,76 +200,100 @@ export function DashboardPage() {
           </select>
         </div>
 
-        <div>
-          <label htmlFor="month">Month</label>
-          <input id="month" type="month" value={month} onChange={(event) => setMonth(event.target.value)} />
+        <div className="field">
+          <label className="field__label" htmlFor="month">
+            Month
+          </label>
+          <input
+            id="month"
+            type="month"
+            className="input"
+            value={month}
+            onChange={(event) => setMonth(event.target.value)}
+          />
         </div>
 
-        <button type="button" onClick={handleCalculate} disabled={!canRun || loading}>
+        <button type="button" className="btn btn--primary" onClick={handleCalculate} disabled={!canRun || loading}>
           {loading ? 'Calculating…' : 'Calculate'}
         </button>
 
-        <button type="button" onClick={handleExport} disabled={!canRun || exporting}>
+        <button
+          type="button"
+          className="btn btn--secondary"
+          onClick={handleExport}
+          disabled={!canRun || exporting}
+        >
           {exporting ? 'Exporting…' : 'Export to Excel'}
         </button>
       </section>
 
-      {loading && <p>Loading payroll data…</p>}
-      {error && <p role="alert">{error}</p>}
-      {exportError && <p role="alert">{exportError}</p>}
+      {loading && <p className="state">Loading payroll data…</p>}
+      {error && (
+        <p className="alert" role="alert">
+          {error}
+        </p>
+      )}
+      {exportError && (
+        <p className="alert" role="alert">
+          {exportError}
+        </p>
+      )}
 
       {rows && !loading && (
-        <table>
-          <thead>
-            <tr>
-              <th>Employee Code</th>
-              <th>Name</th>
-              <th>Available Working Days</th>
-              <th>Days Worked</th>
-              <th>OT Hours</th>
-              <th>OT Pay</th>
-              <th>Gross</th>
-              <th>EPF Employee</th>
-              <th>EPF Employer</th>
-              <th>ETF</th>
-              <th>Allowance</th>
-              <th>Salary Advance</th>
-              <th>Festival Advance</th>
-              <th>Take-Home</th>
-            </tr>
-          </thead>
-          <tbody>
-            {rows.map((row) => (
-              <tr
-                key={row.employeeCode}
-                style={row.workingDaysNotSet ? { backgroundColor: NOT_SET_ROW_BACKGROUND } : undefined}
-              >
-                <td>{row.employeeCode}</td>
-                <td>{row.name}</td>
-                <td>{row.availableWorkingDays}</td>
-                <td>{row.daysWorked}</td>
-                <td>{row.otHours}</td>
-                {MONEY_COLUMNS.map((col) => (
-                  <td key={col}>{row.workingDaysNotSet ? 'N/A' : formatMoney(row[col] ?? 0)}</td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-          {totals && (
-            <tfoot>
+        <div className="table-wrap">
+          <table className="table table--dense">
+            <thead>
               <tr>
-                <td colSpan={5}>Total</td>
-                {MONEY_COLUMNS.map((col) => (
-                  <td key={col}>{formatMoney(totals[col])}</td>
-                ))}
+                <th>Employee Code</th>
+                <th>Name</th>
+                <th className="num">Available Working Days</th>
+                <th className="num">Days Worked</th>
+                <th className="num">OT Hours</th>
+                <th className="num">OT Pay</th>
+                <th className="num">Gross</th>
+                <th className="num">EPF Employee</th>
+                <th className="num">EPF Employer</th>
+                <th className="num">ETF</th>
+                <th className="num">Allowance</th>
+                <th className="num">Salary Advance</th>
+                <th className="num">Festival Advance</th>
+                <th className="num">Take-Home</th>
               </tr>
-            </tfoot>
-          )}
-        </table>
+            </thead>
+            <tbody>
+              {rows.map((row) => (
+                <tr key={row.employeeCode} className={row.workingDaysNotSet ? 'row--flagged' : undefined}>
+                  <td>{row.employeeCode}</td>
+                  <td>{row.name}</td>
+                  <td className="num">{row.availableWorkingDays}</td>
+                  <td className="num">{row.daysWorked}</td>
+                  <td className="num">{row.otHours}</td>
+                  {MONEY_COLUMNS.map((col) => (
+                    <td key={col} className="num">
+                      {row.workingDaysNotSet ? 'N/A' : formatMoney(row[col] ?? 0)}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+            {totals && (
+              <tfoot>
+                <tr>
+                  <td colSpan={5}>Total</td>
+                  {MONEY_COLUMNS.map((col) => (
+                    <td key={col} className="num">
+                      {formatMoney(totals[col])}
+                    </td>
+                  ))}
+                </tr>
+              </tfoot>
+            )}
+          </table>
+        </div>
       )}
 
       {/* TODO(future sub-phase): MonthlyPayrollInput (allowance/advances) has a PUT endpoint
           from 5C-2 but no editing UI anywhere yet. This dashboard stays read-only for 6B. */}
-    </main>
+    </AppShell>
   )
 }

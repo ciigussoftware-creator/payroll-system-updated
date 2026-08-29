@@ -99,7 +99,7 @@ describe('TimestampsPage', () => {
     await fillFormAndLoad(user)
 
     const row = (await screen.findByText('ENTRY')).closest('tr') as HTMLElement
-    expect(row).toHaveStyle({ backgroundColor: '#fdecea' })
+    expect(row).toHaveClass('row--flagged')
     expect(within(row).getByText(/Missing Clock Out/)).toBeInTheDocument()
   })
 
