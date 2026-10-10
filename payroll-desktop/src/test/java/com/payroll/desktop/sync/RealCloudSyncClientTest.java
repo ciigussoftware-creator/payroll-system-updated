@@ -7,6 +7,7 @@ import com.payroll.core.entity.ScanType;
 import com.sun.net.httpserver.HttpServer;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 /**
@@ -214,5 +216,32 @@ class RealCloudSyncClientTest {
         RealCloudSyncClient client = new RealCloudSyncClient("http://localhost:1", "key");
 
         assertThat(client.isCloudReachable()).isFalse();
+    }
+
+    // ── SYNC_API_KEY laziness (regression coverage) ─────────────────────────────
+
+    @Test
+    void noArgConstructorNeverResolvesApiKey() {
+        // Must not throw regardless of whether SYNC_API_KEY is set in this environment —
+        // this is what PayrollApp.start() calls unconditionally on every launch, including
+        // for operators doing purely local work with no intention of syncing that session.
+        assertThatCode(RealCloudSyncClient::new).doesNotThrowAnyException();
+    }
+
+    @Test
+    void isCloudReachableNeverNeedsApiKey() {
+        RealCloudSyncClient client = new RealCloudSyncClient();
+
+        assertThatCode(client::isCloudReachable).doesNotThrowAnyException();
+    }
+
+    @Test
+    @DisabledIfEnvironmentVariable(named = "SYNC_API_KEY", matches = ".+")
+    void pushRecordFailsClearlyWhenApiKeyNotConfigured() {
+        RealCloudSyncClient client = new RealCloudSyncClient();
+
+        assertThatThrownBy(() -> client.pushRecord(sampleRecord()))
+                .isInstanceOf(SyncException.class)
+                .hasMessageContaining("SYNC_API_KEY");
     }
 }

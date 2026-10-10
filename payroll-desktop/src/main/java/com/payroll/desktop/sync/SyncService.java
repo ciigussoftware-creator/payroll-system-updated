@@ -10,6 +10,8 @@ import com.payroll.desktop.repository.DayLevelOTConfigRepository;
 import com.payroll.desktop.repository.EmployeeRepository;
 import com.payroll.desktop.repository.OtEmployeeAuthorizationRepository;
 import com.payroll.desktop.repository.WorkingDaysConfigRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.List;
@@ -27,6 +29,8 @@ import java.util.Map;
  * affects that month's eventual salary calculation, not attendance capture.
  */
 public class SyncService {
+
+    private static final Logger LOG = LoggerFactory.getLogger(SyncService.class);
 
     private final EmployeeRepository employeeRepo;
     private final WorkingDaysConfigRepository workingDaysConfigRepo;
@@ -59,6 +63,7 @@ public class SyncService {
         try {
             employeeResult = client.pushEmployees(employees);
         } catch (SyncException e) {
+            LOG.warn("Rejecting employee sync batch ({} employees): {}", employees.size(), e.getMessage());
             return new SyncRunResult(0, employees.size(), 0, 0, 0, 0, 0, 0, 0, 0, 0, false, true, false);
         }
 
@@ -67,6 +72,7 @@ public class SyncService {
         try {
             workingDaysResult = client.pushWorkingDaysConfig(workingDaysConfigs);
         } catch (SyncException e) {
+            LOG.warn("Rejecting working-days sync batch ({} configs): {}", workingDaysConfigs.size(), e.getMessage());
             workingDaysResult = new WorkingDaysSyncPushResult(0, 0, workingDaysConfigs.size(), List.of(e.getMessage()));
         }
 
@@ -75,6 +81,7 @@ public class SyncService {
         try {
             otConfigResult = client.pushDayLevelOtConfigs(otConfigs);
         } catch (SyncException e) {
+            LOG.warn("Rejecting day-level OT config sync batch ({} configs): {}", otConfigs.size(), e.getMessage());
             return new SyncRunResult(employeeResult.synced(), employeeResult.rejected(),
                     workingDaysResult.synced(), workingDaysResult.rejected(),
                     0, otConfigs.size(), 0, 0, 0, 0, 0, false, false, true);
@@ -85,6 +92,7 @@ public class SyncService {
         try {
             otAuthResult = client.pushOtAuthorizations(toOtAuthorizationRecords(otAuths, employees));
         } catch (SyncException e) {
+            LOG.warn("Rejecting OT authorization sync batch ({} authorizations): {}", otAuths.size(), e.getMessage());
             return new SyncRunResult(employeeResult.synced(), employeeResult.rejected(),
                     workingDaysResult.synced(), workingDaysResult.rejected(),
                     otConfigResult.synced(), otConfigResult.rejected(),
@@ -101,6 +109,7 @@ public class SyncService {
                 recordRepo.markSynced(record.getId(), result.cloudRecordId());
                 synced++;
             } catch (SyncException e) {
+                LOG.warn("Rejecting attendance sync record syncUuid={}: {}", record.getSyncUuid(), e.getMessage());
                 recordRepo.incrementSyncAttempt(record.getId(), e.getMessage());
                 failed++;
             }
