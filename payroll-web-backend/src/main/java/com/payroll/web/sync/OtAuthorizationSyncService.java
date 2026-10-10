@@ -53,23 +53,10 @@ public class OtAuthorizationSyncService {
                 return OtAuthorizationSyncResult.rejected(request.employeeCode(), request.authDate(), reason);
             }
 
-            Optional<CloudOtEmployeeAuthorization> existing = repository.findByCompanyIdAndEmployeeCodeAndAuthDate(
-                    companyId, request.employeeCode(), request.authDate());
-
-            if (existing.isEmpty()) {
-                CloudOtEmployeeAuthorization auth = new CloudOtEmployeeAuthorization();
-                auth.setCompanyId(companyId);
-                auth.setEmployeeCode(request.employeeCode());
-                auth.setAuthDate(request.authDate());
-                applyIncoming(auth, request);
-                repository.save(auth);
-                return OtAuthorizationSyncResult.accepted(request.employeeCode(), request.authDate());
-            }
-
-            CloudOtEmployeeAuthorization current = existing.get();
-            applyIncoming(current, request);
-            repository.save(current);
-            return OtAuthorizationSyncResult.updated(request.employeeCode(), request.authDate());
+            UpsertOutcome outcome = upsert(companyId, request);
+            return outcome.wasNew()
+                    ? OtAuthorizationSyncResult.accepted(request.employeeCode(), request.authDate())
+                    : OtAuthorizationSyncResult.updated(request.employeeCode(), request.authDate());
         } catch (Exception e) {
             log.warn("Rejecting OT authorization sync record employeeCode={} authDate={}: {}",
                     request.employeeCode(), request.authDate(), e.getMessage());
@@ -78,9 +65,35 @@ public class OtAuthorizationSyncService {
         }
     }
 
+    /**
+     * Upserts a single OT employee authorization by (companyId, employeeCode, authDate) —
+     * shared by the sync batch path above and the web-write endpoints in
+     * {@code com.payroll.web.otconfig}, so there is exactly one place that knows how to
+     * correctly upsert this table. Unlike {@link #processOne}, this does NOT check that the
+     * employeeCode exists for the company — the web-write path intentionally allows setting
+     * an authorization ahead of (or independent of) the employee being synced, since each row
+     * is keyed on the raw employeeCode string rather than a foreign key.
+     */
+    public UpsertOutcome upsert(Long companyId, OtAuthorizationSyncRequest request) {
+        Optional<CloudOtEmployeeAuthorization> existing = repository.findByCompanyIdAndEmployeeCodeAndAuthDate(
+                companyId, request.employeeCode(), request.authDate());
+
+        CloudOtEmployeeAuthorization auth = existing.orElseGet(CloudOtEmployeeAuthorization::new);
+        if (existing.isEmpty()) {
+            auth.setCompanyId(companyId);
+            auth.setEmployeeCode(request.employeeCode());
+            auth.setAuthDate(request.authDate());
+        }
+        applyIncoming(auth, request);
+        repository.save(auth);
+        return new UpsertOutcome(auth, existing.isEmpty());
+    }
+
     private void applyIncoming(CloudOtEmployeeAuthorization auth, OtAuthorizationSyncRequest request) {
         auth.setAuthorized(request.authorized());
         auth.setSetBy(request.setBy());
         auth.setSetAt(request.setAt());
     }
+
+    public record UpsertOutcome(CloudOtEmployeeAuthorization config, boolean wasNew) {}
 }

@@ -14,7 +14,9 @@ import org.hibernate.Session;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.nio.file.Path;
 import java.time.LocalDateTime;
@@ -258,6 +260,42 @@ class SyncServiceIT {
             assertThat(result.synced()).isEqualTo(0);
             assertThat(stub.getCallLog()).containsExactly("employees:1");
             assertThat(repo.findUnsynced()).hasSize(1);
+        }
+    }
+
+    /**
+     * Regression coverage: an employee push failure used to be swallowed by SyncService with
+     * zero logging, so a whole-batch failure (e.g. a misconfigured SYNC_API_KEY) was
+     * indistinguishable from a real backend rejection without manually re-running the sync in
+     * a debugger. SyncService must log the actual reason so this is diagnosable from normal
+     * application logs.
+     */
+    @Test
+    void employeePushFailureLogsTheReasonForDiagnosis(@TempDir Path tempDir) throws IOException {
+        try (DatabaseManager db = new DatabaseManager(tempDir)) {
+            EmployeeRepository empRepo = new EmployeeRepository(db.getSessionFactory());
+            AttendanceRecordRepository repo = new AttendanceRecordRepository(db.getSessionFactory());
+            DayLevelOTConfigRepository otConfigRepo = new DayLevelOTConfigRepository(db.getSessionFactory());
+            OtEmployeeAuthorizationRepository otAuthRepo = new OtEmployeeAuthorizationRepository(db.getSessionFactory());
+            WorkingDaysConfigRepository workingDaysRepo = new WorkingDaysConfigRepository(db.getSessionFactory());
+            StubCloudSyncClient stub = new StubCloudSyncClient();
+            stub.setFailEmployeePush(true);
+            SyncService service = new SyncService(empRepo, workingDaysRepo, otConfigRepo, otAuthRepo, repo, stub);
+
+            savedEmployee(empRepo, "EMP-001");
+
+            ByteArrayOutputStream capturedErr = new ByteArrayOutputStream();
+            PrintStream originalErr = System.err;
+            System.setErr(new PrintStream(capturedErr));
+            try {
+                service.syncUnsyncedRecords();
+            } finally {
+                System.setErr(originalErr);
+            }
+
+            assertThat(capturedErr.toString())
+                    .contains("Rejecting employee sync batch")
+                    .contains("Stub: forced employee push failure");
         }
     }
 

@@ -1,4 +1,4 @@
-ï»¿[INFO] Scanning for projects...
+[INFO] Scanning for projects...
 [INFO] ------------------------------------------------------------------------
 [INFO] Reactor Build Order:
 [INFO] 
@@ -43,13 +43,13 @@
 [INFO]  T E S T S
 [INFO] -------------------------------------------------------
 [INFO] Running com.payroll.core.attendance.AttendanceEngineTest
-[INFO] Tests run: 43, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.131 s -- in com.payroll.core.attendance.AttendanceEngineTest
+[INFO] Tests run: 43, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.145 s -- in com.payroll.core.attendance.AttendanceEngineTest
 [INFO] Running com.payroll.core.attendance.OtRulesTest
-[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.015 s -- in com.payroll.core.attendance.OtRulesTest
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.013 s -- in com.payroll.core.attendance.OtRulesTest
 [INFO] Running com.payroll.core.attendance.SessionBuilderTest
-[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.008 s -- in com.payroll.core.attendance.SessionBuilderTest
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.012 s -- in com.payroll.core.attendance.SessionBuilderTest
 [INFO] Running com.payroll.core.engine.GrossSalaryEngineTest
-[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.013 s -- in com.payroll.core.engine.GrossSalaryEngineTest
+[INFO] Tests run: 11, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.016 s -- in com.payroll.core.engine.GrossSalaryEngineTest
 [INFO] 
 [INFO] Results:
 [INFO] 
@@ -90,20 +90,20 @@
 [INFO]  T E S T S
 [INFO] -------------------------------------------------------
 [INFO] Running com.payroll.desktop.admin.EmployeeFormValidatorTest
-[INFO] Tests run: 13, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.081 s -- in com.payroll.desktop.admin.EmployeeFormValidatorTest
+[INFO] Tests run: 13, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.094 s -- in com.payroll.desktop.admin.EmployeeFormValidatorTest
 [INFO] Running com.payroll.desktop.admin.WorkingDaysValidatorTest
-[INFO] Tests run: 13, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.017 s -- in com.payroll.desktop.admin.WorkingDaysValidatorTest
+[INFO] Tests run: 13, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.019 s -- in com.payroll.desktop.admin.WorkingDaysValidatorTest
 [INFO] Running com.payroll.desktop.auth.AuthServiceTest
-2026-08-09T14:11:24.223867900Z main ERROR Log4j2 could not find a logging implementation. Please add log4j-core to the classpath. Using SimpleLogger to log to the console...
-[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.480 s -- in com.payroll.desktop.auth.AuthServiceTest
+2026-08-15T17:31:19.823628Z main ERROR Log4j2 could not find a logging implementation. Please add log4j-core to the classpath. Using SimpleLogger to log to the console...
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.854 s -- in com.payroll.desktop.auth.AuthServiceTest
 [INFO] Running com.payroll.desktop.auth.PasswordHasherTest
-[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.826 s -- in com.payroll.desktop.auth.PasswordHasherTest
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.770 s -- in com.payroll.desktop.auth.PasswordHasherTest
 [INFO] Running com.payroll.desktop.sync.RealCloudSyncClientTest
-[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.460 s -- in com.payroll.desktop.sync.RealCloudSyncClientTest
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.499 s -- in com.payroll.desktop.sync.RealCloudSyncClientTest
 [INFO] Running com.payroll.desktop.sync.SyncStatusFormatterTest
-[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.005 s -- in com.payroll.desktop.sync.SyncStatusFormatterTest
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.007 s -- in com.payroll.desktop.sync.SyncStatusFormatterTest
 [INFO] Running com.payroll.desktop.ui.AdminPackageIsolationTest
-[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.011 s -- in com.payroll.desktop.ui.AdminPackageIsolationTest
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.014 s -- in com.payroll.desktop.ui.AdminPackageIsolationTest
 [INFO] 
 [INFO] Results:
 [INFO] 
@@ -120,148 +120,36 @@
 [INFO]  T E S T S
 [INFO] -------------------------------------------------------
 [INFO] Running com.payroll.desktop.admin.DashboardServiceIT
-2026-08-09T14:11:31.383215100Z main ERROR Log4j2 could not find a logging implementation. Please add log4j-core to the classpath. Using SimpleLogger to log to the console...
-[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.068 s -- in com.payroll.desktop.admin.DashboardServiceIT
+2026-08-15T17:31:27.387024700Z main ERROR Log4j2 could not find a logging implementation. Please add log4j-core to the classpath. Using SimpleLogger to log to the console...
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.778 s -- in com.payroll.desktop.admin.DashboardServiceIT
 [INFO] Running com.payroll.desktop.admin.EmployeeManagementIT
-[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.227 s -- in com.payroll.desktop.admin.EmployeeManagementIT
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.102 s -- in com.payroll.desktop.admin.EmployeeManagementIT
 [INFO] Running com.payroll.desktop.attendance.ScanIngestionServiceIT
-[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.730 s -- in com.payroll.desktop.attendance.ScanIngestionServiceIT
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.642 s -- in com.payroll.desktop.attendance.ScanIngestionServiceIT
 [INFO] Running com.payroll.desktop.auth.FirstRunDetectionIT
-[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.233 s -- in com.payroll.desktop.auth.FirstRunDetectionIT
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.259 s -- in com.payroll.desktop.auth.FirstRunDetectionIT
 [INFO] Running com.payroll.desktop.db.DatabaseManagerIT
-[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.165 s -- in com.payroll.desktop.db.DatabaseManagerIT
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.169 s -- in com.payroll.desktop.db.DatabaseManagerIT
 [INFO] Running com.payroll.desktop.repository.AttendanceRecordRepositoryIT
-[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.663 s -- in com.payroll.desktop.repository.AttendanceRecordRepositoryIT
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.665 s -- in com.payroll.desktop.repository.AttendanceRecordRepositoryIT
 [INFO] Running com.payroll.desktop.repository.DayLevelOTConfigRepositoryIT
-[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.272 s -- in com.payroll.desktop.repository.DayLevelOTConfigRepositoryIT
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.266 s -- in com.payroll.desktop.repository.DayLevelOTConfigRepositoryIT
 [INFO] Running com.payroll.desktop.repository.EmployeeNoteRepositoryIT
-[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.140 s -- in com.payroll.desktop.repository.EmployeeNoteRepositoryIT
+[INFO] Tests run: 2, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.131 s -- in com.payroll.desktop.repository.EmployeeNoteRepositoryIT
 [INFO] Running com.payroll.desktop.repository.EmployeeRepositoryIT
-[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.330 s -- in com.payroll.desktop.repository.EmployeeRepositoryIT
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.341 s -- in com.payroll.desktop.repository.EmployeeRepositoryIT
 [INFO] Running com.payroll.desktop.repository.WorkingDaysConfigRepositoryIT
-[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.387 s -- in com.payroll.desktop.repository.WorkingDaysConfigRepositoryIT
+[INFO] Tests run: 6, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.382 s -- in com.payroll.desktop.repository.WorkingDaysConfigRepositoryIT
 [INFO] Running com.payroll.desktop.statutory.StatutoryCalculationServiceIT
-[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.144 s -- in com.payroll.desktop.statutory.StatutoryCalculationServiceIT
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.345 s -- in com.payroll.desktop.statutory.StatutoryCalculationServiceIT
 [INFO] Running com.payroll.desktop.superadmin.OtSwitchIT
-[INFO] Tests run: 19, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.370 s -- in com.payroll.desktop.superadmin.OtSwitchIT
+[INFO] Tests run: 19, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.200 s -- in com.payroll.desktop.superadmin.OtSwitchIT
 [INFO] Running com.payroll.desktop.superadmin.TimestampCorrectionIT
-[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.647 s -- in com.payroll.desktop.superadmin.TimestampCorrectionIT
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.486 s -- in com.payroll.desktop.superadmin.TimestampCorrectionIT
 [INFO] Running com.payroll.desktop.sync.SyncSchedulerIT
-mvn : [main] INFO org.quartz.impl.StdSchedulerFactory - Using default implementation for ThreadExecutor
-At line:2 char:1
-+ mvn clean verify > verify-output.txt 2>&1
-+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    + CategoryInfo          : NotSpecified: ([main] INFO org... ThreadExecutor:String) [], RemoteException
-    + FullyQualifiedErrorId : NativeCommandError
- 
-[main] INFO org.quartz.core.SchedulerSignalerImpl - Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
-[main] INFO org.quartz.core.QuartzScheduler - Quartz Scheduler v.2.3.2 created.
-[main] INFO org.quartz.simpl.RAMJobStore - RAMJobStore initialized.
-[main] INFO org.quartz.core.QuartzScheduler - Scheduler meta-data: Quartz Scheduler (v2.3.2) 'PayrollSyncScheduler-0' with instanceId 'NON_CLUSTERED'
-  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
-  NOT STARTED.
-  Currently in standby mode.
-  Number of jobs executed: 0
-  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 1 threads.
-  Using job-store 'org.quartz.simpl.RAMJobStore' - which does not support persistence. and is not clustered.
-
-[main] INFO org.quartz.impl.StdSchedulerFactory - Quartz scheduler 'PayrollSyncScheduler-0' initialized from an externally provided properties instance.
-[main] INFO org.quartz.impl.StdSchedulerFactory - Quartz scheduler version: 2.3.2
-[main] INFO org.quartz.core.QuartzScheduler - Scheduler PayrollSyncScheduler-0_$_NON_CLUSTERED started.
-[main] INFO com.payroll.desktop.sync.SyncScheduler - SyncScheduler started ï¿½ daily sync cron: 0 0 19 * * ?
-[main] INFO com.payroll.desktop.sync.SyncScheduler - Manual sync triggered
-[main] INFO com.payroll.desktop.sync.SyncScheduler - Manual sync complete ï¿½ attempted=0 synced=0 failed=0 skippedOffline=false
-[main] INFO org.quartz.core.QuartzScheduler - Scheduler PayrollSyncScheduler-0_$_NON_CLUSTERED shutting down.
-[main] INFO org.quartz.core.QuartzScheduler - Scheduler PayrollSyncScheduler-0_$_NON_CLUSTERED paused.
-[main] INFO org.quartz.core.QuartzScheduler - Scheduler PayrollSyncScheduler-0_$_NON_CLUSTERED shutdown complete.
-[main] INFO com.payroll.desktop.sync.SyncScheduler - SyncScheduler shut down
-[main] INFO org.quartz.impl.StdSchedulerFactory - Using default implementation for ThreadExecutor
-[main] INFO org.quartz.core.SchedulerSignalerImpl - Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
-[main] INFO org.quartz.core.QuartzScheduler - Quartz Scheduler v.2.3.2 created.
-[main] INFO org.quartz.simpl.RAMJobStore - RAMJobStore initialized.
-[main] INFO org.quartz.core.QuartzScheduler - Scheduler meta-data: Quartz Scheduler (v2.3.2) 'PayrollSyncScheduler-1' with instanceId 'NON_CLUSTERED'
-  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
-  NOT STARTED.
-  Currently in standby mode.
-  Number of jobs executed: 0
-  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 1 threads.
-  Using job-store 'org.quartz.simpl.RAMJobStore' - which does not support persistence. and is not clustered.
-
-[main] INFO org.quartz.impl.StdSchedulerFactory - Quartz scheduler 'PayrollSyncScheduler-1' initialized from an externally provided properties instance.
-[main] INFO org.quartz.impl.StdSchedulerFactory - Quartz scheduler version: 2.3.2
-[main] INFO org.quartz.core.QuartzScheduler - Scheduler PayrollSyncScheduler-1_$_NON_CLUSTERED started.
-[main] INFO com.payroll.desktop.sync.SyncScheduler - SyncScheduler started ï¿½ daily sync cron: 0 0 19 * * ?
-[main] INFO com.payroll.desktop.sync.SyncScheduler - Manual sync triggered
-[main] INFO com.payroll.desktop.sync.SyncScheduler - Manual sync complete ï¿½ attempted=2 synced=2 failed=0 skippedOffline=false
-[main] INFO org.quartz.core.QuartzScheduler - Scheduler PayrollSyncScheduler-1_$_NON_CLUSTERED shutting down.
-[main] INFO org.quartz.core.QuartzScheduler - Scheduler PayrollSyncScheduler-1_$_NON_CLUSTERED paused.
-[main] INFO org.quartz.core.QuartzScheduler - Scheduler PayrollSyncScheduler-1_$_NON_CLUSTERED shutdown complete.
-[main] INFO com.payroll.desktop.sync.SyncScheduler - SyncScheduler shut down
-[main] INFO org.quartz.impl.StdSchedulerFactory - Using default implementation for ThreadExecutor
-[main] INFO org.quartz.core.SchedulerSignalerImpl - Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
-[main] INFO org.quartz.core.QuartzScheduler - Quartz Scheduler v.2.3.2 created.
-[main] INFO org.quartz.simpl.RAMJobStore - RAMJobStore initialized.
-[main] INFO org.quartz.core.QuartzScheduler - Scheduler meta-data: Quartz Scheduler (v2.3.2) 'PayrollSyncScheduler-2' with instanceId 'NON_CLUSTERED'
-  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
-  NOT STARTED.
-  Currently in standby mode.
-  Number of jobs executed: 0
-  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 1 threads.
-  Using job-store 'org.quartz.simpl.RAMJobStore' - which does not support persistence. and is not clustered.
-
-[main] INFO org.quartz.impl.StdSchedulerFactory - Quartz scheduler 'PayrollSyncScheduler-2' initialized from an externally provided properties instance.
-[main] INFO org.quartz.impl.StdSchedulerFactory - Quartz scheduler version: 2.3.2
-[main] INFO org.quartz.core.QuartzScheduler - Scheduler PayrollSyncScheduler-2_$_NON_CLUSTERED started.
-[main] INFO com.payroll.desktop.sync.SyncScheduler - SyncScheduler started ï¿½ daily sync cron: 0 0 19 * * ?
-[main] INFO org.quartz.core.QuartzScheduler - Scheduler PayrollSyncScheduler-2_$_NON_CLUSTERED shutting down.
-[main] INFO org.quartz.core.QuartzScheduler - Scheduler PayrollSyncScheduler-2_$_NON_CLUSTERED paused.
-[main] INFO org.quartz.core.QuartzScheduler - Scheduler PayrollSyncScheduler-2_$_NON_CLUSTERED shutdown complete.
-[main] INFO com.payroll.desktop.sync.SyncScheduler - SyncScheduler shut down
-[main] INFO org.quartz.impl.StdSchedulerFactory - Using default implementation for ThreadExecutor
-[main] INFO org.quartz.core.SchedulerSignalerImpl - Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
-[main] INFO org.quartz.core.QuartzScheduler - Quartz Scheduler v.2.3.2 created.
-[main] INFO org.quartz.simpl.RAMJobStore - RAMJobStore initialized.
-[main] INFO org.quartz.core.QuartzScheduler - Scheduler meta-data: Quartz Scheduler (v2.3.2) 'PayrollSyncScheduler-3' with instanceId 'NON_CLUSTERED'
-  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
-  NOT STARTED.
-  Currently in standby mode.
-  Number of jobs executed: 0
-  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 1 threads.
-  Using job-store 'org.quartz.simpl.RAMJobStore' - which does not support persistence. and is not clustered.
-
-[main] INFO org.quartz.impl.StdSchedulerFactory - Quartz scheduler 'PayrollSyncScheduler-3' initialized from an externally provided properties instance.
-[main] INFO org.quartz.impl.StdSchedulerFactory - Quartz scheduler version: 2.3.2
-[main] INFO org.quartz.core.QuartzScheduler - Scheduler PayrollSyncScheduler-3_$_NON_CLUSTERED started.
-[main] INFO com.payroll.desktop.sync.SyncScheduler - SyncScheduler started ï¿½ daily sync cron: 0 0 19 * * ?
-[main] INFO com.payroll.desktop.sync.SyncScheduler - Manual sync triggered
-[main] INFO com.payroll.desktop.sync.SyncScheduler - Manual sync complete ï¿½ attempted=0 synced=0 failed=0 skippedOffline=true
-[main] INFO org.quartz.core.QuartzScheduler - Scheduler PayrollSyncScheduler-3_$_NON_CLUSTERED shutting down.
-[main] INFO org.quartz.core.QuartzScheduler - Scheduler PayrollSyncScheduler-3_$_NON_CLUSTERED paused.
-[main] INFO org.quartz.core.QuartzScheduler - Scheduler PayrollSyncScheduler-3_$_NON_CLUSTERED shutdown complete.
-[main] INFO com.payroll.desktop.sync.SyncScheduler - SyncScheduler shut down
-[main] INFO org.quartz.impl.StdSchedulerFactory - Using default implementation for ThreadExecutor
-[main] INFO org.quartz.core.SchedulerSignalerImpl - Initialized Scheduler Signaller of type: class org.quartz.core.SchedulerSignalerImpl
-[main] INFO org.quartz.core.QuartzScheduler - Quartz Scheduler v.2.3.2 created.
-[main] INFO org.quartz.simpl.RAMJobStore - RAMJobStore initialized.
-[main] INFO org.quartz.core.QuartzScheduler - Scheduler meta-data: Quartz Scheduler (v2.3.2) 'PayrollSyncScheduler-4' with instanceId 'NON_CLUSTERED'
-  Scheduler class: 'org.quartz.core.QuartzScheduler' - running locally.
-  NOT STARTED.
-  Currently in standby mode.
-  Number of jobs executed: 0
-  Using thread pool 'org.quartz.simpl.SimpleThreadPool' - with 1 threads.
-  Using job-store 'org.quartz.simpl.RAMJobStore' - which does not support persistence. and is not clustered.
-
-[main] INFO org.quartz.impl.StdSchedulerFactory - Quartz scheduler 'PayrollSyncScheduler-4' initialized from an externally provided properties instance.
-[main] INFO org.quartz.impl.StdSchedulerFactory - Quartz scheduler version: 2.3.2
-[main] INFO org.quartz.core.QuartzScheduler - Scheduler PayrollSyncScheduler-4_$_NON_CLUSTERED started.
-[main] INFO com.payroll.desktop.sync.SyncScheduler - SyncScheduler started ï¿½ daily sync cron: 0 0 19 * * ?
-[main] INFO org.quartz.core.QuartzScheduler - Scheduler PayrollSyncScheduler-4_$_NON_CLUSTERED shutting down.
-[main] INFO org.quartz.core.QuartzScheduler - Scheduler PayrollSyncScheduler-4_$_NON_CLUSTERED paused.
-[main] INFO org.quartz.core.QuartzScheduler - Scheduler PayrollSyncScheduler-4_$_NON_CLUSTERED shutdown complete.
-[main] INFO com.payroll.desktop.sync.SyncScheduler - SyncScheduler shut down
-[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.184 s -- in com.payroll.desktop.sync.SyncSchedulerIT
+[INFO] Tests run: 5, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.728 s -- in com.payroll.desktop.sync.SyncSchedulerIT
 [INFO] Running com.payroll.desktop.sync.SyncServiceIT
-[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 1.010 s -- in com.payroll.desktop.sync.SyncServiceIT
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.601 s -- in com.payroll.desktop.sync.SyncServiceIT
 [INFO] 
 [INFO] Results:
 [INFO] 
@@ -283,16 +171,16 @@ At line:2 char:1
 [INFO] 
 [INFO] --- compiler:3.13.0:compile (default-compile) @ payroll-web-backend ---
 [INFO] Recompiling the module because of changed dependency.
-[INFO] Compiling 53 source files with javac [debug release 21] to target\classes
+[INFO] Compiling 66 source files with javac [debug release 21] to target\classes
 [INFO] 
 [INFO] --- resources:3.3.1:testResources (default-testResources) @ payroll-web-backend ---
 [INFO] skip non existing resourceDirectory D:\Projects\payroll\payroll-web-backend\src\test\resources
 [INFO] 
 [INFO] --- compiler:3.13.0:testCompile (default-testCompile) @ payroll-web-backend ---
 [INFO] Recompiling the module because of changed dependency.
-[INFO] Compiling 7 source files with javac [debug release 21] to target\test-classes
-[INFO] /D:/Projects/payroll/payroll-web-backend/src/test/java/com/payroll/web/auth/AuthControllerIT.java: Some input files use or override a deprecated API.
-[INFO] /D:/Projects/payroll/payroll-web-backend/src/test/java/com/payroll/web/auth/AuthControllerIT.java: Recompile with -Xlint:deprecation for details.
+[INFO] Compiling 10 source files with javac [debug release 21] to target\test-classes
+[INFO] /D:/Projects/payroll/payroll-web-backend/src/test/java/com/payroll/web/attendance/AttendanceControllerIT.java: Some input files use or override a deprecated API.
+[INFO] /D:/Projects/payroll/payroll-web-backend/src/test/java/com/payroll/web/attendance/AttendanceControllerIT.java: Recompile with -Xlint:deprecation for details.
 [INFO] 
 [INFO] --- surefire:3.3.0:test (default-test) @ payroll-web-backend ---
 [INFO] 
@@ -308,157 +196,175 @@ At line:2 char:1
 [INFO] -------------------------------------------------------
 [INFO]  T E S T S
 [INFO] -------------------------------------------------------
+[INFO] Running com.payroll.web.attendance.AttendanceControllerIT
+23:01:46.545 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.payroll.web.attendance.AttendanceControllerIT]: AttendanceControllerIT does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+23:01:46.715 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.payroll.web.WebBackendApplication for test class com.payroll.web.attendance.AttendanceControllerIT
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::               (v3.5.16)
+
+2026-08-15T23:01:47.191+05:30  INFO 46376 --- [payroll-web-backend] [           main] c.p.w.attendance.AttendanceControllerIT  : Starting AttendanceControllerIT using Java 23.0.1 with PID 46376 (started by chand in D:\Projects\payroll\payroll-web-backend)
+2026-08-15T23:01:47.192+05:30  INFO 46376 --- [payroll-web-backend] [           main] c.p.w.attendance.AttendanceControllerIT  : No active profile set, falling back to 1 default profile: "default"
+2026-08-15T23:01:47.900+05:30  INFO 46376 --- [payroll-web-backend] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-08-15T23:01:47.967+05:30  INFO 46376 --- [payroll-web-backend] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 57 ms. Found 10 JPA repository interfaces.
+2026-08-15T23:01:48.112+05:30  INFO 46376 --- [payroll-web-backend] [           main] EmbeddedDatabaseContextCustomizerFactory : Replacing 'dataSource' DataSource bean with embedded version
+2026-08-15T23:01:48.344+05:30  WARN 46376 --- [payroll-web-backend] [           main] trationDelegate$BeanPostProcessorChecker : Bean 'io.zonky.test.db.config.EmbeddedDatabaseAutoConfiguration' of type [io.zonky.test.db.config.EmbeddedDatabaseAutoConfiguration$$SpringCGLIB$$0] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). The currently created BeanPostProcessor [springScriptDatabaseExtension] is declared through a non-static factory method on that class; consider declaring it as static instead.
+2026-08-15T23:01:48.615+05:30  INFO 46376 --- [payroll-web-backend] [  prefetching-1] i.z.t.d.p.embedded.EmbeddedPostgres      : Detected a Windows x86_64 system
+2026-08-15T23:01:48.618+05:30  INFO 46376 --- [payroll-web-backend] [  prefetching-1] .z.t.d.p.e.DefaultPostgresBinaryResolver : Detected distribution: 'Unknown'
+2026-08-15T23:01:48.620+05:30  INFO 46376 --- [payroll-web-backend] [  prefetching-1] .z.t.d.p.e.DefaultPostgresBinaryResolver : System specific postgres binaries found: 'postgres-windows-x86_64.txz'
+2026-08-15T23:01:48.709+05:30  INFO 46376 --- [payroll-web-backend] [  prefetching-1] i.z.t.d.p.embedded.EmbeddedPostgres      : Postgres binaries at C:\Users\chand\AppData\Local\Temp\embedded-pg\PG-3942d5a1dcdbfebc27772e9e670d5d85
+2026-08-15T23:01:48.822+05:30  INFO 46376 --- [payroll-web-backend] [itdb:pid(34960)] i.z.t.d.p.embedded.EmbeddedPostgres      : The files belonging to this database system will be owned by user "chand".
+2026-08-15T23:01:48.822+05:30  INFO 46376 --- [payroll-web-backend] [itdb:pid(34960)] i.z.t.d.p.embedded.EmbeddedPostgres      : This user must also own the server process.
+2026-08-15T23:01:48.822+05:30  INFO 46376 --- [payroll-web-backend] [itdb:pid(34960)] i.z.t.d.p.embedded.EmbeddedPostgres      : 
+2026-08-15T23:01:48.822+05:30  INFO 46376 --- [payroll-web-backend] [itdb:pid(34960)] i.z.t.d.p.embedded.EmbeddedPostgres      : The database cluster will be initialized with locale "English_United States.1252".
+2026-08-15T23:01:48.822+05:30  INFO 46376 --- [payroll-web-backend] [itdb:pid(34960)] i.z.t.d.p.embedded.EmbeddedPostgres      : The default text search configuration will be set to "english".
+2026-08-15T23:01:48.822+05:30  INFO 46376 --- [payroll-web-backend] [itdb:pid(34960)] i.z.t.d.p.embedded.EmbeddedPostgres      : 
+2026-08-15T23:01:48.822+05:30  INFO 46376 --- [payroll-web-backend] [itdb:pid(34960)] i.z.t.d.p.embedded.EmbeddedPostgres      : Data page checksums are disabled.
+2026-08-15T23:01:48.822+05:30  INFO 46376 --- [payroll-web-backend] [itdb:pid(34960)] i.z.t.d.p.embedded.EmbeddedPostgres      : 
+2026-08-15T23:01:48.822+05:30  INFO 46376 --- [payroll-web-backend] [itdb:pid(34960)] i.z.t.d.p.embedded.EmbeddedPostgres      : fixing permissions on existing directory C:/Users/chand/AppData/Local/Temp/epg5585536609828371760 ... ok
+2026-08-15T23:01:48.827+05:30  INFO 46376 --- [payroll-web-backend] [itdb:pid(34960)] i.z.t.d.p.embedded.EmbeddedPostgres      : creating subdirectories ... ok
+2026-08-15T23:01:48.828+05:30  INFO 46376 --- [payroll-web-backend] [itdb:pid(34960)] i.z.t.d.p.embedded.EmbeddedPostgres      : selecting dynamic shared memory implementation ... windows
+2026-08-15T23:01:48.906+05:30  INFO 46376 --- [payroll-web-backend] [itdb:pid(34960)] i.z.t.d.p.embedded.EmbeddedPostgres      : selecting default max_connections ... 100
+2026-08-15T23:01:48.959+05:30  INFO 46376 --- [payroll-web-backend] [itdb:pid(34960)] i.z.t.d.p.embedded.EmbeddedPostgres      : selecting default shared_buffers ... 128MB
+2026-08-15T23:01:48.961+05:30  INFO 46376 --- [payroll-web-backend] [itdb:pid(34960)] i.z.t.d.p.embedded.EmbeddedPostgres      : selecting default time zone ... Asia/Colombo
+2026-08-15T23:01:48.966+05:30  INFO 46376 --- [payroll-web-backend] [itdb:pid(34960)] i.z.t.d.p.embedded.EmbeddedPostgres      : creating configuration files ... ok
+2026-08-15T23:01:50.350+05:30  INFO 46376 --- [payroll-web-backend] [itdb:pid(34960)] i.z.t.d.p.embedded.EmbeddedPostgres      : running bootstrap script ... ok
+2026-08-15T23:01:53.168+05:30  INFO 46376 --- [payroll-web-backend] [itdb:pid(34960)] i.z.t.d.p.embedded.EmbeddedPostgres      : performing post-bootstrap initialization ... ok
+2026-08-15T23:01:57.683+05:30  INFO 46376 --- [payroll-web-backend] [itdb:pid(34960)] i.z.t.d.p.embedded.EmbeddedPostgres      : syncing data to disk ... ok
+2026-08-15T23:01:57.683+05:30  INFO 46376 --- [payroll-web-backend] [itdb:pid(34960)] i.z.t.d.p.embedded.EmbeddedPostgres      : 
+2026-08-15T23:01:57.683+05:30  INFO 46376 --- [payroll-web-backend] [itdb:pid(34960)] i.z.t.d.p.embedded.EmbeddedPostgres      : Success. You can now start the database server using:
+2026-08-15T23:01:57.683+05:30  INFO 46376 --- [payroll-web-backend] [itdb:pid(34960)] i.z.t.d.p.embedded.EmbeddedPostgres      : 
+2026-08-15T23:01:57.683+05:30  INFO 46376 --- [payroll-web-backend] [itdb:pid(34960)] i.z.t.d.p.embedded.EmbeddedPostgres      :     ^"C^:^\Users^\chand^\AppData^\Local^\Temp^\embedded^-pg^\PG^-3942d5a1dcdbfebc27772e9e670d5d85^\bin^\pg^_ctl^" -D ^"C^:^\Users^\chand^\AppData^\Local^\Temp^\epg5585536609828371760^" -l logfile start
+2026-08-15T23:01:57.683+05:30  INFO 46376 --- [payroll-web-backend] [itdb:pid(34960)] i.z.t.d.p.embedded.EmbeddedPostgres      : 
+2026-08-15T23:01:57.689+05:30  INFO 46376 --- [payroll-web-backend] [  prefetching-1] i.z.t.d.p.embedded.EmbeddedPostgres      : 6f060065-19f3-470b-bcdc-d9ca988df318 initdb completed in 00:00:08.977
+2026-08-15T23:01:57.700+05:30  INFO 46376 --- [payroll-web-backend] [  prefetching-1] i.z.t.d.p.embedded.EmbeddedPostgres      : 6f060065-19f3-470b-bcdc-d9ca988df318 postmaster started as Process[pid=44384, exitValue="not exited"] on port 56643.  Waiting up to PT20S for server startup to finish.
+2026-08-15T23:01:57.849+05:30  INFO 46376 --- [payroll-web-backend] [gres:pid(44384)] i.z.t.d.p.embedded.EmbeddedPostgres      : waiting for server to start....2026-08-15 23:01:57.849 +0530 [15104] LOG:  starting PostgreSQL 14.22, compiled by Visual C++ build 1944, 64-bit
+2026-08-15T23:01:57.853+05:30  INFO 46376 --- [payroll-web-backend] [gres:pid(44384)] i.z.t.d.p.embedded.EmbeddedPostgres      : 2026-08-15 23:01:57.853 +0530 [15104] LOG:  listening on IPv6 address "::1", port 56643
+2026-08-15T23:01:57.854+05:30  INFO 46376 --- [payroll-web-backend] [gres:pid(44384)] i.z.t.d.p.embedded.EmbeddedPostgres      : 2026-08-15 23:01:57.854 +0530 [15104] LOG:  listening on IPv4 address "127.0.0.1", port 56643
+2026-08-15T23:01:57.912+05:30  INFO 46376 --- [payroll-web-backend] [gres:pid(44384)] i.z.t.d.p.embedded.EmbeddedPostgres      : 2026-08-15 23:01:57.913 +0530 [7096] LOG:  database system was shut down at 2026-08-15 23:01:53 +0530
+2026-08-15T23:01:57.957+05:30  INFO 46376 --- [payroll-web-backend] [gres:pid(44384)] i.z.t.d.p.embedded.EmbeddedPostgres      : 2026-08-15 23:01:57.957 +0530 [15104] LOG:  database system is ready to accept connections
+2026-08-15T23:01:58.014+05:30  INFO 46376 --- [payroll-web-backend] [gres:pid(44384)] i.z.t.d.p.embedded.EmbeddedPostgres      :  done
+2026-08-15T23:01:58.014+05:30  INFO 46376 --- [payroll-web-backend] [gres:pid(44384)] i.z.t.d.p.embedded.EmbeddedPostgres      : server started
+2026-08-15T23:01:58.067+05:30  INFO 46376 --- [payroll-web-backend] [  prefetching-1] i.z.t.d.p.embedded.EmbeddedPostgres      : 6f060065-19f3-470b-bcdc-d9ca988df318 postmaster startup finished in 00:00:00.374
+2026-08-15T23:01:59.178+05:30  INFO 46376 --- [payroll-web-backend] [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-08-15T23:01:59.218+05:30  INFO 46376 --- [payroll-web-backend] [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.2.Final
+2026-08-15T23:01:59.245+05:30  INFO 46376 --- [payroll-web-backend] [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-08-15T23:01:59.476+05:30  INFO 46376 --- [payroll-web-backend] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-08-15T23:01:59.587+05:30  WARN 46376 --- [payroll-web-backend] [           main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-08-15T23:02:00.470+05:30  INFO 46376 --- [payroll-web-backend] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-08-15T23:02:00.745+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2026-08-15T23:02:00.745+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "uk78x0yuwv25lky2ky2b9cnqw9a" of relation "attendance_records" does not exist, skipping
+2026-08-15T23:02:00.747+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2026-08-15T23:02:00.747+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "ukdyu5jh7vfk4ltuv5qcvpsqdmk" of relation "cloud_day_level_ot_configs" does not exist, skipping
+2026-08-15T23:02:00.749+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2026-08-15T23:02:00.749+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "uksk49y5bqfifgu693pl70p0av5" of relation "cloud_ot_employee_authorizations" does not exist, skipping
+2026-08-15T23:02:00.752+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2026-08-15T23:02:00.752+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "ukegmkv3dau9i69aopuywi1rdxw" of relation "cloud_working_days_configs" does not exist, skipping
+2026-08-15T23:02:00.754+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2026-08-15T23:02:00.754+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "ukm1bj83lpw9ykgqyv6wj7krxlo" of relation "companies" does not exist, skipping
+2026-08-15T23:02:00.765+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2026-08-15T23:02:00.765+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "uk9e6554dk8krqdskek6p0wqsu3" of relation "day_level_ot_configs" does not exist, skipping
+2026-08-15T23:02:00.768+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2026-08-15T23:02:00.768+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "ukmpa35jnb0w5kiaglkkmcpkgat" of relation "employees" does not exist, skipping
+2026-08-15T23:02:00.771+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2026-08-15T23:02:00.771+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "ukro1jt4pnp0uqf8kgj6s24d48h" of relation "employees" does not exist, skipping
+2026-08-15T23:02:00.773+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2026-08-15T23:02:00.773+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "ukcrudwo4rc3u86i80wgov6vh4o" of relation "monthly_payroll_inputs" does not exist, skipping
+2026-08-15T23:02:00.775+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2026-08-15T23:02:00.776+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "uk942k66h2wq2tu9qqa10h3nr4f" of relation "ot_employee_authorizations" does not exist, skipping
+2026-08-15T23:02:00.778+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2026-08-15T23:02:00.778+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "ukghvd0jwqoa4ttbtr23udgdm07" of relation "statutory_overrides" does not exist, skipping
+2026-08-15T23:02:00.782+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2026-08-15T23:02:00.782+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "ukggm0n5enypbxyv8rk8w25c6hr" of relation "sync_clients" does not exist, skipping
+2026-08-15T23:02:00.784+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2026-08-15T23:02:00.784+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "uklxwlgwuy2yrbye2vgs9w9x7mr" of relation "user_accounts" does not exist, skipping
+2026-08-15T23:02:00.786+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2026-08-15T23:02:00.786+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "ukmltwv57lr2gwfrbcrc9ottiqr" of relation "web_admin_accounts" does not exist, skipping
+2026-08-15T23:02:00.788+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2026-08-15T23:02:00.788+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "uk7r9s4axfcm64dxvr5qjtw4kug" of relation "working_days_config" does not exist, skipping
+2026-08-15T23:02:00.798+05:30  INFO 46376 --- [payroll-web-backend] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-08-15T23:02:01.123+05:30  INFO 46376 --- [payroll-web-backend] [           main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-08-15T23:02:02.279+05:30  WARN 46376 --- [payroll-web-backend] [           main] .s.s.UserDetailsServiceAutoConfiguration : 
+
+Using generated security password: f89eeac1-c38e-4154-bc47-b6f867a72a36
+
+This generated password is for development use only. Your security configuration must be updated before running your application in production.
+
+2026-08-15T23:02:02.288+05:30  INFO 46376 --- [payroll-web-backend] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2026-08-15T23:02:02.754+05:30  INFO 46376 --- [payroll-web-backend] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-08-15T23:02:02.754+05:30  INFO 46376 --- [payroll-web-backend] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-08-15T23:02:02.755+05:30  INFO 46376 --- [payroll-web-backend] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-08-15T23:02:02.790+05:30  INFO 46376 --- [payroll-web-backend] [           main] c.p.w.attendance.AttendanceControllerIT  : Started AttendanceControllerIT in 15.939 seconds (process running for 17.167)
+=== DEV BOOTSTRAP: created sync API keys (shown only once) ===
+Company: Wood Lanka (WL)  API key: vpP8HLwwEcDJbACNH9yvTLXNgd6PharJtgVTIhl1VZk
+Company: DCH Plywood (DCH)  API key: 9V1mp4wjDQXq86undooP2JMgNd8QHoKp65WmEA5LiQU
+================================================================
+=== DEV BOOTSTRAP: created initial web admin account ===
+Username: admin
+Password: 2AQZ_FVuDwCeq_dWy20AGbUn  (shown only once — change it after first login)
+==========================================================
+2026-08-15T23:02:04.010+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='AttendanceControllerIT#getReturnsRecordsForEmployeeAndDate_scopedToCompany'
+2026-08-15T23:02:04.230+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for GET /api/attendance/3/EMP-001/2026-06-20
+2026-08-15T23:02:04.667+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='AttendanceControllerIT#putWithInvalidTokenReturns401'
+2026-08-15T23:02:04.872+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='AttendanceControllerIT#getForUnknownEmployeeReturnsEmptyList'
+2026-08-15T23:02:04.873+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for GET /api/attendance/7/NO-SUCH-EMP/2026-06-20
+2026-08-15T23:02:05.112+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='AttendanceControllerIT#getWithoutTokenReturns401'
+2026-08-15T23:02:05.319+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='AttendanceControllerIT#putOnRecordBelongingToDifferentCompanyIsRejected'
+2026-08-15T23:02:05.390+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for PUT /api/attendance/4
+2026-08-15T23:02:05.817+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='AttendanceControllerIT#putWithBlankReason_returns400_doesNotUpdateOrWriteAudit'
+2026-08-15T23:02:05.900+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for PUT /api/attendance/5
+2026-08-15T23:02:06.174+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='AttendanceControllerIT#getFlagsDanglingEntryAsMissingClockOut'
+2026-08-15T23:02:06.243+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for GET /api/attendance/15/EMP-002/2026-06-20
+2026-08-15T23:02:06.517+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='AttendanceControllerIT#putWithoutTokenReturns401'
+2026-08-15T23:02:06.716+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='AttendanceControllerIT#getWithInvalidTokenReturns401'
+2026-08-15T23:02:06.918+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='AttendanceControllerIT#editingTwice_originalScanDatetimeIsNeverOverwritten'
+2026-08-15T23:02:06.995+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for PUT /api/attendance/7
+2026-08-15T23:02:07.061+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for PUT /api/attendance/7
+2026-08-15T23:02:07.407+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='AttendanceControllerIT#putWithMissingReason_returns400'
+2026-08-15T23:02:07.474+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for PUT /api/attendance/8
+2026-08-15T23:02:07.720+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='AttendanceControllerIT#putWithValidReason_updatesRecordAndWritesAudit'
+2026-08-15T23:02:07.800+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for PUT /api/attendance/9
+[INFO] Tests run: 12, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 21.55 s -- in com.payroll.web.attendance.AttendanceControllerIT
 [INFO] Running com.payroll.web.auth.AuthControllerIT
-19:41:54.413 [main] INFO org.springframework.test.context.support.AnnotationConfigContextLoaderUtils -- Could not detect default configuration classes for test class [com.payroll.web.auth.AuthControllerIT]: AuthControllerIT does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-19:41:54.562 [main] INFO org.springframework.boot.test.context.SpringBootTestContextBootstrapper -- Found @SpringBootConfiguration com.payroll.web.WebBackendApplication for test class com.payroll.web.auth.AuthControllerIT
-
-  .   ____          _            __ _ _
- /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
-( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
- \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
-  '  |____| .__|_| |_|_| |_\__, | / / / /
- =========|_|==============|___/=/_/_/_/
-
- :: Spring Boot ::               (v3.5.16)
-
-2026-08-09T19:41:55.051+05:30  INFO 29360 --- [payroll-web-backend] [           main] com.payroll.web.auth.AuthControllerIT    : Starting AuthControllerIT using Java 23.0.1 with PID 29360 (started by chand in D:\Projects\payroll\payroll-web-backend)
-2026-08-09T19:41:55.052+05:30  INFO 29360 --- [payroll-web-backend] [           main] com.payroll.web.auth.AuthControllerIT    : No active profile set, falling back to 1 default profile: "default"
-2026-08-09T19:41:55.757+05:30  INFO 29360 --- [payroll-web-backend] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2026-08-09T19:41:55.822+05:30  INFO 29360 --- [payroll-web-backend] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 54 ms. Found 9 JPA repository interfaces.
-2026-08-09T19:41:56.002+05:30  INFO 29360 --- [payroll-web-backend] [           main] EmbeddedDatabaseContextCustomizerFactory : Replacing 'dataSource' DataSource bean with embedded version
-2026-08-09T19:41:56.240+05:30  WARN 29360 --- [payroll-web-backend] [           main] trationDelegate$BeanPostProcessorChecker : Bean 'io.zonky.test.db.config.EmbeddedDatabaseAutoConfiguration' of type [io.zonky.test.db.config.EmbeddedDatabaseAutoConfiguration$$SpringCGLIB$$0] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). The currently created BeanPostProcessor [springScriptDatabaseExtension] is declared through a non-static factory method on that class; consider declaring it as static instead.
-2026-08-09T19:41:56.744+05:30  INFO 29360 --- [payroll-web-backend] [  prefetching-1] i.z.t.d.p.embedded.EmbeddedPostgres      : Detected a Windows x86_64 system
-2026-08-09T19:41:56.745+05:30  INFO 29360 --- [payroll-web-backend] [  prefetching-1] .z.t.d.p.e.DefaultPostgresBinaryResolver : Detected distribution: 'Unknown'
-2026-08-09T19:41:56.746+05:30  INFO 29360 --- [payroll-web-backend] [  prefetching-1] .z.t.d.p.e.DefaultPostgresBinaryResolver : System specific postgres binaries found: 'postgres-windows-x86_64.txz'
-2026-08-09T19:41:57.788+05:30  INFO 29360 --- [payroll-web-backend] [  prefetching-1] i.z.t.d.p.embedded.EmbeddedPostgres      : Postgres binaries at C:\Users\chand\AppData\Local\Temp\embedded-pg\PG-3942d5a1dcdbfebc27772e9e670d5d85
-2026-08-09T19:41:57.948+05:30  INFO 29360 --- [payroll-web-backend] [initdb:pid(432)] i.z.t.d.p.embedded.EmbeddedPostgres      : The files belonging to this database system will be owned by user "chand".
-2026-08-09T19:41:57.948+05:30  INFO 29360 --- [payroll-web-backend] [initdb:pid(432)] i.z.t.d.p.embedded.EmbeddedPostgres      : This user must also own the server process.
-2026-08-09T19:41:57.949+05:30  INFO 29360 --- [payroll-web-backend] [initdb:pid(432)] i.z.t.d.p.embedded.EmbeddedPostgres      : 
-2026-08-09T19:41:57.949+05:30  INFO 29360 --- [payroll-web-backend] [initdb:pid(432)] i.z.t.d.p.embedded.EmbeddedPostgres      : The database cluster will be initialized with locale "English_United States.1252".
-2026-08-09T19:41:57.949+05:30  INFO 29360 --- [payroll-web-backend] [initdb:pid(432)] i.z.t.d.p.embedded.EmbeddedPostgres      : The default text search configuration will be set to "english".
-2026-08-09T19:41:57.949+05:30  INFO 29360 --- [payroll-web-backend] [initdb:pid(432)] i.z.t.d.p.embedded.EmbeddedPostgres      : 
-2026-08-09T19:41:57.949+05:30  INFO 29360 --- [payroll-web-backend] [initdb:pid(432)] i.z.t.d.p.embedded.EmbeddedPostgres      : Data page checksums are disabled.
-2026-08-09T19:41:57.949+05:30  INFO 29360 --- [payroll-web-backend] [initdb:pid(432)] i.z.t.d.p.embedded.EmbeddedPostgres      : 
-2026-08-09T19:41:57.949+05:30  INFO 29360 --- [payroll-web-backend] [initdb:pid(432)] i.z.t.d.p.embedded.EmbeddedPostgres      : fixing permissions on existing directory C:/Users/chand/AppData/Local/Temp/epg14165848796319680249 ... ok
-2026-08-09T19:41:57.954+05:30  INFO 29360 --- [payroll-web-backend] [initdb:pid(432)] i.z.t.d.p.embedded.EmbeddedPostgres      : creating subdirectories ... ok
-2026-08-09T19:41:57.955+05:30  INFO 29360 --- [payroll-web-backend] [initdb:pid(432)] i.z.t.d.p.embedded.EmbeddedPostgres      : selecting dynamic shared memory implementation ... windows
-2026-08-09T19:41:57.996+05:30  INFO 29360 --- [payroll-web-backend] [initdb:pid(432)] i.z.t.d.p.embedded.EmbeddedPostgres      : selecting default max_connections ... 100
-2026-08-09T19:41:58.043+05:30  INFO 29360 --- [payroll-web-backend] [initdb:pid(432)] i.z.t.d.p.embedded.EmbeddedPostgres      : selecting default shared_buffers ... 128MB
-2026-08-09T19:41:58.043+05:30  INFO 29360 --- [payroll-web-backend] [initdb:pid(432)] i.z.t.d.p.embedded.EmbeddedPostgres      : selecting default time zone ... Asia/Colombo
-2026-08-09T19:41:58.046+05:30  INFO 29360 --- [payroll-web-backend] [initdb:pid(432)] i.z.t.d.p.embedded.EmbeddedPostgres      : creating configuration files ... ok
-2026-08-09T19:41:59.171+05:30  INFO 29360 --- [payroll-web-backend] [initdb:pid(432)] i.z.t.d.p.embedded.EmbeddedPostgres      : running bootstrap script ... ok
-2026-08-09T19:42:02.096+05:30  INFO 29360 --- [payroll-web-backend] [initdb:pid(432)] i.z.t.d.p.embedded.EmbeddedPostgres      : performing post-bootstrap initialization ... ok
-2026-08-09T19:42:11.891+05:30  INFO 29360 --- [payroll-web-backend] [initdb:pid(432)] i.z.t.d.p.embedded.EmbeddedPostgres      : syncing data to disk ... ok
-2026-08-09T19:42:11.891+05:30  INFO 29360 --- [payroll-web-backend] [initdb:pid(432)] i.z.t.d.p.embedded.EmbeddedPostgres      : 
-2026-08-09T19:42:11.891+05:30  INFO 29360 --- [payroll-web-backend] [initdb:pid(432)] i.z.t.d.p.embedded.EmbeddedPostgres      : Success. You can now start the database server using:
-2026-08-09T19:42:11.891+05:30  INFO 29360 --- [payroll-web-backend] [initdb:pid(432)] i.z.t.d.p.embedded.EmbeddedPostgres      : 
-2026-08-09T19:42:11.892+05:30  INFO 29360 --- [payroll-web-backend] [initdb:pid(432)] i.z.t.d.p.embedded.EmbeddedPostgres      :     ^"C^:^\Users^\chand^\AppData^\Local^\Temp^\embedded^-pg^\PG^-3942d5a1dcdbfebc27772e9e670d5d85^\bin^\pg^_ctl^" -D ^"C^:^\Users^\chand^\AppData^\Local^\Temp^\epg14165848796319680249^" -l logfile start
-2026-08-09T19:42:11.892+05:30  INFO 29360 --- [payroll-web-backend] [initdb:pid(432)] i.z.t.d.p.embedded.EmbeddedPostgres      : 
-2026-08-09T19:42:11.898+05:30  INFO 29360 --- [payroll-web-backend] [  prefetching-1] i.z.t.d.p.embedded.EmbeddedPostgres      : 32704bd8-d80b-4ecb-a365-651a3711cf1a initdb completed in 00:00:14.107
-2026-08-09T19:42:11.908+05:30  INFO 29360 --- [payroll-web-backend] [  prefetching-1] i.z.t.d.p.embedded.EmbeddedPostgres      : 32704bd8-d80b-4ecb-a365-651a3711cf1a postmaster started as Process[pid=23120, exitValue="not exited"] on port 56056.  Waiting up to PT20S for server startup to finish.
-2026-08-09T19:42:12.055+05:30  INFO 29360 --- [payroll-web-backend] [gres:pid(23120)] i.z.t.d.p.embedded.EmbeddedPostgres      : waiting for server to start....2026-08-09 19:42:12.056 +0530 [8028] LOG:  starting PostgreSQL 14.22, compiled by Visual C++ build 1944, 64-bit
-2026-08-09T19:42:12.060+05:30  INFO 29360 --- [payroll-web-backend] [gres:pid(23120)] i.z.t.d.p.embedded.EmbeddedPostgres      : 2026-08-09 19:42:12.061 +0530 [8028] LOG:  listening on IPv6 address "::1", port 56056
-2026-08-09T19:42:12.061+05:30  INFO 29360 --- [payroll-web-backend] [gres:pid(23120)] i.z.t.d.p.embedded.EmbeddedPostgres      : 2026-08-09 19:42:12.061 +0530 [8028] LOG:  listening on IPv4 address "127.0.0.1", port 56056
-2026-08-09T19:42:12.119+05:30  INFO 29360 --- [payroll-web-backend] [gres:pid(23120)] i.z.t.d.p.embedded.EmbeddedPostgres      : 2026-08-09 19:42:12.119 +0530 [28488] LOG:  database system was shut down at 2026-08-09 19:42:02 +0530
-2026-08-09T19:42:12.164+05:30  INFO 29360 --- [payroll-web-backend] [gres:pid(23120)] i.z.t.d.p.embedded.EmbeddedPostgres      : 2026-08-09 19:42:12.165 +0530 [8028] LOG:  database system is ready to accept connections
-2026-08-09T19:42:12.233+05:30  INFO 29360 --- [payroll-web-backend] [gres:pid(23120)] i.z.t.d.p.embedded.EmbeddedPostgres      :  done
-2026-08-09T19:42:12.233+05:30  INFO 29360 --- [payroll-web-backend] [gres:pid(23120)] i.z.t.d.p.embedded.EmbeddedPostgres      : server started
-2026-08-09T19:42:12.249+05:30  INFO 29360 --- [payroll-web-backend] [  prefetching-1] i.z.t.d.p.embedded.EmbeddedPostgres      : 32704bd8-d80b-4ecb-a365-651a3711cf1a postmaster startup finished in 00:00:00.347
-2026-08-09T19:42:13.336+05:30  INFO 29360 --- [payroll-web-backend] [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2026-08-09T19:42:13.385+05:30  INFO 29360 --- [payroll-web-backend] [           main] org.hibernate.Version                    : HHH000412: Hibernate ORM core version 6.5.2.Final
-2026-08-09T19:42:13.418+05:30  INFO 29360 --- [payroll-web-backend] [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
-2026-08-09T19:42:13.636+05:30  INFO 29360 --- [payroll-web-backend] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
-2026-08-09T19:42:13.755+05:30  WARN 29360 --- [payroll-web-backend] [           main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2026-08-09T19:42:14.841+05:30  INFO 29360 --- [payroll-web-backend] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2026-08-09T19:42:15.141+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
-2026-08-09T19:42:15.141+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "uk78x0yuwv25lky2ky2b9cnqw9a" of relation "attendance_records" does not exist, skipping
-2026-08-09T19:42:15.143+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
-2026-08-09T19:42:15.143+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "ukdyu5jh7vfk4ltuv5qcvpsqdmk" of relation "cloud_day_level_ot_configs" does not exist, skipping
-2026-08-09T19:42:15.145+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
-2026-08-09T19:42:15.146+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "uksk49y5bqfifgu693pl70p0av5" of relation "cloud_ot_employee_authorizations" does not exist, skipping
-2026-08-09T19:42:15.147+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
-2026-08-09T19:42:15.147+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "ukegmkv3dau9i69aopuywi1rdxw" of relation "cloud_working_days_configs" does not exist, skipping
-2026-08-09T19:42:15.149+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
-2026-08-09T19:42:15.149+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "ukm1bj83lpw9ykgqyv6wj7krxlo" of relation "companies" does not exist, skipping
-2026-08-09T19:42:15.159+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
-2026-08-09T19:42:15.160+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "uk9e6554dk8krqdskek6p0wqsu3" of relation "day_level_ot_configs" does not exist, skipping
-2026-08-09T19:42:15.161+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
-2026-08-09T19:42:15.162+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "ukmpa35jnb0w5kiaglkkmcpkgat" of relation "employees" does not exist, skipping
-2026-08-09T19:42:15.163+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
-2026-08-09T19:42:15.163+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "ukro1jt4pnp0uqf8kgj6s24d48h" of relation "employees" does not exist, skipping
-2026-08-09T19:42:15.166+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
-2026-08-09T19:42:15.166+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "ukcrudwo4rc3u86i80wgov6vh4o" of relation "monthly_payroll_inputs" does not exist, skipping
-2026-08-09T19:42:15.168+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
-2026-08-09T19:42:15.168+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "uk942k66h2wq2tu9qqa10h3nr4f" of relation "ot_employee_authorizations" does not exist, skipping
-2026-08-09T19:42:15.170+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
-2026-08-09T19:42:15.170+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "ukghvd0jwqoa4ttbtr23udgdm07" of relation "statutory_overrides" does not exist, skipping
-2026-08-09T19:42:15.172+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
-2026-08-09T19:42:15.172+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "ukggm0n5enypbxyv8rk8w25c6hr" of relation "sync_clients" does not exist, skipping
-2026-08-09T19:42:15.175+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
-2026-08-09T19:42:15.175+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "uklxwlgwuy2yrbye2vgs9w9x7mr" of relation "user_accounts" does not exist, skipping
-2026-08-09T19:42:15.177+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
-2026-08-09T19:42:15.177+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "ukmltwv57lr2gwfrbcrc9ottiqr" of relation "web_admin_accounts" does not exist, skipping
-2026-08-09T19:42:15.179+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
-2026-08-09T19:42:15.179+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "uk7r9s4axfcm64dxvr5qjtw4kug" of relation "working_days_config" does not exist, skipping
-2026-08-09T19:42:15.191+05:30  INFO 29360 --- [payroll-web-backend] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2026-08-09T19:42:15.871+05:30  INFO 29360 --- [payroll-web-backend] [           main] o.s.d.j.r.query.QueryEnhancerFactory     : Hibernate is in classpath; If applicable, HQL parser will be used.
-2026-08-09T19:42:16.770+05:30  WARN 29360 --- [payroll-web-backend] [           main] .s.s.UserDetailsServiceAutoConfiguration : 
-
-Using generated security password: b9c8ed2b-b51f-4d35-ad61-da6ef9ef643d
-
-This generated password is for development use only. Your security configuration must be updated before running your application in production.
-
-2026-08-09T19:42:16.780+05:30  INFO 29360 --- [payroll-web-backend] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
-2026-08-09T19:42:17.262+05:30  INFO 29360 --- [payroll-web-backend] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2026-08-09T19:42:17.262+05:30  INFO 29360 --- [payroll-web-backend] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
-2026-08-09T19:42:17.263+05:30  INFO 29360 --- [payroll-web-backend] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
-2026-08-09T19:42:17.300+05:30  INFO 29360 --- [payroll-web-backend] [           main] com.payroll.web.auth.AuthControllerIT    : Started AuthControllerIT in 22.593 seconds (process running for 23.777)
-=== DEV BOOTSTRAP: created sync API keys (shown only once) ===
-Company: Wood Lanka (WL)  API key: Dx_-S7BmMHqnjmHPn7LhOGidNv7sR6hEIz3j-DkCH20
-Company: DCH Plywood (DCH)  API key: DZeJr-fp6sUPe4rwfF0GYCQlgqhjae2bDUEPB64BeMs
-================================================================
-=== DEV BOOTSTRAP: created initial web admin account ===
-Username: admin
-Password: tFFc-DD1uFQ7WSiwuUQ-l4IM  (shown only once ï¿½ change it after first login)
-==========================================================
-Mockito is currently self-attaching to enable the inline-mock-maker. This will no longer work in future releases of the JDK. Please add Mockito as an agent to your build as described in Mockito's 
-documentation: https://javadoc.io/doc/org.mockito/mockito-core/latest/org.mockito/org/mockito/Mockito.html#0.3
-Java HotSpot(TM) 64-Bit Server VM warning: Sharing is only supported for boot loader classes because bootstrap classpath has been appended
-WARNING: A Java agent has been loaded dynamically (C:\Users\chand\.m2\repository\net\bytebuddy\byte-buddy-agent\1.17.8\byte-buddy-agent-1.17.8.jar)
-WARNING: If a serviceability tool is in use, please run with -XX:+EnableDynamicAgentLoading to hide this warning
-WARNING: If a serviceability tool is not in use, please run with -Djdk.instrument.traceUsage for more information
-WARNING: Dynamic loading of agents will be disallowed by default in a future release
-2026-08-09T19:42:18.411+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='AuthControllerIT#loginWithNullUsernameReturnsClean400'
-2026-08-09T19:42:18.464+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
-2026-08-09T19:42:18.879+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='AuthControllerIT#loginWithCorrectCredentialsReturnsToken'
-2026-08-09T19:42:18.880+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
-2026-08-09T19:42:19.394+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='AuthControllerIT#loginWithOversizedPasswordReturnsClean400'
-2026-08-09T19:42:19.395+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
-2026-08-09T19:42:19.597+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='AuthControllerIT#loginWithWrongPasswordReturnsGeneric401'
-2026-08-09T19:42:19.598+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
-2026-08-09T19:42:20.019+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='AuthControllerIT#sixthAttemptIsRejectedEvenWithCorrectPasswordAfterFiveFailures'
-2026-08-09T19:42:20.021+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
-2026-08-09T19:42:20.187+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
-2026-08-09T19:42:20.390+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
-2026-08-09T19:42:20.607+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
-2026-08-09T19:42:20.781+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
-2026-08-09T19:42:20.968+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
-2026-08-09T19:42:21.244+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='AuthControllerIT#loginWithUnknownUsernameReturnsSameGeneric401'
-2026-08-09T19:42:21.245+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
-2026-08-09T19:42:21.653+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='AuthControllerIT#successfulLoginResetsFailedAttemptCounter'
-2026-08-09T19:42:21.654+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
-2026-08-09T19:42:21.860+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
-2026-08-09T19:42:22.060+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
-2026-08-09T19:42:22.241+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
-2026-08-09T19:42:22.438+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
-2026-08-09T19:42:22.625+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
-2026-08-09T19:42:22.794+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
-2026-08-09T19:42:22.962+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
-2026-08-09T19:42:23.129+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
-2026-08-09T19:42:23.307+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
-[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 29.23 s -- in com.payroll.web.auth.AuthControllerIT
+2026-08-15T23:02:07.925+05:30  INFO 46376 --- [payroll-web-backend] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.payroll.web.auth.AuthControllerIT]: AuthControllerIT does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-15T23:02:07.934+05:30  INFO 46376 --- [payroll-web-backend] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.payroll.web.WebBackendApplication for test class com.payroll.web.auth.AuthControllerIT
+2026-08-15T23:02:08.138+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='AuthControllerIT#loginWithNullUsernameReturnsClean400'
+2026-08-15T23:02:08.141+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
+2026-08-15T23:02:08.353+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='AuthControllerIT#loginWithCorrectCredentialsReturnsToken'
+2026-08-15T23:02:08.354+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
+2026-08-15T23:02:08.723+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='AuthControllerIT#loginWithOversizedPasswordReturnsClean400'
+2026-08-15T23:02:08.724+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
+2026-08-15T23:02:08.947+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='AuthControllerIT#loginWithWrongPasswordReturnsGeneric401'
+2026-08-15T23:02:08.948+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
+2026-08-15T23:02:09.345+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='AuthControllerIT#sixthAttemptIsRejectedEvenWithCorrectPasswordAfterFiveFailures'
+2026-08-15T23:02:09.347+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
+2026-08-15T23:02:09.525+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
+2026-08-15T23:02:09.709+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
+2026-08-15T23:02:09.896+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
+2026-08-15T23:02:10.078+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
+2026-08-15T23:02:10.249+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
+2026-08-15T23:02:10.456+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='AuthControllerIT#loginWithUnknownUsernameReturnsSameGeneric401'
+2026-08-15T23:02:10.458+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
+2026-08-15T23:02:10.841+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='AuthControllerIT#successfulLoginResetsFailedAttemptCounter'
+2026-08-15T23:02:10.842+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
+2026-08-15T23:02:11.037+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
+2026-08-15T23:02:11.211+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
+2026-08-15T23:02:11.370+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
+2026-08-15T23:02:11.550+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
+2026-08-15T23:02:11.761+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
+2026-08-15T23:02:11.985+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
+2026-08-15T23:02:12.175+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
+2026-08-15T23:02:12.351+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
+2026-08-15T23:02:12.537+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
+[INFO] Tests run: 7, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.787 s -- in com.payroll.web.auth.AuthControllerIT
 [INFO] Running com.payroll.web.auth.LoginRateLimitWindowIT
-2026-08-09T19:42:23.494+05:30  INFO 29360 --- [payroll-web-backend] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.payroll.web.WebBackendApplication for test class com.payroll.web.auth.LoginRateLimitWindowIT
+2026-08-15T23:02:12.718+05:30  INFO 46376 --- [payroll-web-backend] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.payroll.web.WebBackendApplication for test class com.payroll.web.auth.LoginRateLimitWindowIT
 
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -469,246 +375,296 @@ WARNING: Dynamic loading of agents will be disallowed by default in a future rel
 
  :: Spring Boot ::               (v3.5.16)
 
-2026-08-09T19:42:23.521+05:30  INFO 29360 --- [payroll-web-backend] [           main] c.p.web.auth.LoginRateLimitWindowIT      : Starting LoginRateLimitWindowIT using Java 23.0.1 with PID 29360 (started by chand in D:\Projects\payroll\payroll-web-backend)
-2026-08-09T19:42:23.521+05:30  INFO 29360 --- [payroll-web-backend] [           main] c.p.web.auth.LoginRateLimitWindowIT      : No active profile set, falling back to 1 default profile: "default"
-2026-08-09T19:42:23.681+05:30  INFO 29360 --- [payroll-web-backend] [           main] o.s.b.f.s.DefaultListableBeanFactory     : Overriding bean definition for bean 'clock' with a different definition: replacing [Root bean: class=null; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; fallback=false; factoryBeanName=appConfig; factoryMethodName=clock; initMethodNames=null; destroyMethodNames=[(inferred)]; defined in class path resource [com/payroll/web/config/AppConfig.class]] with [Root bean: class=null; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=true; fallback=false; factoryBeanName=loginRateLimitWindowIT.MutableClockConfig; factoryMethodName=clock; initMethodNames=null; destroyMethodNames=[(inferred)]; defined in com.payroll.web.auth.LoginRateLimitWindowIT$MutableClockConfig]
-2026-08-09T19:42:23.710+05:30  INFO 29360 --- [payroll-web-backend] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
-2026-08-09T19:42:23.728+05:30  INFO 29360 --- [payroll-web-backend] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 15 ms. Found 9 JPA repository interfaces.
-2026-08-09T19:42:23.766+05:30  INFO 29360 --- [payroll-web-backend] [           main] EmbeddedDatabaseContextCustomizerFactory : Replacing 'dataSource' DataSource bean with embedded version
-2026-08-09T19:42:23.787+05:30  WARN 29360 --- [payroll-web-backend] [           main] trationDelegate$BeanPostProcessorChecker : Bean 'io.zonky.test.db.config.EmbeddedDatabaseAutoConfiguration' of type [io.zonky.test.db.config.EmbeddedDatabaseAutoConfiguration$$SpringCGLIB$$0] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). The currently created BeanPostProcessor [springScriptDatabaseExtension] is declared through a non-static factory method on that class; consider declaring it as static instead.
-2026-08-09T19:42:24.306+05:30  INFO 29360 --- [payroll-web-backend] [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
-2026-08-09T19:42:24.308+05:30  INFO 29360 --- [payroll-web-backend] [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
-2026-08-09T19:42:24.317+05:30  INFO 29360 --- [payroll-web-backend] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
-2026-08-09T19:42:24.375+05:30  WARN 29360 --- [payroll-web-backend] [           main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
-2026-08-09T19:42:24.584+05:30  INFO 29360 --- [payroll-web-backend] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
-2026-08-09T19:42:24.846+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
-2026-08-09T19:42:24.846+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "uk78x0yuwv25lky2ky2b9cnqw9a" of relation "attendance_records" does not exist, skipping
-2026-08-09T19:42:24.849+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
-2026-08-09T19:42:24.849+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "ukdyu5jh7vfk4ltuv5qcvpsqdmk" of relation "cloud_day_level_ot_configs" does not exist, skipping
-2026-08-09T19:42:24.850+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
-2026-08-09T19:42:24.850+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "uksk49y5bqfifgu693pl70p0av5" of relation "cloud_ot_employee_authorizations" does not exist, skipping
-2026-08-09T19:42:24.852+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
-2026-08-09T19:42:24.852+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "ukegmkv3dau9i69aopuywi1rdxw" of relation "cloud_working_days_configs" does not exist, skipping
-2026-08-09T19:42:24.854+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
-2026-08-09T19:42:24.854+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "ukm1bj83lpw9ykgqyv6wj7krxlo" of relation "companies" does not exist, skipping
-2026-08-09T19:42:24.866+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
-2026-08-09T19:42:24.866+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "uk9e6554dk8krqdskek6p0wqsu3" of relation "day_level_ot_configs" does not exist, skipping
-2026-08-09T19:42:24.869+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
-2026-08-09T19:42:24.869+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "ukmpa35jnb0w5kiaglkkmcpkgat" of relation "employees" does not exist, skipping
-2026-08-09T19:42:24.870+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
-2026-08-09T19:42:24.870+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "ukro1jt4pnp0uqf8kgj6s24d48h" of relation "employees" does not exist, skipping
-2026-08-09T19:42:24.873+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
-2026-08-09T19:42:24.873+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "ukcrudwo4rc3u86i80wgov6vh4o" of relation "monthly_payroll_inputs" does not exist, skipping
-2026-08-09T19:42:24.875+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
-2026-08-09T19:42:24.875+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "uk942k66h2wq2tu9qqa10h3nr4f" of relation "ot_employee_authorizations" does not exist, skipping
-2026-08-09T19:42:24.878+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
-2026-08-09T19:42:24.878+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "ukghvd0jwqoa4ttbtr23udgdm07" of relation "statutory_overrides" does not exist, skipping
-2026-08-09T19:42:24.878+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
-2026-08-09T19:42:24.880+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "ukggm0n5enypbxyv8rk8w25c6hr" of relation "sync_clients" does not exist, skipping
-2026-08-09T19:42:24.881+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
-2026-08-09T19:42:24.881+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "uklxwlgwuy2yrbye2vgs9w9x7mr" of relation "user_accounts" does not exist, skipping
-2026-08-09T19:42:24.883+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
-2026-08-09T19:42:24.884+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "ukmltwv57lr2gwfrbcrc9ottiqr" of relation "web_admin_accounts" does not exist, skipping
-2026-08-09T19:42:24.885+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
-2026-08-09T19:42:24.885+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "uk7r9s4axfcm64dxvr5qjtw4kug" of relation "working_days_config" does not exist, skipping
-2026-08-09T19:42:24.895+05:30  INFO 29360 --- [payroll-web-backend] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
-2026-08-09T19:42:25.046+05:30  WARN 29360 --- [payroll-web-backend] [           main] .s.s.UserDetailsServiceAutoConfiguration : 
+2026-08-15T23:02:12.740+05:30  INFO 46376 --- [payroll-web-backend] [           main] c.p.web.auth.LoginRateLimitWindowIT      : Starting LoginRateLimitWindowIT using Java 23.0.1 with PID 46376 (started by chand in D:\Projects\payroll\payroll-web-backend)
+2026-08-15T23:02:12.740+05:30  INFO 46376 --- [payroll-web-backend] [           main] c.p.web.auth.LoginRateLimitWindowIT      : No active profile set, falling back to 1 default profile: "default"
+2026-08-15T23:02:12.889+05:30  INFO 46376 --- [payroll-web-backend] [           main] o.s.b.f.s.DefaultListableBeanFactory     : Overriding bean definition for bean 'clock' with a different definition: replacing [Root bean: class=null; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=false; fallback=false; factoryBeanName=appConfig; factoryMethodName=clock; initMethodNames=null; destroyMethodNames=[(inferred)]; defined in class path resource [com/payroll/web/config/AppConfig.class]] with [Root bean: class=null; scope=; abstract=false; lazyInit=null; autowireMode=3; dependencyCheck=0; autowireCandidate=true; primary=true; fallback=false; factoryBeanName=loginRateLimitWindowIT.MutableClockConfig; factoryMethodName=clock; initMethodNames=null; destroyMethodNames=[(inferred)]; defined in com.payroll.web.auth.LoginRateLimitWindowIT$MutableClockConfig]
+2026-08-15T23:02:12.928+05:30  INFO 46376 --- [payroll-web-backend] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-08-15T23:02:12.951+05:30  INFO 46376 --- [payroll-web-backend] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 22 ms. Found 10 JPA repository interfaces.
+2026-08-15T23:02:13.002+05:30  INFO 46376 --- [payroll-web-backend] [           main] EmbeddedDatabaseContextCustomizerFactory : Replacing 'dataSource' DataSource bean with embedded version
+2026-08-15T23:02:13.034+05:30  WARN 46376 --- [payroll-web-backend] [           main] trationDelegate$BeanPostProcessorChecker : Bean 'io.zonky.test.db.config.EmbeddedDatabaseAutoConfiguration' of type [io.zonky.test.db.config.EmbeddedDatabaseAutoConfiguration$$SpringCGLIB$$0] is not eligible for getting processed by all BeanPostProcessors (for example: not eligible for auto-proxying). The currently created BeanPostProcessor [springScriptDatabaseExtension] is declared through a non-static factory method on that class; consider declaring it as static instead.
+2026-08-15T23:02:13.660+05:30  INFO 46376 --- [payroll-web-backend] [           main] o.hibernate.jpa.internal.util.LogHelper  : HHH000204: Processing PersistenceUnitInfo [name: default]
+2026-08-15T23:02:13.663+05:30  INFO 46376 --- [payroll-web-backend] [           main] o.h.c.internal.RegionFactoryInitiator    : HHH000026: Second-level cache disabled
+2026-08-15T23:02:13.672+05:30  INFO 46376 --- [payroll-web-backend] [           main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-08-15T23:02:13.768+05:30  WARN 46376 --- [payroll-web-backend] [           main] org.hibernate.orm.deprecation            : HHH90000025: PostgreSQLDialect does not need to be specified explicitly using 'hibernate.dialect' (remove the property setting and it will be selected by default)
+2026-08-15T23:02:14.094+05:30  INFO 46376 --- [payroll-web-backend] [           main] o.h.e.t.j.p.i.JtaPlatformInitiator       : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-08-15T23:02:14.355+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2026-08-15T23:02:14.355+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "uk78x0yuwv25lky2ky2b9cnqw9a" of relation "attendance_records" does not exist, skipping
+2026-08-15T23:02:14.357+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2026-08-15T23:02:14.359+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "ukdyu5jh7vfk4ltuv5qcvpsqdmk" of relation "cloud_day_level_ot_configs" does not exist, skipping
+2026-08-15T23:02:14.360+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2026-08-15T23:02:14.361+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "uksk49y5bqfifgu693pl70p0av5" of relation "cloud_ot_employee_authorizations" does not exist, skipping
+2026-08-15T23:02:14.363+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2026-08-15T23:02:14.363+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "ukegmkv3dau9i69aopuywi1rdxw" of relation "cloud_working_days_configs" does not exist, skipping
+2026-08-15T23:02:14.366+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2026-08-15T23:02:14.367+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "ukm1bj83lpw9ykgqyv6wj7krxlo" of relation "companies" does not exist, skipping
+2026-08-15T23:02:14.378+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2026-08-15T23:02:14.378+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "uk9e6554dk8krqdskek6p0wqsu3" of relation "day_level_ot_configs" does not exist, skipping
+2026-08-15T23:02:14.381+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2026-08-15T23:02:14.381+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "ukmpa35jnb0w5kiaglkkmcpkgat" of relation "employees" does not exist, skipping
+2026-08-15T23:02:14.383+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2026-08-15T23:02:14.383+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "ukro1jt4pnp0uqf8kgj6s24d48h" of relation "employees" does not exist, skipping
+2026-08-15T23:02:14.385+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2026-08-15T23:02:14.385+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "ukcrudwo4rc3u86i80wgov6vh4o" of relation "monthly_payroll_inputs" does not exist, skipping
+2026-08-15T23:02:14.388+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2026-08-15T23:02:14.388+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "uk942k66h2wq2tu9qqa10h3nr4f" of relation "ot_employee_authorizations" does not exist, skipping
+2026-08-15T23:02:14.389+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2026-08-15T23:02:14.390+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "ukghvd0jwqoa4ttbtr23udgdm07" of relation "statutory_overrides" does not exist, skipping
+2026-08-15T23:02:14.392+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2026-08-15T23:02:14.392+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "ukggm0n5enypbxyv8rk8w25c6hr" of relation "sync_clients" does not exist, skipping
+2026-08-15T23:02:14.394+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2026-08-15T23:02:14.394+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "uklxwlgwuy2yrbye2vgs9w9x7mr" of relation "user_accounts" does not exist, skipping
+2026-08-15T23:02:14.397+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2026-08-15T23:02:14.397+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "ukmltwv57lr2gwfrbcrc9ottiqr" of relation "web_admin_accounts" does not exist, skipping
+2026-08-15T23:02:14.399+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Warning Code: 0, SQLState: 00000
+2026-08-15T23:02:14.399+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : constraint "uk7r9s4axfcm64dxvr5qjtw4kug" of relation "working_days_config" does not exist, skipping
+2026-08-15T23:02:14.410+05:30  INFO 46376 --- [payroll-web-backend] [           main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-08-15T23:02:14.631+05:30  WARN 46376 --- [payroll-web-backend] [           main] .s.s.UserDetailsServiceAutoConfiguration : 
 
-Using generated security password: 7ea213ab-f7f4-41c1-98c7-63c4a0d3b7e4
+Using generated security password: 2eb0140c-0429-488e-bb51-1f69fccc28b8
 
 This generated password is for development use only. Your security configuration must be updated before running your application in production.
 
-2026-08-09T19:42:25.048+05:30  INFO 29360 --- [payroll-web-backend] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
-2026-08-09T19:42:25.108+05:30  INFO 29360 --- [payroll-web-backend] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2026-08-09T19:42:25.108+05:30  INFO 29360 --- [payroll-web-backend] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
-2026-08-09T19:42:25.108+05:30  INFO 29360 --- [payroll-web-backend] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
-2026-08-09T19:42:25.121+05:30  INFO 29360 --- [payroll-web-backend] [           main] c.p.web.auth.LoginRateLimitWindowIT      : Started LoginRateLimitWindowIT in 1.623 seconds (process running for 31.597)
+2026-08-15T23:02:14.631+05:30  INFO 46376 --- [payroll-web-backend] [           main] r$InitializeUserDetailsManagerConfigurer : Global AuthenticationManager configured with UserDetailsService bean with name inMemoryUserDetailsManager
+2026-08-15T23:02:14.725+05:30  INFO 46376 --- [payroll-web-backend] [           main] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2026-08-15T23:02:14.725+05:30  INFO 46376 --- [payroll-web-backend] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2026-08-15T23:02:14.726+05:30  INFO 46376 --- [payroll-web-backend] [           main] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 1 ms
+2026-08-15T23:02:14.741+05:30  INFO 46376 --- [payroll-web-backend] [           main] c.p.web.auth.LoginRateLimitWindowIT      : Started LoginRateLimitWindowIT in 2.02 seconds (process running for 29.118)
 === DEV BOOTSTRAP: created initial web admin account ===
 Username: admin
-Password: VJ_uG40qmZeYVCU3Ssygm0Ov  (shown only once ï¿½ change it after first login)
+Password: 55mavF8m74QJtM2mbljl8Ftv  (shown only once — change it after first login)
 ==========================================================
 === DEV BOOTSTRAP: created sync API keys (shown only once) ===
-Company: Wood Lanka (WL)  API key: f7Y2-e1Y6cPq1D4Y5yNXGM2_W8IWIAMecrET5Y0FZZc
-Company: DCH Plywood (DCH)  API key: ktSSotDhRloi2TonRYDIfNfFmk-OhVPIi5MEVZs4dWs
+Company: Wood Lanka (WL)  API key: M1dcW8lAymIPxKtf6GZmClgdpPkJYxfU9OUQbMV_BAA
+Company: DCH Plywood (DCH)  API key: gZWZ5bnU5S8gEWMdKfv9GFMOOpoDpI-lhCQIkM7TsH4
 ================================================================
-2026-08-09T19:42:25.715+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/pdzsczjyiyci?user=postgres', scope='LoginRateLimitWindowIT#attemptsAreAllowedAgainAfterWindowExpires'
-2026-08-09T19:42:25.717+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
-2026-08-09T19:42:25.898+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
-2026-08-09T19:42:26.082+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
-2026-08-09T19:42:26.271+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
-2026-08-09T19:42:26.458+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
-2026-08-09T19:42:26.656+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
-2026-08-09T19:42:26.658+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
-[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.371 s -- in com.payroll.web.auth.LoginRateLimitWindowIT
+2026-08-15T23:02:15.411+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/adyqijlmqqbp?user=postgres', scope='LoginRateLimitWindowIT#attemptsAreAllowedAgainAfterWindowExpires'
+2026-08-15T23:02:15.413+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
+2026-08-15T23:02:15.612+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
+2026-08-15T23:02:15.804+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
+2026-08-15T23:02:16.011+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
+2026-08-15T23:02:16.239+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
+2026-08-15T23:02:16.456+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
+2026-08-15T23:02:16.459+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/auth/login
+[INFO] Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 3.989 s -- in com.payroll.web.auth.LoginRateLimitWindowIT
 [INFO] Running com.payroll.web.calculation.PayrollCalculationControllerIT
-2026-08-09T19:42:26.861+05:30  INFO 29360 --- [payroll-web-backend] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.payroll.web.calculation.PayrollCalculationControllerIT]: PayrollCalculationControllerIT does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2026-08-09T19:42:26.871+05:30  INFO 29360 --- [payroll-web-backend] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.payroll.web.WebBackendApplication for test class com.payroll.web.calculation.PayrollCalculationControllerIT
-2026-08-09T19:42:27.179+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='PayrollCalculationControllerIT#goldenCase_throughFullCloudPipeline_gross24000_epf1920'
-2026-08-09T19:42:30.822+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for GET /api/payroll/calculate/2026-04
-2026-08-09T19:42:31.394+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='PayrollCalculationControllerIT#missingWorkingDaysConfig_flagsRowAndNullsMoneyFields'
-2026-08-09T19:42:31.426+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for GET /api/payroll/calculate/2026-08
-2026-08-09T19:42:31.906+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='PayrollCalculationControllerIT#otAuthorizationGate_autoAuthorizedWhenNoSwitchSet_blockedWhenExplicitlyFalse'
-2026-08-09T19:42:32.206+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for GET /api/payroll/calculate/2026-06
-2026-08-09T19:42:32.771+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='PayrollCalculationControllerIT#getWithoutTokenReturns401'
-2026-08-09T19:42:33.076+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='PayrollCalculationControllerIT#takeHomeFormula_withAllowanceAndBothAdvances_arithmeticIsCorrect'
-2026-08-09T19:42:34.266+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for GET /api/payroll/calculate/2026-04
-2026-08-09T19:42:34.767+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='PayrollCalculationControllerIT#twoCompaniesSameEmployeeCodeStaySegregated'
-2026-08-09T19:42:35.974+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for GET /api/payroll/calculate/2026-04
-2026-08-09T19:42:36.163+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for GET /api/payroll/calculate/2026-04
-2026-08-09T19:42:36.763+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='PayrollCalculationControllerIT#missingMonthlyPayrollInput_defaultsToZero_takeHomeStillCorrect'
-2026-08-09T19:42:36.817+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for GET /api/payroll/calculate/2026-07
-2026-08-09T19:42:37.288+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='PayrollCalculationControllerIT#getWithInvalidTokenReturns401'
-2026-08-09T19:42:37.593+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='PayrollCalculationControllerIT#otPay_breakInsideOtWindow_isDeducted'
-2026-08-09T19:42:37.733+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for GET /api/payroll/calculate/2026-05
-[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 11.06 s -- in com.payroll.web.calculation.PayrollCalculationControllerIT
+2026-08-15T23:02:16.704+05:30  INFO 46376 --- [payroll-web-backend] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.payroll.web.calculation.PayrollCalculationControllerIT]: PayrollCalculationControllerIT does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-15T23:02:16.713+05:30  INFO 46376 --- [payroll-web-backend] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.payroll.web.WebBackendApplication for test class com.payroll.web.calculation.PayrollCalculationControllerIT
+2026-08-15T23:02:17.060+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='PayrollCalculationControllerIT#goldenCase_throughFullCloudPipeline_gross24000_epf1920'
+2026-08-15T23:02:20.955+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for GET /api/payroll/calculate/2026-04
+2026-08-15T23:02:21.531+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='PayrollCalculationControllerIT#missingWorkingDaysConfig_flagsRowAndNullsMoneyFields'
+2026-08-15T23:02:21.563+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for GET /api/payroll/calculate/2026-08
+2026-08-15T23:02:22.067+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='PayrollCalculationControllerIT#otAuthorizationGate_autoAuthorizedWhenNoSwitchSet_blockedWhenExplicitlyFalse'
+2026-08-15T23:02:22.393+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for GET /api/payroll/calculate/2026-06
+2026-08-15T23:02:22.912+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='PayrollCalculationControllerIT#getWithoutTokenReturns401'
+2026-08-15T23:02:23.239+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='PayrollCalculationControllerIT#takeHomeFormula_withAllowanceAndBothAdvances_arithmeticIsCorrect'
+2026-08-15T23:02:24.590+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for GET /api/payroll/calculate/2026-04
+2026-08-15T23:02:25.163+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='PayrollCalculationControllerIT#twoCompaniesSameEmployeeCodeStaySegregated'
+2026-08-15T23:02:26.480+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for GET /api/payroll/calculate/2026-04
+2026-08-15T23:02:26.692+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for GET /api/payroll/calculate/2026-04
+2026-08-15T23:02:27.241+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='PayrollCalculationControllerIT#missingMonthlyPayrollInput_defaultsToZero_takeHomeStillCorrect'
+2026-08-15T23:02:27.303+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for GET /api/payroll/calculate/2026-07
+2026-08-15T23:02:27.829+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='PayrollCalculationControllerIT#getWithInvalidTokenReturns401'
+2026-08-15T23:02:28.177+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='PayrollCalculationControllerIT#otPay_breakInsideOtWindow_isDeducted'
+2026-08-15T23:02:28.346+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for GET /api/payroll/calculate/2026-05
+[INFO] Tests run: 9, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 11.86 s -- in com.payroll.web.calculation.PayrollCalculationControllerIT
 [INFO] Running com.payroll.web.calculation.PayrollExportControllerIT
-2026-08-09T19:42:37.919+05:30  INFO 29360 --- [payroll-web-backend] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.payroll.web.calculation.PayrollExportControllerIT]: PayrollExportControllerIT does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2026-08-09T19:42:37.922+05:30  INFO 29360 --- [payroll-web-backend] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.payroll.web.WebBackendApplication for test class com.payroll.web.calculation.PayrollExportControllerIT
-2026-08-09T19:42:38.216+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='PayrollExportControllerIT#totalsRow_matchesManualSum_forMultipleEmployees'
-2026-08-09T19:42:40.652+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for GET /api/payroll/export/2026-04
-2026-08-09T19:42:42.289+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='PayrollExportControllerIT#headers_matchExpectedOrderAndNames'
-2026-08-09T19:42:42.292+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for GET /api/payroll/export/2026-04
-2026-08-09T19:42:42.878+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='PayrollExportControllerIT#getWithoutTokenReturns401'
-2026-08-09T19:42:43.164+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='PayrollExportControllerIT#twoCompaniesSameEmployeeCodeStaySegregated'
-2026-08-09T19:42:44.398+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for GET /api/payroll/export/2026-04
-2026-08-09T19:42:44.659+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for GET /api/payroll/export/2026-04
-2026-08-09T19:42:45.266+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='PayrollExportControllerIT#goldenCase_gross24000_epf1920_inCorrectColumns'
-2026-08-09T19:42:46.416+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for GET /api/payroll/export/2026-04
-2026-08-09T19:42:46.968+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='PayrollExportControllerIT#missingWorkingDaysConfig_rendersNA_inMoneyColumns'
-2026-08-09T19:42:46.998+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for GET /api/payroll/export/2026-08
-2026-08-09T19:42:47.557+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='PayrollExportControllerIT#getWithInvalidTokenReturns401'
-2026-08-09T19:42:47.882+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='PayrollExportControllerIT#responseHeaders_contentTypeAndDisposition_areCorrect'
-2026-08-09T19:42:47.939+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for GET /api/payroll/export/2026-04
-[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 10.26 s -- in com.payroll.web.calculation.PayrollExportControllerIT
+2026-08-15T23:02:28.565+05:30  INFO 46376 --- [payroll-web-backend] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.payroll.web.calculation.PayrollExportControllerIT]: PayrollExportControllerIT does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-15T23:02:28.567+05:30  INFO 46376 --- [payroll-web-backend] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.payroll.web.WebBackendApplication for test class com.payroll.web.calculation.PayrollExportControllerIT
+2026-08-15T23:02:28.912+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='PayrollExportControllerIT#totalsRow_matchesManualSum_forMultipleEmployees'
+2026-08-15T23:02:31.369+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for GET /api/payroll/export/2026-04
+2026-08-15T23:02:33.251+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='PayrollExportControllerIT#headers_matchExpectedOrderAndNames'
+2026-08-15T23:02:33.253+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for GET /api/payroll/export/2026-04
+2026-08-15T23:02:33.824+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='PayrollExportControllerIT#getWithoutTokenReturns401'
+2026-08-15T23:02:34.122+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='PayrollExportControllerIT#twoCompaniesSameEmployeeCodeStaySegregated'
+2026-08-15T23:02:35.446+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for GET /api/payroll/export/2026-04
+2026-08-15T23:02:35.742+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for GET /api/payroll/export/2026-04
+2026-08-15T23:02:36.371+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='PayrollExportControllerIT#goldenCase_gross24000_epf1920_inCorrectColumns'
+2026-08-15T23:02:37.610+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for GET /api/payroll/export/2026-04
+2026-08-15T23:02:38.217+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='PayrollExportControllerIT#missingWorkingDaysConfig_rendersNA_inMoneyColumns'
+2026-08-15T23:02:38.250+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for GET /api/payroll/export/2026-08
+2026-08-15T23:02:38.814+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='PayrollExportControllerIT#getWithInvalidTokenReturns401'
+2026-08-15T23:02:39.102+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='PayrollExportControllerIT#responseHeaders_contentTypeAndDisposition_areCorrect'
+2026-08-15T23:02:39.159+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for GET /api/payroll/export/2026-04
+[INFO] Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 10.86 s -- in com.payroll.web.calculation.PayrollExportControllerIT
+[INFO] Running com.payroll.web.company.CompanyControllerIT
+2026-08-15T23:02:39.427+05:30  INFO 46376 --- [payroll-web-backend] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.payroll.web.company.CompanyControllerIT]: CompanyControllerIT does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-15T23:02:39.436+05:30  INFO 46376 --- [payroll-web-backend] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.payroll.web.WebBackendApplication for test class com.payroll.web.company.CompanyControllerIT
+2026-08-15T23:02:39.534+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='CompanyControllerIT#getWithoutTokenReturns401'
+2026-08-15T23:02:39.630+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='CompanyControllerIT#getWithInvalidTokenReturns401'
+2026-08-15T23:02:39.720+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='CompanyControllerIT#listReturnsAllCompaniesWithIdAndName'
+2026-08-15T23:02:39.722+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for GET /api/companies
+[INFO] Tests run: 3, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.335 s -- in com.payroll.web.company.CompanyControllerIT
+[INFO] Running com.payroll.web.otconfig.OtConfigControllerIT
+2026-08-15T23:02:39.763+05:30  INFO 46376 --- [payroll-web-backend] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.payroll.web.otconfig.OtConfigControllerIT]: OtConfigControllerIT does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-15T23:02:39.770+05:30  INFO 46376 --- [payroll-web-backend] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.payroll.web.WebBackendApplication for test class com.payroll.web.otconfig.OtConfigControllerIT
+2026-08-15T23:02:39.961+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='OtConfigControllerIT#putEmployeeAuthorization_retroactiveWithReason_savedAndReasonInAudit'
+2026-08-15T23:02:39.963+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for PUT /api/ot-config/employee-authorization/67/EMP-030/2026-08-14
+2026-08-15T23:02:40.250+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='OtConfigControllerIT#putDayLevel_retroactiveWithMissingReason_returns400'
+2026-08-15T23:02:40.252+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for PUT /api/ot-config/day-level/69/2026-08-14
+2026-08-15T23:02:40.511+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='OtConfigControllerIT#putDayLevel_scopedToCompany'
+2026-08-15T23:02:40.514+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for PUT /api/ot-config/day-level/71/2026-08-17
+2026-08-15T23:02:40.556+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for PUT /api/ot-config/day-level/72/2026-08-17
+2026-08-15T23:02:40.827+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='OtConfigControllerIT#getDayLevelForWeekdayWithNoConfig_derivesAllStaffOtOff'
+2026-08-15T23:02:40.829+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for GET /api/ot-config/day-level/73/2026-08-17
+2026-08-15T23:02:41.039+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='OtConfigControllerIT#getEmployeeAuthorizations_returnsListScopedToCompany'
+2026-08-15T23:02:41.041+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for PUT /api/ot-config/employee-authorization/75/EMP-001/2026-08-17
+2026-08-15T23:02:41.082+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for PUT /api/ot-config/employee-authorization/75/EMP-002/2026-08-17
+2026-08-15T23:02:41.117+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for PUT /api/ot-config/employee-authorization/76/EMP-001/2026-08-17
+2026-08-15T23:02:41.156+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for GET /api/ot-config/employee-authorizations/75/2026-08-17
+2026-08-15T23:02:41.369+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='OtConfigControllerIT#putDayLevel_retroactiveWithBlankReason_returns400_noDbOrAuditWrite'
+2026-08-15T23:02:41.370+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for PUT /api/ot-config/day-level/77/2026-08-14
+2026-08-15T23:02:41.636+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='OtConfigControllerIT#putEmployeeAuthorization_retroactiveWithBlankReason_returns400_noDbOrAuditWrite'
+2026-08-15T23:02:41.638+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for PUT /api/ot-config/employee-authorization/79/EMP-020/2026-08-14
+2026-08-15T23:02:41.908+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='OtConfigControllerIT#putDayLevel_retroactiveWithReason_savedAndReasonInAudit'
+2026-08-15T23:02:41.909+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for PUT /api/ot-config/day-level/81/2026-08-14
+2026-08-15T23:02:42.217+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='OtConfigControllerIT#putEmployeeAuthorization_updatesRowAndWritesAudit'
+2026-08-15T23:02:42.219+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for PUT /api/ot-config/employee-authorization/83/EMP-010/2026-08-17
+2026-08-15T23:02:42.485+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='OtConfigControllerIT#putEmployeeAuthorizationWithoutTokenReturns401'
+2026-08-15T23:02:42.664+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='OtConfigControllerIT#getEmployeeAuthorizations_emptyWhenNoneSet'
+2026-08-15T23:02:42.665+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for GET /api/ot-config/employee-authorizations/87/2026-08-17
+2026-08-15T23:02:42.869+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='OtConfigControllerIT#getDayLevelForSundayWithNoConfig_derivesAllStaffOtOn'
+2026-08-15T23:02:42.871+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for GET /api/ot-config/day-level/89/2026-08-16
+2026-08-15T23:02:43.081+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='OtConfigControllerIT#putDayLevel_updatesConfigAndWritesAudit'
+2026-08-15T23:02:43.082+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for PUT /api/ot-config/day-level/91/2026-08-17
+2026-08-15T23:02:43.383+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='OtConfigControllerIT#putEmployeeAuthorization_allowsUnknownEmployeeCode'
+2026-08-15T23:02:43.387+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for PUT /api/ot-config/employee-authorization/93/MADE-UP-CODE/2026-08-17
+2026-08-15T23:02:43.654+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='OtConfigControllerIT#getEmployeeAuthorizationsWithoutTokenReturns401'
+2026-08-15T23:02:43.830+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='OtConfigControllerIT#puttingOneEmployeeAuthorization_doesNotAffectAnotherEmployeeSameDate'
+2026-08-15T23:02:43.832+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for PUT /api/ot-config/employee-authorization/97/EMP-041/2026-08-17
+2026-08-15T23:02:43.868+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for PUT /api/ot-config/employee-authorization/97/EMP-042/2026-08-17
+2026-08-15T23:02:43.907+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for PUT /api/ot-config/employee-authorization/97/EMP-041/2026-08-17
+2026-08-15T23:02:44.182+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='OtConfigControllerIT#putDayLevelWithoutTokenReturns401'
+2026-08-15T23:02:44.357+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='OtConfigControllerIT#getDayLevelWithoutTokenReturns401'
+[INFO] Tests run: 18, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 4.599 s -- in com.payroll.web.otconfig.OtConfigControllerIT
 [INFO] Running com.payroll.web.payrollinput.PayrollInputControllerIT
-2026-08-09T19:42:48.177+05:30  INFO 29360 --- [payroll-web-backend] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.payroll.web.payrollinput.PayrollInputControllerIT]: PayrollInputControllerIT does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2026-08-09T19:42:48.184+05:30  INFO 29360 --- [payroll-web-backend] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.payroll.web.WebBackendApplication for test class com.payroll.web.payrollinput.PayrollInputControllerIT
-2026-08-09T19:42:48.303+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='PayrollInputControllerIT#putUpdatesExistingEntryRatherThanDuplicating'
-2026-08-09T19:42:48.309+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for PUT /api/payroll-inputs/37/EMP-001/2026-08
-2026-08-09T19:42:48.381+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for PUT /api/payroll-inputs/37/EMP-001/2026-08
-2026-08-09T19:42:48.629+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='PayrollInputControllerIT#putWithInvalidTokenReturns401'
-2026-08-09T19:42:48.743+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='PayrollInputControllerIT#putWithNegativeAmountReturns400'
-2026-08-09T19:42:48.745+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for PUT /api/payroll-inputs/41/EMP-001/2026-08
-2026-08-09T19:42:48.905+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='PayrollInputControllerIT#getWithoutTokenReturns401'
-2026-08-09T19:42:49.025+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='PayrollInputControllerIT#putDefaultsOmittedAmountsToZero'
-2026-08-09T19:42:49.026+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for PUT /api/payroll-inputs/45/EMP-002/2026-08
-2026-08-09T19:42:49.197+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='PayrollInputControllerIT#getReturnsAllEntriesForMonthScopedToCompany'
-2026-08-09T19:42:49.198+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for PUT /api/payroll-inputs/47/EMP-001/2026-08
-2026-08-09T19:42:49.259+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for PUT /api/payroll-inputs/47/EMP-002/2026-08
-2026-08-09T19:42:49.319+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for PUT /api/payroll-inputs/47/EMP-001/2026-07
-2026-08-09T19:42:49.380+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for GET /api/payroll-inputs/2026-08
-2026-08-09T19:42:49.537+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='PayrollInputControllerIT#putCreatesNewEntryWhenAbsent'
-2026-08-09T19:42:49.538+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for PUT /api/payroll-inputs/49/EMP-001/2026-08
-2026-08-09T19:42:49.741+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='PayrollInputControllerIT#putWithoutTokenReturns401'
-2026-08-09T19:42:49.859+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='PayrollInputControllerIT#getWithInvalidTokenReturns401'
-2026-08-09T19:42:49.985+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='PayrollInputControllerIT#twoCompaniesSameEmployeeCodeAndMonthStaySegregated'
-2026-08-09T19:42:49.987+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for PUT /api/payroll-inputs/55/EMP-001/2026-08
-2026-08-09T19:42:50.044+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for PUT /api/payroll-inputs/56/EMP-001/2026-08
-2026-08-09T19:42:50.104+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for GET /api/payroll-inputs/2026-08
-2026-08-09T19:42:50.134+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for GET /api/payroll-inputs/2026-08
-[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.049 s -- in com.payroll.web.payrollinput.PayrollInputControllerIT
+2026-08-15T23:02:44.363+05:30  INFO 46376 --- [payroll-web-backend] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.payroll.web.payrollinput.PayrollInputControllerIT]: PayrollInputControllerIT does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-15T23:02:44.368+05:30  INFO 46376 --- [payroll-web-backend] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.payroll.web.WebBackendApplication for test class com.payroll.web.payrollinput.PayrollInputControllerIT
+2026-08-15T23:02:44.495+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='PayrollInputControllerIT#putUpdatesExistingEntryRatherThanDuplicating'
+2026-08-15T23:02:44.501+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for PUT /api/payroll-inputs/103/EMP-001/2026-08
+2026-08-15T23:02:44.577+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for PUT /api/payroll-inputs/103/EMP-001/2026-08
+2026-08-15T23:02:44.832+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='PayrollInputControllerIT#putWithInvalidTokenReturns401'
+2026-08-15T23:02:44.951+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='PayrollInputControllerIT#putWithNegativeAmountReturns400'
+2026-08-15T23:02:44.953+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for PUT /api/payroll-inputs/107/EMP-001/2026-08
+2026-08-15T23:02:45.104+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='PayrollInputControllerIT#getWithoutTokenReturns401'
+2026-08-15T23:02:45.229+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='PayrollInputControllerIT#putDefaultsOmittedAmountsToZero'
+2026-08-15T23:02:45.230+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for PUT /api/payroll-inputs/111/EMP-002/2026-08
+2026-08-15T23:02:45.404+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='PayrollInputControllerIT#getReturnsAllEntriesForMonthScopedToCompany'
+2026-08-15T23:02:45.406+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for PUT /api/payroll-inputs/113/EMP-001/2026-08
+2026-08-15T23:02:45.464+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for PUT /api/payroll-inputs/113/EMP-002/2026-08
+2026-08-15T23:02:45.523+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for PUT /api/payroll-inputs/113/EMP-001/2026-07
+2026-08-15T23:02:45.583+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for GET /api/payroll-inputs/2026-08
+2026-08-15T23:02:45.740+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='PayrollInputControllerIT#putCreatesNewEntryWhenAbsent'
+2026-08-15T23:02:45.742+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for PUT /api/payroll-inputs/115/EMP-001/2026-08
+2026-08-15T23:02:45.945+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='PayrollInputControllerIT#putWithoutTokenReturns401'
+2026-08-15T23:02:46.064+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='PayrollInputControllerIT#getWithInvalidTokenReturns401'
+2026-08-15T23:02:46.183+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='PayrollInputControllerIT#twoCompaniesSameEmployeeCodeAndMonthStaySegregated'
+2026-08-15T23:02:46.184+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for PUT /api/payroll-inputs/121/EMP-001/2026-08
+2026-08-15T23:02:46.249+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for PUT /api/payroll-inputs/122/EMP-001/2026-08
+2026-08-15T23:02:46.309+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for GET /api/payroll-inputs/2026-08
+2026-08-15T23:02:46.340+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for GET /api/payroll-inputs/2026-08
+[INFO] Tests run: 10, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 2.071 s -- in com.payroll.web.payrollinput.PayrollInputControllerIT
 [INFO] Running com.payroll.web.ping.PingControllerIT
-2026-08-09T19:42:50.226+05:30  INFO 29360 --- [payroll-web-backend] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.payroll.web.ping.PingControllerIT]: PingControllerIT does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2026-08-09T19:42:50.230+05:30  INFO 29360 --- [payroll-web-backend] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.payroll.web.WebBackendApplication for test class com.payroll.web.ping.PingControllerIT
-2026-08-09T19:42:50.235+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='PingControllerIT#pingWithValidTokenReturns200'
-2026-08-09T19:42:50.237+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for GET /api/ping
-2026-08-09T19:42:50.242+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='PingControllerIT#pingWithoutTokenReturns401'
-2026-08-09T19:42:50.247+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='PingControllerIT#pingWithTamperedTokenReturns401'
-2026-08-09T19:42:50.253+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='PingControllerIT#pingWithExpiredTokenReturns401'
-[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.033 s -- in com.payroll.web.ping.PingControllerIT
+2026-08-15T23:02:46.436+05:30  INFO 46376 --- [payroll-web-backend] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.payroll.web.ping.PingControllerIT]: PingControllerIT does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-15T23:02:46.440+05:30  INFO 46376 --- [payroll-web-backend] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.payroll.web.WebBackendApplication for test class com.payroll.web.ping.PingControllerIT
+2026-08-15T23:02:46.444+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='PingControllerIT#pingWithValidTokenReturns200'
+2026-08-15T23:02:46.446+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for GET /api/ping
+2026-08-15T23:02:46.450+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='PingControllerIT#pingWithoutTokenReturns401'
+2026-08-15T23:02:46.454+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='PingControllerIT#pingWithTamperedTokenReturns401'
+2026-08-15T23:02:46.460+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='PingControllerIT#pingWithExpiredTokenReturns401'
+[INFO] Tests run: 4, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.031 s -- in com.payroll.web.ping.PingControllerIT
 [INFO] Running com.payroll.web.sync.SyncControllerIT
-2026-08-09T19:42:50.260+05:30  INFO 29360 --- [payroll-web-backend] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.payroll.web.sync.SyncControllerIT]: SyncControllerIT does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2026-08-09T19:42:50.268+05:30  INFO 29360 --- [payroll-web-backend] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.payroll.web.WebBackendApplication for test class com.payroll.web.sync.SyncControllerIT
-2026-08-09T19:42:50.623+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='SyncControllerIT#twoCompaniesSameEmployeeCodeAndDateStaySegregatedForOtAuth'
-2026-08-09T19:42:51.423+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='SyncControllerIT#otAuthUpsertUpdatesExistingAuthorization'
-2026-08-09T19:42:52.067+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='SyncControllerIT#workingDaysInvalidApiKeyReturns401'
-2026-08-09T19:42:52.098+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no matching sync client for key prefix 'not-a-re...'
-2026-08-09T19:42:52.442+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='SyncControllerIT#newEmployeeInsertedWithCorrectCompanyId'
-2026-08-09T19:42:52.909+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='SyncControllerIT#workingDaysMissingApiKeyReturns401'
-2026-08-09T19:42:52.911+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/sync/working-days
-2026-08-09T19:42:53.249+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='SyncControllerIT#employeesInvalidApiKeyReturns401'
-2026-08-09T19:42:53.279+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no matching sync client for key prefix 'not-a-re...'
-2026-08-09T19:42:53.623+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='SyncControllerIT#employeesMissingApiKeyReturns401'
-2026-08-09T19:42:53.624+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/sync/employees
-2026-08-09T19:42:53.973+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='SyncControllerIT#twoFactoriesKeysSegregateRecordsByCompany'
-2026-08-09T19:42:54.678+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='SyncControllerIT#validKeyInsertsNewRecordTaggedWithCorrectCompany'
-2026-08-09T19:42:55.188+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='SyncControllerIT#differentDataForSameUuidUpdatesInPlaceAndPreservesOriginal'
-2026-08-09T19:42:55.839+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='SyncControllerIT#otAuthUpsertInsertsNewAuthorization'
-2026-08-09T19:42:56.344+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='SyncControllerIT#existingEmployeeIsUpdatedNotDuplicated'
-2026-08-09T19:42:56.926+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='SyncControllerIT#twoCompaniesSamePeriodMonthStaySegregatedForWorkingDays'
-2026-08-09T19:42:57.529+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='SyncControllerIT#workingDaysBatchWithOneBadRecordRejectsOnlyThatRecord'
-2026-08-09T19:42:57.685+05:30  INFO 29360 --- [payroll-web-backend] [gres:pid(23120)] i.z.t.d.p.embedded.EmbeddedPostgres      : 2026-08-09 19:42:57.685 +0530 [39924] ERROR:  null value in column "period_month" of relation "cloud_working_days_configs" violates not-null constraint
-2026-08-09T19:42:57.685+05:30  INFO 29360 --- [payroll-web-backend] [gres:pid(23120)] i.z.t.d.p.embedded.EmbeddedPostgres      : 2026-08-09 19:42:57.685 +0530 [39924] DETAIL:  Failing row contains (16, 25, 83, null, 2026-08-01 05:30:00+05:30, admin).
-2026-08-09T19:42:57.685+05:30  INFO 29360 --- [payroll-web-backend] [gres:pid(23120)] i.z.t.d.p.embedded.EmbeddedPostgres      : 2026-08-09 19:42:57.685 +0530 [39924] STATEMENT:  insert into cloud_working_days_configs (available_working_days,company_id,period_month,updated_at,updated_by) values ($1,$2,$3,$4,$5) returning id
-2026-08-09T19:42:57.686+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 0, SQLState: 23502
-2026-08-09T19:42:57.686+05:30 ERROR 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : ERROR: null value in column "period_month" of relation "cloud_working_days_configs" violates not-null constraint
-  Detail: Failing row contains (16, 25, 83, null, 2026-08-01 05:30:00+05:30, admin).
-2026-08-09T19:42:57.696+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.web.sync.WorkingDaysSyncService      : Rejecting working-days sync record periodMonth=null: could not execute statement [ERROR: null value in column "period_month" of relation "cloud_working_days_configs" violates not-null constraint
-  Detail: Failing row contains (16, 25, 83, null, 2026-08-01 05:30:00+05:30, admin).] [insert into cloud_working_days_configs (available_working_days,company_id,period_month,updated_at,updated_by) values (?,?,?,?,?) returning id]; SQL [insert into cloud_working_days_configs (available_working_days,company_id,period_month,updated_at,updated_by) values (?,?,?,?,?) returning id]; constraint [period_month" of relation "cloud_working_days_configs]
-2026-08-09T19:42:58.165+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='SyncControllerIT#dayLevelOtUpsertUpdatesExistingConfig'
-2026-08-09T19:42:58.749+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='SyncControllerIT#dayLevelOtUpsertInsertsNewConfig'
-2026-08-09T19:42:59.214+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='SyncControllerIT#batchWithOneUnknownEmployeeCodeRejectsOnlyThatRecord'
-2026-08-09T19:42:59.363+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.web.sync.AttendanceSyncService       : Rejecting sync record syncUuid=uuid-bad: Unknown employeeCode 'NO-SUCH-EMPLOYEE' for this company
-2026-08-09T19:42:59.901+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='SyncControllerIT#employeeSyncThenAttendanceSyncForNewEmployeeCodeIsAccepted'
-2026-08-09T19:43:00.512+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='SyncControllerIT#otAuthBatchWithUnknownEmployeeCodeRejectsOnlyThatRecord'
-2026-08-09T19:43:00.661+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.web.sync.OtAuthorizationSyncService  : Rejecting OT authorization sync record employeeCode=NO-SUCH-EMPLOYEE authDate=2026-08-05: Unknown employeeCode 'NO-SUCH-EMPLOYEE' for this company
-2026-08-09T19:43:01.173+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='SyncControllerIT#twoCompaniesSameEmployeeCodeStaySegregated'
-2026-08-09T19:43:01.760+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='SyncControllerIT#invalidApiKeyReturns401'
-2026-08-09T19:43:01.790+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no matching sync client for key prefix 'not-a-re...'
-2026-08-09T19:43:02.128+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='SyncControllerIT#oneBadRecordInEmployeeBatchDoesNotBlockOthers'
-2026-08-09T19:43:02.272+05:30  INFO 29360 --- [payroll-web-backend] [gres:pid(23120)] i.z.t.d.p.embedded.EmbeddedPostgres      : 2026-08-09 19:43:02.273 +0530 [25008] ERROR:  duplicate key value violates unique constraint "ukro1jt4pnp0uqf8kgj6s24d48h"
-2026-08-09T19:43:02.272+05:30  INFO 29360 --- [payroll-web-backend] [gres:pid(23120)] i.z.t.d.p.embedded.EmbeddedPostgres      : 2026-08-09 19:43:02.273 +0530 [25008] DETAIL:  Key (rfid_card_id)=(RFID-DUP) already exists.
-2026-08-09T19:43:02.272+05:30  INFO 29360 --- [payroll-web-backend] [gres:pid(23120)] i.z.t.d.p.embedded.EmbeddedPostgres      : 2026-08-09 19:43:02.273 +0530 [25008] STATEMENT:  insert into employees (category,company_id,created_at,employee_code,epf_employee_rate,epf_employer_rate,etf_rate,gross_daily_salary,is_active,name,rfid_card_id) values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) returning id
-2026-08-09T19:43:02.272+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 0, SQLState: 23505
-2026-08-09T19:43:02.272+05:30 ERROR 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : ERROR: duplicate key value violates unique constraint "ukro1jt4pnp0uqf8kgj6s24d48h"
+2026-08-15T23:02:46.468+05:30  INFO 46376 --- [payroll-web-backend] [           main] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.payroll.web.sync.SyncControllerIT]: SyncControllerIT does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-08-15T23:02:46.474+05:30  INFO 46376 --- [payroll-web-backend] [           main] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.payroll.web.WebBackendApplication for test class com.payroll.web.sync.SyncControllerIT
+2026-08-15T23:02:46.834+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='SyncControllerIT#twoCompaniesSameEmployeeCodeAndDateStaySegregatedForOtAuth'
+2026-08-15T23:02:47.531+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='SyncControllerIT#otAuthUpsertUpdatesExistingAuthorization'
+2026-08-15T23:02:48.183+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='SyncControllerIT#workingDaysInvalidApiKeyReturns401'
+2026-08-15T23:02:48.214+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no matching sync client for key prefix 'not-a-re...'
+2026-08-15T23:02:48.575+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='SyncControllerIT#newEmployeeInsertedWithCorrectCompanyId'
+2026-08-15T23:02:49.066+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='SyncControllerIT#workingDaysMissingApiKeyReturns401'
+2026-08-15T23:02:49.067+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/sync/working-days
+2026-08-15T23:02:49.440+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='SyncControllerIT#employeesInvalidApiKeyReturns401'
+2026-08-15T23:02:49.470+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no matching sync client for key prefix 'not-a-re...'
+2026-08-15T23:02:49.828+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='SyncControllerIT#employeesMissingApiKeyReturns401'
+2026-08-15T23:02:49.829+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/sync/employees
+2026-08-15T23:02:50.193+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='SyncControllerIT#twoFactoriesKeysSegregateRecordsByCompany'
+2026-08-15T23:02:50.934+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='SyncControllerIT#validKeyInsertsNewRecordTaggedWithCorrectCompany'
+2026-08-15T23:02:51.499+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='SyncControllerIT#differentDataForSameUuidUpdatesInPlaceAndPreservesOriginal'
+2026-08-15T23:02:52.205+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='SyncControllerIT#otAuthUpsertInsertsNewAuthorization'
+2026-08-15T23:02:52.751+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='SyncControllerIT#existingEmployeeIsUpdatedNotDuplicated'
+2026-08-15T23:02:53.356+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='SyncControllerIT#twoCompaniesSamePeriodMonthStaySegregatedForWorkingDays'
+2026-08-15T23:02:54.011+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='SyncControllerIT#workingDaysBatchWithOneBadRecordRejectsOnlyThatRecord'
+2026-08-15T23:02:54.224+05:30  INFO 46376 --- [payroll-web-backend] [gres:pid(44384)] i.z.t.d.p.embedded.EmbeddedPostgres      : 2026-08-15 23:02:54.224 +0530 [43684] ERROR:  null value in column "period_month" of relation "cloud_working_days_configs" violates not-null constraint
+2026-08-15T23:02:54.224+05:30  INFO 46376 --- [payroll-web-backend] [gres:pid(44384)] i.z.t.d.p.embedded.EmbeddedPostgres      : 2026-08-15 23:02:54.224 +0530 [43684] DETAIL:  Failing row contains (16, 25, 149, null, 2026-08-01 05:30:00+05:30, admin).
+2026-08-15T23:02:54.224+05:30  INFO 46376 --- [payroll-web-backend] [gres:pid(44384)] i.z.t.d.p.embedded.EmbeddedPostgres      : 2026-08-15 23:02:54.224 +0530 [43684] STATEMENT:  insert into cloud_working_days_configs (available_working_days,company_id,period_month,updated_at,updated_by) values ($1,$2,$3,$4,$5) returning id
+2026-08-15T23:02:54.225+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 0, SQLState: 23502
+2026-08-15T23:02:54.225+05:30 ERROR 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : ERROR: null value in column "period_month" of relation "cloud_working_days_configs" violates not-null constraint
+  Detail: Failing row contains (16, 25, 149, null, 2026-08-01 05:30:00+05:30, admin).
+2026-08-15T23:02:54.266+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.web.sync.WorkingDaysSyncService      : Rejecting working-days sync record periodMonth=null: could not execute statement [ERROR: null value in column "period_month" of relation "cloud_working_days_configs" violates not-null constraint
+  Detail: Failing row contains (16, 25, 149, null, 2026-08-01 05:30:00+05:30, admin).] [insert into cloud_working_days_configs (available_working_days,company_id,period_month,updated_at,updated_by) values (?,?,?,?,?) returning id]; SQL [insert into cloud_working_days_configs (available_working_days,company_id,period_month,updated_at,updated_by) values (?,?,?,?,?) returning id]; constraint [period_month" of relation "cloud_working_days_configs]
+2026-08-15T23:02:54.779+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='SyncControllerIT#dayLevelOtUpsertUpdatesExistingConfig'
+2026-08-15T23:02:55.418+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='SyncControllerIT#dayLevelOtUpsertInsertsNewConfig'
+2026-08-15T23:02:55.895+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='SyncControllerIT#batchWithOneUnknownEmployeeCodeRejectsOnlyThatRecord'
+2026-08-15T23:02:56.058+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.web.sync.AttendanceSyncService       : Rejecting sync record syncUuid=uuid-bad: Unknown employeeCode 'NO-SUCH-EMPLOYEE' for this company
+2026-08-15T23:02:56.592+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='SyncControllerIT#employeeSyncThenAttendanceSyncForNewEmployeeCodeIsAccepted'
+2026-08-15T23:02:57.273+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='SyncControllerIT#otAuthBatchWithUnknownEmployeeCodeRejectsOnlyThatRecord'
+2026-08-15T23:02:57.436+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.web.sync.OtAuthorizationSyncService  : Rejecting OT authorization sync record employeeCode=NO-SUCH-EMPLOYEE authDate=2026-08-05: Unknown employeeCode 'NO-SUCH-EMPLOYEE' for this company
+2026-08-15T23:02:57.994+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='SyncControllerIT#twoCompaniesSameEmployeeCodeStaySegregated'
+2026-08-15T23:02:58.697+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='SyncControllerIT#invalidApiKeyReturns401'
+2026-08-15T23:02:58.729+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no matching sync client for key prefix 'not-a-re...'
+2026-08-15T23:02:59.102+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='SyncControllerIT#oneBadRecordInEmployeeBatchDoesNotBlockOthers'
+2026-08-15T23:02:59.308+05:30  INFO 46376 --- [payroll-web-backend] [gres:pid(44384)] i.z.t.d.p.embedded.EmbeddedPostgres      : 2026-08-15 23:02:59.309 +0530 [1052] ERROR:  duplicate key value violates unique constraint "ukro1jt4pnp0uqf8kgj6s24d48h"
+2026-08-15T23:02:59.309+05:30  INFO 46376 --- [payroll-web-backend] [gres:pid(44384)] i.z.t.d.p.embedded.EmbeddedPostgres      : 2026-08-15 23:02:59.309 +0530 [1052] DETAIL:  Key (rfid_card_id)=(RFID-DUP) already exists.
+2026-08-15T23:02:59.309+05:30  INFO 46376 --- [payroll-web-backend] [gres:pid(44384)] i.z.t.d.p.embedded.EmbeddedPostgres      : 2026-08-15 23:02:59.309 +0530 [1052] STATEMENT:  insert into employees (category,company_id,created_at,employee_code,epf_employee_rate,epf_employer_rate,etf_rate,gross_daily_salary,is_active,name,rfid_card_id) values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11) returning id
+2026-08-15T23:02:59.309+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 0, SQLState: 23505
+2026-08-15T23:02:59.309+05:30 ERROR 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : ERROR: duplicate key value violates unique constraint "ukro1jt4pnp0uqf8kgj6s24d48h"
   Detail: Key (rfid_card_id)=(RFID-DUP) already exists.
-2026-08-09T19:43:02.274+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.payroll.web.sync.EmployeeSyncService   : Rejecting employee sync record employeeCode=EMP-201: could not execute statement [ERROR: duplicate key value violates unique constraint "ukro1jt4pnp0uqf8kgj6s24d48h"
+2026-08-15T23:02:59.310+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.payroll.web.sync.EmployeeSyncService   : Rejecting employee sync record employeeCode=EMP-201: could not execute statement [ERROR: duplicate key value violates unique constraint "ukro1jt4pnp0uqf8kgj6s24d48h"
   Detail: Key (rfid_card_id)=(RFID-DUP) already exists.] [insert into employees (category,company_id,created_at,employee_code,epf_employee_rate,epf_employer_rate,etf_rate,gross_daily_salary,is_active,name,rfid_card_id) values (?,?,?,?,?,?,?,?,?,?,?) returning id]; SQL [insert into employees (category,company_id,created_at,employee_code,epf_employee_rate,epf_employer_rate,etf_rate,gross_daily_salary,is_active,name,rfid_card_id) values (?,?,?,?,?,?,?,?,?,?,?) returning id]; constraint [ukro1jt4pnp0uqf8kgj6s24d48h]
-2026-08-09T19:43:02.778+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='SyncControllerIT#twoCompaniesSameConfigDateStaySegregated'
-2026-08-09T19:43:03.362+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='SyncControllerIT#missingApiKeyReturns401'
-2026-08-09T19:43:03.363+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/sync/attendance
-2026-08-09T19:43:03.701+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='SyncControllerIT#inactiveApiKeyReturns401'
-2026-08-09T19:43:03.757+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: sync client id=54 (key prefix 'inactive...') is inactive
-2026-08-09T19:43:04.089+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='SyncControllerIT#companyACannotSyncCompanyBsEmployeeCode'
-2026-08-09T19:43:04.170+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.web.sync.AttendanceSyncService       : Rejecting sync record syncUuid=uuid-cross: Unknown employeeCode 'ONLY-IN-B' for this company
-2026-08-09T19:43:04.519+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='SyncControllerIT#dayLevelOtInvalidApiKeyReturns401'
-2026-08-09T19:43:04.546+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no matching sync client for key prefix 'not-a-re...'
-2026-08-09T19:43:04.882+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='SyncControllerIT#dayLevelOtBatchWithOneBadRecordRejectsOnlyThatRecord'
-2026-08-09T19:43:05.024+05:30  INFO 29360 --- [payroll-web-backend] [gres:pid(23120)] i.z.t.d.p.embedded.EmbeddedPostgres      : 2026-08-09 19:43:05.023 +0530 [42428] ERROR:  null value in column "config_date" of relation "cloud_day_level_ot_configs" violates not-null constraint
-2026-08-09T19:43:05.024+05:30  INFO 29360 --- [payroll-web-backend] [gres:pid(23120)] i.z.t.d.p.embedded.EmbeddedPostgres      : 2026-08-09 19:43:05.023 +0530 [42428] DETAIL:  Failing row contains (9, f, 111, null, WEEKDAY, 2026-08-01 05:30:00+05:30, 1).
-2026-08-09T19:43:05.024+05:30  INFO 29360 --- [payroll-web-backend] [gres:pid(23120)] i.z.t.d.p.embedded.EmbeddedPostgres      : 2026-08-09 19:43:05.023 +0530 [42428] STATEMENT:  insert into cloud_day_level_ot_configs (is_all_staff_ot,company_id,config_date,day_type,set_at,set_by) values ($1,$2,$3,$4,$5,$6) returning id
-2026-08-09T19:43:05.024+05:30  WARN 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 0, SQLState: 23502
-2026-08-09T19:43:05.024+05:30 ERROR 29360 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : ERROR: null value in column "config_date" of relation "cloud_day_level_ot_configs" violates not-null constraint
-  Detail: Failing row contains (9, f, 111, null, WEEKDAY, 2026-08-01 05:30:00+05:30, 1).
-2026-08-09T19:43:05.024+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.web.sync.DayLevelOtSyncService       : Rejecting day-level OT sync record configDate=null: could not execute statement [ERROR: null value in column "config_date" of relation "cloud_day_level_ot_configs" violates not-null constraint
-  Detail: Failing row contains (9, f, 111, null, WEEKDAY, 2026-08-01 05:30:00+05:30, 1).] [insert into cloud_day_level_ot_configs (is_all_staff_ot,company_id,config_date,day_type,set_at,set_by) values (?,?,?,?,?,?) returning id]; SQL [insert into cloud_day_level_ot_configs (is_all_staff_ot,company_id,config_date,day_type,set_at,set_by) values (?,?,?,?,?,?) returning id]; constraint [config_date" of relation "cloud_day_level_ot_configs]
-2026-08-09T19:43:05.549+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='SyncControllerIT#dayLevelOtMissingApiKeyReturns401'
-2026-08-09T19:43:05.550+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/sync/day-level-ot
-2026-08-09T19:43:05.887+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='SyncControllerIT#identicalRePushIsNoOpWithoutDuplicate'
-2026-08-09T19:43:06.454+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='SyncControllerIT#otAuthInvalidApiKeyReturns401'
-2026-08-09T19:43:06.481+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no matching sync client for key prefix 'not-a-re...'
-2026-08-09T19:43:06.808+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='SyncControllerIT#workingDaysUpsertInsertsNewConfig'
-2026-08-09T19:43:07.252+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='SyncControllerIT#otAuthMissingApiKeyReturns401'
-2026-08-09T19:43:07.253+05:30  WARN 29360 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/sync/ot-authorizations
-2026-08-09T19:43:07.594+05:30  INFO 29360 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56056/whivkckkbzeg?user=postgres', scope='SyncControllerIT#workingDaysUpsertUpdatesExistingConfig'
-[INFO] Tests run: 34, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 17.57 s -- in com.payroll.web.sync.SyncControllerIT
+2026-08-15T23:02:59.911+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='SyncControllerIT#twoCompaniesSameConfigDateStaySegregated'
+2026-08-15T23:03:00.562+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='SyncControllerIT#missingApiKeyReturns401'
+2026-08-15T23:03:00.563+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/sync/attendance
+2026-08-15T23:03:01.009+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='SyncControllerIT#inactiveApiKeyReturns401'
+2026-08-15T23:03:01.095+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: sync client id=54 (key prefix 'inactive...') is inactive
+2026-08-15T23:03:01.535+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='SyncControllerIT#companyACannotSyncCompanyBsEmployeeCode'
+2026-08-15T23:03:01.730+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.web.sync.AttendanceSyncService       : Rejecting sync record syncUuid=uuid-cross: Unknown employeeCode 'ONLY-IN-B' for this company
+2026-08-15T23:03:02.077+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='SyncControllerIT#dayLevelOtInvalidApiKeyReturns401'
+2026-08-15T23:03:02.107+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no matching sync client for key prefix 'not-a-re...'
+2026-08-15T23:03:02.450+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='SyncControllerIT#dayLevelOtBatchWithOneBadRecordRejectsOnlyThatRecord'
+2026-08-15T23:03:02.591+05:30  INFO 46376 --- [payroll-web-backend] [gres:pid(44384)] i.z.t.d.p.embedded.EmbeddedPostgres      : 2026-08-15 23:03:02.591 +0530 [42192] ERROR:  null value in column "config_date" of relation "cloud_day_level_ot_configs" violates not-null constraint
+2026-08-15T23:03:02.591+05:30  INFO 46376 --- [payroll-web-backend] [gres:pid(44384)] i.z.t.d.p.embedded.EmbeddedPostgres      : 2026-08-15 23:03:02.591 +0530 [42192] DETAIL:  Failing row contains (13, f, 177, null, WEEKDAY, 2026-08-01 05:30:00+05:30, 1).
+2026-08-15T23:03:02.591+05:30  INFO 46376 --- [payroll-web-backend] [gres:pid(44384)] i.z.t.d.p.embedded.EmbeddedPostgres      : 2026-08-15 23:03:02.591 +0530 [42192] STATEMENT:  insert into cloud_day_level_ot_configs (is_all_staff_ot,company_id,config_date,day_type,set_at,set_by) values ($1,$2,$3,$4,$5,$6) returning id
+2026-08-15T23:03:02.591+05:30  WARN 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : SQL Error: 0, SQLState: 23502
+2026-08-15T23:03:02.591+05:30 ERROR 46376 --- [payroll-web-backend] [           main] o.h.engine.jdbc.spi.SqlExceptionHelper   : ERROR: null value in column "config_date" of relation "cloud_day_level_ot_configs" violates not-null constraint
+  Detail: Failing row contains (13, f, 177, null, WEEKDAY, 2026-08-01 05:30:00+05:30, 1).
+2026-08-15T23:03:02.592+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.web.sync.DayLevelOtSyncService       : Rejecting day-level OT sync record configDate=null: could not execute statement [ERROR: null value in column "config_date" of relation "cloud_day_level_ot_configs" violates not-null constraint
+  Detail: Failing row contains (13, f, 177, null, WEEKDAY, 2026-08-01 05:30:00+05:30, 1).] [insert into cloud_day_level_ot_configs (is_all_staff_ot,company_id,config_date,day_type,set_at,set_by) values (?,?,?,?,?,?) returning id]; SQL [insert into cloud_day_level_ot_configs (is_all_staff_ot,company_id,config_date,day_type,set_at,set_by) values (?,?,?,?,?,?) returning id]; constraint [config_date" of relation "cloud_day_level_ot_configs]
+2026-08-15T23:03:03.063+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='SyncControllerIT#dayLevelOtMissingApiKeyReturns401'
+2026-08-15T23:03:03.064+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/sync/day-level-ot
+2026-08-15T23:03:03.424+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='SyncControllerIT#identicalRePushIsNoOpWithoutDuplicate'
+2026-08-15T23:03:04.075+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='SyncControllerIT#otAuthInvalidApiKeyReturns401'
+2026-08-15T23:03:04.107+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no matching sync client for key prefix 'not-a-re...'
+2026-08-15T23:03:04.472+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='SyncControllerIT#workingDaysUpsertInsertsNewConfig'
+2026-08-15T23:03:04.949+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='SyncControllerIT#otAuthMissingApiKeyReturns401'
+2026-08-15T23:03:04.949+05:30  WARN 46376 --- [payroll-web-backend] [           main] c.p.w.s.ApiKeyAuthenticationFilter       : API key rejected: no X-API-Key header provided for POST /api/sync/ot-authorizations
+2026-08-15T23:03:05.309+05:30  INFO 46376 --- [payroll-web-backend] [           main] i.z.t.d.l.EmbeddedDatabaseReporter       : JDBC URL to connect to 'dataSource': url='jdbc:postgresql://localhost:56643/ximcxptwrdbj?user=postgres', scope='SyncControllerIT#workingDaysUpsertUpdatesExistingConfig'
+[INFO] Tests run: 34, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 19.09 s -- in com.payroll.web.sync.SyncControllerIT
 [INFO] 
 [INFO] Results:
 [INFO] 
-[INFO] Tests run: 73, Failures: 0, Errors: 0, Skipped: 0
+[INFO] Tests run: 106, Failures: 0, Errors: 0, Skipped: 0
 [INFO] 
 [INFO] 
 [INFO] --- failsafe:3.3.0:verify (default) @ payroll-web-backend ---
 [INFO] ------------------------------------------------------------------------
 [INFO] Reactor Summary for Payroll System - Parent 1.0.0-SNAPSHOT:
 [INFO] 
-[INFO] Payroll System - Parent ............................ SUCCESS [  0.452 s]
-[INFO] Payroll Core ....................................... SUCCESS [  3.702 s]
-[INFO] Payroll Desktop .................................... SUCCESS [ 26.568 s]
-[INFO] Payroll Web Backend ................................ SUCCESS [01:22 min]
+[INFO] Payroll System - Parent ............................ SUCCESS [  0.157 s]
+[INFO] Payroll Core ....................................... SUCCESS [  4.357 s]
+[INFO] Payroll Desktop .................................... SUCCESS [ 26.029 s]
+[INFO] Payroll Web Backend ................................ SUCCESS [01:25 min]
 [INFO] ------------------------------------------------------------------------
 [INFO] BUILD SUCCESS
 [INFO] ------------------------------------------------------------------------
-[INFO] Total time:  01:53 min
-[INFO] Finished at: 2026-08-09T19:43:09+05:30
+[INFO] Total time:  01:56 min
+[INFO] Finished at: 2026-08-15T23:03:06+05:30
 [INFO] ------------------------------------------------------------------------

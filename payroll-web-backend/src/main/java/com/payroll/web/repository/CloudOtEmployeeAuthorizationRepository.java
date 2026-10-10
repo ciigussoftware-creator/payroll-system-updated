@@ -11,5 +11,7 @@ public interface CloudOtEmployeeAuthorizationRepository extends JpaRepository<Cl
     Optional<CloudOtEmployeeAuthorization> findByCompanyIdAndEmployeeCodeAndAuthDate(
             Long companyId, String employeeCode, LocalDate authDate);
 
+    List<CloudOtEmployeeAuthorization> findByCompanyIdAndAuthDate(Long companyId, LocalDate authDate);
+
     List<CloudOtEmployeeAuthorization> findByCompanyIdAndAuthDateBetween(Long companyId, LocalDate from, LocalDate to);
 }

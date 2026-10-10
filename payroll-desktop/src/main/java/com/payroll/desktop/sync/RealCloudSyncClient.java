@@ -17,6 +17,7 @@ import java.net.http.HttpResponse;
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 /**
  * Production {@link CloudSyncClient}: posts a single-record batch to the web
@@ -36,19 +37,37 @@ public class RealCloudSyncClient implements CloudSyncClient {
     private static final Duration HEALTH_TIMEOUT = Duration.ofSeconds(3);
 
     private final String baseUrl;
-    private final String apiKey;
+    private final Supplier<String> apiKeySupplier;
     private final HttpClient httpClient;
 
+    /**
+     * SYNC_API_KEY is resolved lazily via the supplier, not read here — this constructor
+     * must stay safe to call with no cloud credentials configured at all, since it runs
+     * unconditionally at app startup so the scheduler can hold a client reference.
+     */
     public RealCloudSyncClient() {
-        this(CloudSyncConfig.BASE_URL, CloudSyncConfig.API_KEY);
+        this(CloudSyncConfig.BASE_URL, CloudSyncConfig::apiKey);
     }
 
     public RealCloudSyncClient(String baseUrl, String apiKey) {
+        this(baseUrl, () -> apiKey);
+    }
+
+    private RealCloudSyncClient(String baseUrl, Supplier<String> apiKeySupplier) {
         this.baseUrl = baseUrl;
-        this.apiKey = apiKey;
+        this.apiKeySupplier = apiKeySupplier;
         this.httpClient = HttpClient.newBuilder()
                 .connectTimeout(REQUEST_TIMEOUT)
                 .build();
+    }
+
+    /** Resolves the API key for an in-progress sync attempt, translating a missing-config error into a SyncException. */
+    private String requireApiKey() throws SyncException {
+        try {
+            return apiKeySupplier.get();
+        } catch (IllegalStateException e) {
+            throw new SyncException(e.getMessage(), e);
+        }
     }
 
     @Override
@@ -68,7 +87,7 @@ public class RealCloudSyncClient implements CloudSyncClient {
                     .uri(URI.create(baseUrl + "/api/sync/attendance"))
                     .timeout(REQUEST_TIMEOUT)
                     .header("Content-Type", "application/json")
-                    .header("X-API-Key", apiKey)
+                    .header("X-API-Key", requireApiKey())
                     .POST(HttpRequest.BodyPublishers.ofString(body))
                     .build();
 
@@ -122,7 +141,7 @@ public class RealCloudSyncClient implements CloudSyncClient {
                     .uri(URI.create(baseUrl + "/api/sync/employees"))
                     .timeout(REQUEST_TIMEOUT)
                     .header("Content-Type", "application/json")
-                    .header("X-API-Key", apiKey)
+                    .header("X-API-Key", requireApiKey())
                     .POST(HttpRequest.BodyPublishers.ofString(body))
                     .build();
 
@@ -174,7 +193,7 @@ public class RealCloudSyncClient implements CloudSyncClient {
                     .uri(URI.create(baseUrl + "/api/sync/day-level-ot"))
                     .timeout(REQUEST_TIMEOUT)
                     .header("Content-Type", "application/json")
-                    .header("X-API-Key", apiKey)
+                    .header("X-API-Key", requireApiKey())
                     .POST(HttpRequest.BodyPublishers.ofString(body))
                     .build();
 
@@ -226,7 +245,7 @@ public class RealCloudSyncClient implements CloudSyncClient {
                     .uri(URI.create(baseUrl + "/api/sync/ot-authorizations"))
                     .timeout(REQUEST_TIMEOUT)
                     .header("Content-Type", "application/json")
-                    .header("X-API-Key", apiKey)
+                    .header("X-API-Key", requireApiKey())
                     .POST(HttpRequest.BodyPublishers.ofString(body))
                     .build();
 
@@ -277,7 +296,7 @@ public class RealCloudSyncClient implements CloudSyncClient {
                     .uri(URI.create(baseUrl + "/api/sync/working-days"))
                     .timeout(REQUEST_TIMEOUT)
                     .header("Content-Type", "application/json")
-                    .header("X-API-Key", apiKey)
+                    .header("X-API-Key", requireApiKey())
                     .POST(HttpRequest.BodyPublishers.ofString(body))
                     .build();
 
