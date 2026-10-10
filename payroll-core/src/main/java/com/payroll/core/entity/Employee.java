@@ -6,7 +6,10 @@ import java.time.Instant;
 
 @Entity
 @Table(name = "employees",
-        uniqueConstraints = @UniqueConstraint(columnNames = {"company_id", "employee_code"}))
+        uniqueConstraints = {
+                @UniqueConstraint(columnNames = {"company_id", "employee_code"}),
+                @UniqueConstraint(columnNames = {"company_id", "rfid_card_id"})
+        })
 public class Employee {
 
     @Id
@@ -28,7 +31,7 @@ public class Employee {
     @Column(nullable = false)
     private String name;
 
-    @Column(name = "rfid_card_id", unique = true)
+    @Column(name = "rfid_card_id")
     private String rfidCardId;
 
     @Enumerated(EnumType.STRING)
