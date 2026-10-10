@@ -399,6 +399,26 @@ class SyncControllerIT {
     }
 
     @Test
+    void twoCompaniesSameRfidCardIdDoNotBlockEachOther() throws Exception {
+        var reqA = employeeRequestFor("EMP-210", "Worker A", "RFID-SAME");
+        var reqB = employeeRequestFor("EMP-211", "Worker B", "RFID-SAME");
+
+        mockMvc.perform(post("/api/sync/employees")
+                        .header("X-API-Key", apiKeyA)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(List.of(reqA))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].status").value("ACCEPTED"));
+
+        mockMvc.perform(post("/api/sync/employees")
+                        .header("X-API-Key", apiKeyB)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(List.of(reqB))))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].status").value("ACCEPTED"));
+    }
+
+    @Test
     void oneBadRecordInEmployeeBatchDoesNotBlockOthers() throws Exception {
         // employeeA already has no rfidCardId set; give a duplicate rfidCardId to two
         // records in the same batch so the second collides on the global unique constraint.
