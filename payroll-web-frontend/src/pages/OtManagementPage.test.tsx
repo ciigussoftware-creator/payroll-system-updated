@@ -20,7 +20,11 @@ const companiesResponse = [
   { id: 2, name: 'DCH Plywood' },
 ]
 
-const FUTURE_DATE = '2026-08-20'
+// Derived at runtime, not hardcoded: OtManagementPage treats any date before
+// todayIsoDate() as retroactive and then requires a reason, so a literal future
+// date silently turns these tests red once that day passes. Matches the page's
+// UTC basis (toISOString) so the comparison can't straddle a timezone boundary.
+const FUTURE_DATE = new Date(Date.now() + 30 * 864e5).toISOString().slice(0, 10)
 const PAST_DATE = '2020-01-01'
 
 const dayLevelResponse = { isAllStaffOt: false, dayType: 'WEEKDAY', setAt: null, setBy: null }
