@@ -20,6 +20,8 @@ const companiesResponse = [
   { id: 2, name: 'DCH Plywood' },
 ]
 
+const singleCompanyResponse = [{ id: 7, name: 'Wood Lanka' }]
+
 function jsonResponse(body: unknown, status = 200): Response {
   return new Response(JSON.stringify(body), {
     status,
@@ -196,5 +198,27 @@ describe('TimestampsPage', () => {
     await fillFormAndLoad(user)
 
     await waitFor(() => expect(screen.getByText('Login Page')).toBeInTheDocument())
+  })
+
+  it('hides the company picker and uses the only company when there is exactly one', async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(jsonResponse(singleCompanyResponse))
+      .mockResolvedValueOnce(jsonResponse([]))
+    vi.stubGlobal('fetch', fetchMock)
+    const user = userEvent.setup()
+
+    renderTimestamps()
+    await user.type(screen.getByLabelText('Employee Code'), 'EMP-001')
+    const dateInput = screen.getByLabelText('Date') as HTMLInputElement
+    await user.clear(dateInput)
+    await user.type(dateInput, '2026-06-20')
+    const load = screen.getByRole('button', { name: 'Load' })
+    await waitFor(() => expect(load).toBeEnabled())
+    expect(screen.queryByLabelText('Company')).not.toBeInTheDocument()
+    await user.click(load)
+
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(2))
+    expect(fetchMock.mock.calls[1][0]).toContain('/api/attendance/7/EMP-001/2026-06-20')
   })
 })

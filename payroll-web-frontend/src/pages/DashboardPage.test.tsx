@@ -20,6 +20,8 @@ const companiesResponse = [
   { id: 2, name: 'DCH Plywood' },
 ]
 
+const singleCompanyResponse = [{ id: 7, name: 'Wood Lanka' }]
+
 function jsonResponse(body: unknown, status = 200): Response {
   return new Response(JSON.stringify(body), {
     status,
@@ -326,5 +328,26 @@ describe('DashboardPage', () => {
     await waitFor(() => expect(createObjectURLSpy).toHaveBeenCalledTimes(1))
     expect(anchorClickSpy).toHaveBeenCalledTimes(1)
     expect(revokeObjectURLSpy).toHaveBeenCalledWith('blob:mock-url')
+  })
+
+  it('hides the company picker and uses the only company when there is exactly one', async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(jsonResponse(singleCompanyResponse))
+      .mockResolvedValueOnce(jsonResponse([]))
+    vi.stubGlobal('fetch', fetchMock)
+    const user = userEvent.setup()
+
+    renderDashboard()
+    const monthInput = screen.getByLabelText('Month') as HTMLInputElement
+    await user.clear(monthInput)
+    await user.type(monthInput, '2026-04')
+    const calculate = screen.getByRole('button', { name: 'Calculate' })
+    await waitFor(() => expect(calculate).toBeEnabled())
+    expect(screen.queryByLabelText('Company')).not.toBeInTheDocument()
+    await user.click(calculate)
+
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(2))
+    expect(fetchMock.mock.calls[1][0]).toContain('/api/payroll/calculate/2026-04?companyId=7')
   })
 })

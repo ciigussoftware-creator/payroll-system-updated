@@ -1,0 +1,5 @@
+# Test-only overrides, layered on top of src/main/resources/application.yml.
+# Every @SpringBootTest boots against a fresh embedded database, so without this
+# SyncClientBootstrapRunner would fail startup for lack of COMPANY_CODE/COMPANY_NAME.
+bootstrap:
+  dev-companies: true

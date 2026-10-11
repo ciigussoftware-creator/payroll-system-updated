@@ -1,11 +1,8 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { apiFetch } from '../api/client'
+import { CompanyPicker } from '../components/CompanyPicker'
+import { useCompanies } from '../hooks/useCompanies'
 import { AppShell } from '../layout/AppShell'
-
-interface Company {
-  id: number
-  name: string
-}
 
 interface Note {
   id: number
@@ -20,8 +17,7 @@ const LOAD_ERROR = 'Could not load notes. Try again.'
 const SAVE_ERROR = 'Could not save the note. Try again.'
 
 export function NotesPage() {
-  const [companies, setCompanies] = useState<Company[]>([])
-  const [companyId, setCompanyId] = useState('')
+  const { companies, companyId, setCompanyId } = useCompanies()
   const [employeeCode, setEmployeeCode] = useState('')
   const [notes, setNotes] = useState<Note[] | null>(null)
   const [loading, setLoading] = useState(false)
@@ -31,22 +27,6 @@ export function NotesPage() {
   const [newText, setNewText] = useState('')
   const [saving, setSaving] = useState(false)
   const [saveError, setSaveError] = useState<string | null>(null)
-
-  useEffect(() => {
-    let cancelled = false
-
-    async function loadCompanies() {
-      const response = await apiFetch('/api/companies')
-      if (!response.ok || cancelled) return
-      const data: Company[] = await response.json()
-      if (!cancelled) setCompanies(data)
-    }
-
-    void loadCompanies()
-    return () => {
-      cancelled = true
-    }
-  }, [])
 
   const canLoad = companyId !== '' && employeeCode.trim() !== ''
 
@@ -115,24 +95,7 @@ export function NotesPage() {
   return (
     <AppShell title="Notes">
       <section className="filters">
-        <div className="field">
-          <label className="field__label" htmlFor="company">
-            Company
-          </label>
-          <select
-            id="company"
-            className="select"
-            value={companyId}
-            onChange={(event) => setCompanyId(event.target.value)}
-          >
-            <option value="">Select a company</option>
-            {companies.map((company) => (
-              <option key={company.id} value={company.id}>
-                {company.name}
-              </option>
-            ))}
-          </select>
-        </div>
+        <CompanyPicker companies={companies} value={companyId} onChange={setCompanyId} />
 
         <div className="field">
           <label className="field__label" htmlFor="employeeCode">
