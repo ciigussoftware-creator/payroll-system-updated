@@ -20,6 +20,8 @@ const companiesResponse = [
   { id: 2, name: 'DCH Plywood' },
 ]
 
+const singleCompanyResponse = [{ id: 7, name: 'Wood Lanka' }]
+
 const notesResponse = [
   {
     id: 2,
@@ -190,5 +192,24 @@ describe('NotesPage', () => {
     await loadWithEmployee(user, 'EMP-001')
 
     await waitFor(() => expect(screen.getByText('Login Page')).toBeInTheDocument())
+  })
+
+  it('hides the company picker and uses the only company when there is exactly one', async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(jsonResponse(singleCompanyResponse))
+      .mockResolvedValueOnce(jsonResponse([]))
+    vi.stubGlobal('fetch', fetchMock)
+    const user = userEvent.setup()
+
+    renderNotesPage()
+    await user.type(screen.getByLabelText('Employee Code'), 'EMP-001')
+    const load = screen.getByRole('button', { name: 'Load' })
+    await waitFor(() => expect(load).toBeEnabled())
+    expect(screen.queryByLabelText('Company')).not.toBeInTheDocument()
+    await user.click(load)
+
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(2))
+    expect(fetchMock.mock.calls[1][0]).toContain('/api/notes/7/EMP-001')
   })
 })

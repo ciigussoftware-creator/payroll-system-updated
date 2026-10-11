@@ -20,6 +20,8 @@ const companiesResponse = [
   { id: 2, name: 'DCH Plywood' },
 ]
 
+const singleCompanyResponse = [{ id: 7, name: 'Wood Lanka' }]
+
 // Derived at runtime, not hardcoded: OtManagementPage treats any date before
 // todayIsoDate() as retroactive and then requires a reason, so a literal future
 // date silently turns these tests red once that day passes. Matches the page's
@@ -214,5 +216,28 @@ describe('OtManagementPage', () => {
     await loadWithDate(user, FUTURE_DATE)
 
     await waitFor(() => expect(screen.getByText('Login Page')).toBeInTheDocument())
+  })
+
+  it('hides the company picker and uses the only company when there is exactly one', async () => {
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValueOnce(jsonResponse(singleCompanyResponse))
+      .mockResolvedValueOnce(jsonResponse(dayLevelResponse))
+      .mockResolvedValueOnce(jsonResponse(employeeAuthsResponse))
+    vi.stubGlobal('fetch', fetchMock)
+    const user = userEvent.setup()
+
+    renderOtManagement()
+    const dateInput = screen.getByLabelText('Date') as HTMLInputElement
+    await user.clear(dateInput)
+    await user.type(dateInput, FUTURE_DATE)
+    const load = screen.getByRole('button', { name: 'Load' })
+    await waitFor(() => expect(load).toBeEnabled())
+    expect(screen.queryByLabelText('Company')).not.toBeInTheDocument()
+    await user.click(load)
+
+    await waitFor(() => expect(fetchMock).toHaveBeenCalledTimes(3))
+    expect(fetchMock.mock.calls[1][0]).toContain(`/api/ot-config/day-level/7/${FUTURE_DATE}`)
+    expect(fetchMock.mock.calls[2][0]).toContain(`/api/ot-config/employee-authorizations/7/${FUTURE_DATE}`)
   })
 })

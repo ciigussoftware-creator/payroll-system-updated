@@ -37,3 +37,13 @@ security:
   login-rate-limit:
     max-attempts: 5
     window-ms: 900000 # 15 minutes
+
+bootstrap:
+  # First-boot seeding of the companies table (see SyncClientBootstrapRunner).
+  # Set both COMPANY_CODE and COMPANY_NAME for a single-company deployment.
+  # BOOTSTRAP_DEV_COMPANIES=true seeds the two demo companies instead, and only
+  # applies when neither COMPANY_CODE nor COMPANY_NAME is set.
+  company:
+    code: ${COMPANY_CODE:}
+    name: ${COMPANY_NAME:}
+  dev-companies: ${BOOTSTRAP_DEV_COMPANIES:false}
